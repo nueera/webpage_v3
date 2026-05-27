@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
+import { ThemeProvider } from "next-themes";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+import PageLoader from "@/components/page-loader";
+import ScrollTopBtn from "@/components/scroll-top-btn";
+import WhatsAppFloat from "@/components/whatsapp-float";
+import MobileBottomNav from "@/components/mobile-bottom-nav";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -41,9 +48,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body className={`${outfit.variable} antialiased`}>
-        <div className="min-h-screen flex flex-col">{children}</div>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          <PageLoader />
+          <Navbar />
+          <main className="pt-20 min-h-screen pb-mobile-nav">
+            {children}
+          </main>
+          <Footer />
+          <WhatsAppFloat />
+          <ScrollTopBtn />
+          <MobileBottomNav />
+        </ThemeProvider>
       </body>
     </html>
   );
