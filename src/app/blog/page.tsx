@@ -1,10 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowRight, BookOpen, Calendar, Clock, Tag, User } from 'lucide-react';
+import { ArrowRight, BookOpen, Calendar, Clock, Tag } from 'lucide-react';
 import Breadcrumb from '@/components/breadcrumb';
-import { SectionWrapper, SectionHeader } from '@/components/section-utils';
+import { SectionWrapper } from '@/components/section-utils';
 
 const categories = ['All', 'Technology', 'Design', 'Branding', 'Marketing', 'Business'];
 
@@ -49,6 +49,15 @@ const articles = [
 ];
 
 export default function BlogPage() {
+  const [activeCategory, setActiveCategory] = useState('All');
+
+  const filteredArticles = activeCategory === 'All'
+    ? articles
+    : articles.filter(a => a.cat === activeCategory);
+
+  const featuredArticle = filteredArticles.find(a => a.featured) || filteredArticles[0];
+  const gridArticles = filteredArticles.filter(a => a !== featuredArticle);
+
   return (
     <>
       <Breadcrumb items={[{ label: 'Blog' }]} />
@@ -89,11 +98,12 @@ export default function BlogPage() {
       <SectionWrapper>
         <div className="container-nueera">
           <div className="flex flex-wrap justify-center gap-3 mb-12">
-            {categories.map((cat, i) => (
+            {categories.map((cat) => (
               <button
                 key={cat}
+                onClick={() => setActiveCategory(cat)}
                 className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300
-                  ${i === 0
+                  ${activeCategory === cat
                     ? 'bg-gradient-to-r from-[var(--blue-primary)] to-[var(--orange-primary)] text-white'
                     : 'bg-[var(--bg-glass)] border border-[var(--border-soft)] text-[var(--text-secondary)] hover:border-[var(--border-active)] hover:text-[var(--blue-primary)]'
                   }`}
@@ -104,7 +114,7 @@ export default function BlogPage() {
           </div>
 
           {/* Featured Article */}
-          {articles[0] && (
+          {featuredArticle && (
             <Link href="/blog/post" className="block mb-12">
               <div className="glass-card rounded-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-0">
                 <div className="h-64 lg:h-auto bg-gradient-to-br from-[var(--blue-primary)]/20 to-[var(--orange-primary)]/20 flex items-center justify-center">
@@ -112,11 +122,11 @@ export default function BlogPage() {
                 </div>
                 <div className="p-8 flex flex-col justify-center">
                   <div className="flex items-center gap-3 mb-3">
-                    <span className="px-3 py-1 rounded-full text-xs font-medium bg-[var(--blue-primary)]/10 text-[var(--blue-primary)]">{articles[0].cat}</span>
-                    <span className="text-[var(--text-muted)] text-xs flex items-center gap-1"><Calendar className="w-3 h-3" /> {articles[0].date}</span>
+                    <span className="px-3 py-1 rounded-full text-xs font-medium bg-[var(--blue-primary)]/10 text-[var(--blue-primary)]">{featuredArticle.cat}</span>
+                    <span className="text-[var(--text-muted)] text-xs flex items-center gap-1"><Calendar className="w-3 h-3" /> {featuredArticle.date}</span>
                   </div>
-                  <h2 className="text-2xl font-extrabold text-[var(--text-primary)] mb-3 hover:text-[var(--blue-primary)] transition-colors">{articles[0].title}</h2>
-                  <p className="text-[var(--text-secondary)] mb-4">{articles[0].excerpt}</p>
+                  <h2 className="text-2xl font-extrabold text-[var(--text-primary)] mb-3 hover:text-[var(--blue-primary)] transition-colors">{featuredArticle.title}</h2>
+                  <p className="text-[var(--text-secondary)] mb-4">{featuredArticle.excerpt}</p>
                   <span className="text-[var(--blue-primary)] text-sm font-semibold inline-flex items-center gap-1">
                     Read More <ArrowRight className="w-4 h-4" />
                   </span>
@@ -126,23 +136,30 @@ export default function BlogPage() {
           )}
 
           {/* Article Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {articles.slice(1).map((article, i) => (
-              <Link key={i} href="/blog/post" className="glass-card rounded-2xl overflow-hidden group">
-                <div className="h-48 bg-gradient-to-br from-[var(--blue-primary)]/10 to-[var(--orange-primary)]/10 flex items-center justify-center">
-                  <BookOpen className="w-10 h-10 text-[var(--blue-primary)] opacity-30" />
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="px-3 py-1 rounded-full text-xs font-medium bg-[var(--blue-primary)]/10 text-[var(--blue-primary)]">{article.cat}</span>
-                    <span className="text-[var(--text-muted)] text-xs">{article.date}</span>
+          {gridArticles.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {gridArticles.map((article, i) => (
+                <Link key={i} href="/blog/post" className="glass-card rounded-2xl overflow-hidden group">
+                  <div className="h-48 bg-gradient-to-br from-[var(--blue-primary)]/10 to-[var(--orange-primary)]/10 flex items-center justify-center">
+                    <BookOpen className="w-10 h-10 text-[var(--blue-primary)] opacity-30" />
                   </div>
-                  <h3 className="font-bold text-[var(--text-primary)] mb-2 group-hover:text-[var(--blue-primary)] transition-colors">{article.title}</h3>
-                  <p className="text-[var(--text-secondary)] text-sm line-clamp-2">{article.excerpt}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
+                  <div className="p-6">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-[var(--blue-primary)]/10 text-[var(--blue-primary)]">{article.cat}</span>
+                      <span className="text-[var(--text-muted)] text-xs">{article.date}</span>
+                    </div>
+                    <h3 className="font-bold text-[var(--text-primary)] mb-2 group-hover:text-[var(--blue-primary)] transition-colors">{article.title}</h3>
+                    <p className="text-[var(--text-secondary)] text-sm line-clamp-2">{article.excerpt}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <BookOpen className="w-12 h-12 mx-auto text-[var(--text-muted)] opacity-30 mb-4" />
+              <p className="text-[var(--text-muted)]">No articles found in this category.</p>
+            </div>
+          )}
         </div>
       </SectionWrapper>
 

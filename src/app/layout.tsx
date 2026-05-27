@@ -7,6 +7,8 @@ import PageLoader from "@/components/page-loader";
 import ScrollTopBtn from "@/components/scroll-top-btn";
 import WhatsAppFloat from "@/components/whatsapp-float";
 import MobileBottomNav from "@/components/mobile-bottom-nav";
+import CookieConsent from "@/components/cookie-consent";
+import ScrollProgress from "@/components/scroll-progress";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -51,15 +53,24 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${outfit.variable} antialiased`} suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          {/* Skip to main content - accessibility */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-[var(--blue-primary)] focus:text-white focus:text-sm focus:font-semibold focus:outline-none"
+          >
+            Skip to main content
+          </a>
+          <ScrollProgress />
           <PageLoader />
           <Navbar />
-          <main className="pt-20 min-h-screen pb-mobile-nav">
+          <main id="main-content" className="pt-20 min-h-screen pb-mobile-nav">
             {children}
           </main>
           <Footer />
           <WhatsAppFloat />
           <ScrollTopBtn />
           <MobileBottomNav />
+          <CookieConsent />
         </ThemeProvider>
       </body>
     </html>
