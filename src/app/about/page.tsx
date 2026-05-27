@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import Breadcrumb from '@/components/breadcrumb';
 import { SectionWrapper, SectionHeader } from '@/components/section-utils';
+import { TiltEffect } from '@/components/effects/tilt-effect';
 
 const teamMembers = [
   { name: 'Nil Shinde', role: 'Founder & CEO', img: '/assets/images/profiles/nil_shinde.webp' },
@@ -237,19 +238,21 @@ export default function AboutPage() {
           <SectionHeader badge="Team" title="Meet Our Team" description="The talented people behind NueEra's success." />
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
             {teamMembers.map((member) => (
-              <div key={member.name} className="glass-card rounded-2xl p-6 text-center group">
-                <div className="relative w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden ring-2 ring-[var(--border-soft)] group-hover:ring-[var(--blue-primary)] transition-all">
-                  <Image
-                    src={member.img}
-                    alt={member.name}
-                    fill
-                    className="object-cover"
-                    sizes="80px"
-                  />
+              <TiltEffect key={member.name} maxTilt={6} scale={1.02}>
+                <div className="glass-card rounded-2xl p-6 text-center group">
+                  <div className="relative w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden ring-2 ring-[var(--border-soft)] group-hover:ring-[var(--blue-primary)] transition-all">
+                    <Image
+                      src={member.img}
+                      alt={member.name}
+                      fill
+                      className="object-cover"
+                      sizes="80px"
+                    />
+                  </div>
+                  <h3 className="font-bold text-[var(--text-primary)] text-sm mb-1">{member.name}</h3>
+                  <p className="text-[var(--text-muted)] text-xs">{member.role}</p>
                 </div>
-                <h3 className="font-bold text-[var(--text-primary)] text-sm mb-1">{member.name}</h3>
-                <p className="text-[var(--text-muted)] text-xs">{member.role}</p>
-              </div>
+              </TiltEffect>
             ))}
           </div>
         </div>

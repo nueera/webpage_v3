@@ -1,15 +1,33 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle2, HelpCircle, Zap, Shield, Users } from 'lucide-react';
 import Breadcrumb from '@/components/breadcrumb';
 import { SectionWrapper, SectionHeader } from '@/components/section-utils';
+import { CounterAnimation } from '@/components/effects/counter-animation';
 
-const tiers = [
+type BillingCycle = 'monthly' | 'yearly';
+
+interface Tier {
+  name: string;
+  monthlyPrice: string;
+  yearlyPrice: string;
+  period: string;
+  yearlyPeriod: string;
+  desc: string;
+  features: string[];
+  featured?: boolean;
+  isCustom?: boolean;
+}
+
+const tiers: Tier[] = [
   {
     name: 'Starter',
-    price: '$2,500',
+    monthlyPrice: '$2,500',
+    yearlyPrice: '$2,000',
     period: 'per project',
+    yearlyPeriod: 'per project',
     desc: 'Perfect for startups and small businesses getting their digital presence off the ground.',
     features: [
       'Custom responsive website (up to 5 pages)',
@@ -22,8 +40,10 @@ const tiers = [
   },
   {
     name: 'Growth',
-    price: '$5,500',
+    monthlyPrice: '$5,500',
+    yearlyPrice: '$4,400',
     period: 'per project',
+    yearlyPeriod: 'per project',
     desc: 'For growing businesses ready to scale with a powerful digital platform.',
     features: [
       'Custom web application (up to 15 pages)',
@@ -39,8 +59,10 @@ const tiers = [
   },
   {
     name: 'Enterprise',
-    price: 'Custom',
+    monthlyPrice: 'Custom',
+    yearlyPrice: 'Custom',
     period: 'tailored',
+    yearlyPeriod: 'tailored',
     desc: 'For established businesses needing complex, scalable, enterprise-grade solutions.',
     features: [
       'Unlimited pages & features',
@@ -52,6 +74,7 @@ const tiers = [
       'Priority response (4h SLA)',
       'Quarterly strategy reviews',
     ],
+    isCustom: true,
   },
 ];
 
@@ -64,7 +87,81 @@ const faqs = [
   { q: 'Do you work with clients outside India?', a: 'Yes! We work with clients globally. Our team is experienced in remote collaboration and we adapt to your timezone and communication preferences.' },
 ];
 
+function PricingToggle({ billing, setBilling }: { billing: BillingCycle; setBilling: (b: BillingCycle) => void }) {
+  return (
+    <div className="flex items-center justify-center gap-4 mb-10">
+      <span
+        className={`text-sm font-semibold transition-colors duration-300 ${
+          billing === 'monthly' ? 'text-[var(--text-primary)]' : 'text-[var(--text-muted)]'
+        }`}
+      >
+        Monthly
+      </span>
+      <button
+        onClick={() => setBilling(billing === 'monthly' ? 'yearly' : 'monthly')}
+        className="relative w-14 h-7 rounded-full transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--blue-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-main)]"
+        style={{
+          background: billing === 'yearly'
+            ? 'linear-gradient(135deg, var(--blue-primary), var(--orange-primary))'
+            : 'var(--border-soft)',
+        }}
+        role="switch"
+        aria-checked={billing === 'yearly'}
+        aria-label="Toggle yearly billing"
+      >
+        <span
+          className="absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-300 ease-[var(--ease-emphasis)]"
+          style={{
+            transform: billing === 'yearly' ? 'translateX(28px)' : 'translateX(0)',
+          }}
+        />
+      </button>
+      <span
+        className={`text-sm font-semibold transition-colors duration-300 flex items-center gap-2 ${
+          billing === 'yearly' ? 'text-[var(--text-primary)]' : 'text-[var(--text-muted)]'
+        }`}
+      >
+        Yearly
+        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-[var(--blue-primary)] to-[var(--orange-primary)] text-white animate-fade-in">
+          Save 20%
+        </span>
+      </span>
+    </div>
+  );
+}
+
+function PriceDisplay({ tier, billing }: { tier: Tier; billing: BillingCycle }) {
+  const price = billing === 'yearly' ? tier.yearlyPrice : tier.monthlyPrice;
+  const period = billing === 'yearly' ? tier.yearlyPeriod : tier.period;
+  const showOriginal = billing === 'yearly' && !tier.isCustom;
+
+  return (
+    <div className="flex items-baseline gap-1 mb-2 min-h-[40px]">
+      <div className="relative">
+        {/* Original price with strikethrough */}
+        {showOriginal && (
+          <span className="absolute -top-5 left-0 text-[var(--text-muted)] text-sm line-through decoration-2">
+            {tier.monthlyPrice}
+          </span>
+        )}
+        <span
+          key={price}
+          className="text-3xl font-extrabold gradient-text inline-block"
+          style={{
+            animation: 'priceFadeScale 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+        >
+          {price}
+        </span>
+      </div>
+      <span className="text-[var(--text-muted)] text-sm">/{period}</span>
+    </div>
+  );
+}
+
 export default function PricingPage() {
+  const [billing, setBilling] = useState<BillingCycle>('monthly');
+
   return (
     <>
       <Breadcrumb items={[{ label: 'Pricing' }]} />
@@ -82,17 +179,20 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Pricing Principles */}
+      {/* Pricing Principles with CounterAnimation */}
       <SectionWrapper className="bg-[var(--bg-secondary)]">
         <div className="container-nueera">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { icon: Zap, title: 'No Hidden Costs', desc: 'What you see is what you pay. Every cost is transparent from the start.' },
-              { icon: Shield, title: 'Value Guarantee', desc: 'If we don\'t deliver on our promises, we\'ll make it right.' },
-              { icon: Users, title: 'Flexible Terms', desc: 'Milestone-based payments and customizable scopes to fit your budget.' },
+              { icon: Zap, title: 'No Hidden Costs', desc: 'What you see is what you pay. Every cost is transparent from the start.', value: 100, suffix: '%' },
+              { icon: Shield, title: 'Value Guarantee', desc: 'If we don\'t deliver on our promises, we\'ll make it right.', value: 99, suffix: '.9%' },
+              { icon: Users, title: 'Flexible Terms', desc: 'Milestone-based payments and customizable scopes to fit your budget.', value: 24, suffix: 'h' },
             ].map((item) => (
               <div key={item.title} className="glass-card rounded-2xl p-6 text-center">
                 <item.icon className="w-8 h-8 mx-auto mb-3 text-[var(--blue-primary)]" />
+                <div className="text-3xl font-extrabold gradient-text mb-2">
+                  <CounterAnimation target={item.value} suffix={item.suffix} duration={2000} />
+                </div>
                 <h3 className="font-bold text-[var(--text-primary)] mb-2">{item.title}</h3>
                 <p className="text-[var(--text-secondary)] text-sm">{item.desc}</p>
               </div>
@@ -104,6 +204,7 @@ export default function PricingPage() {
       {/* Pricing Tiers */}
       <SectionWrapper>
         <div className="container-nueera">
+          <PricingToggle billing={billing} setBilling={setBilling} />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             {tiers.map((tier) => (
               <div
@@ -120,10 +221,7 @@ export default function PricingPage() {
                   </span>
                 )}
                 <h3 className="text-xl font-bold text-[var(--text-primary)] mb-1">{tier.name}</h3>
-                <div className="flex items-baseline gap-1 mb-2">
-                  <span className="text-3xl font-extrabold gradient-text">{tier.price}</span>
-                  <span className="text-[var(--text-muted)] text-sm">/{tier.period}</span>
-                </div>
+                <PriceDisplay tier={tier} billing={billing} />
                 <p className="text-[var(--text-secondary)] text-sm mb-6">{tier.desc}</p>
                 <ul className="space-y-3 mb-8">
                   {tier.features.map((f) => (
@@ -239,6 +337,20 @@ export default function PricingPage() {
           </Link>
         </div>
       </SectionWrapper>
+
+      {/* Price animation keyframes */}
+      <style jsx global>{`
+        @keyframes priceFadeScale {
+          0% {
+            opacity: 0;
+            transform: scale(0.85) translateY(4px);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+          }
+        }
+      `}</style>
     </>
   );
 }

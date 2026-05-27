@@ -1,124 +1,24 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useCallback } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, ChevronDown, CheckCircle2 } from "lucide-react";
-import { GradientButton, GhostButton } from "./ui-extensions";
-
-interface Particle {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  size: number;
-  opacity: number;
-}
-
-function ParticleCanvas() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<Particle[]>([]);
-  const animationRef = useRef<number>(0);
-  const shouldReduceMotion = useReducedMotion();
-
-  const initParticles = useCallback((width: number, height: number) => {
-    const count = Math.min(Math.floor((width * height) / 15000), 80);
-    const particles: Particle[] = [];
-    for (let i = 0; i < count; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        size: Math.random() * 2 + 0.5,
-        opacity: Math.random() * 0.5 + 0.1,
-      });
-    }
-    particlesRef.current = particles;
-  }, []);
-
-  useEffect(() => {
-    if (shouldReduceMotion) return;
-
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const resize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-      initParticles(canvas.width, canvas.height);
-    };
-
-    resize();
-    window.addEventListener("resize", resize);
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const particles = particlesRef.current;
-
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 149, 0, ${p.opacity})`;
-        ctx.fill();
-
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const dx = p.x - p2.x;
-          const dy = p.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < 120) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(0, 168, 255, ${0.15 * (1 - dist / 120)})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      }
-
-      animationRef.current = requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    return () => {
-      window.removeEventListener("resize", resize);
-      cancelAnimationFrame(animationRef.current);
-    };
-  }, [shouldReduceMotion, initParticles]);
-
-  if (shouldReduceMotion) return null;
-
-  return <canvas ref={canvasRef} className="particle-canvas" />;
-}
+import { motion, useReducedMotion } from 'framer-motion';
+import { ArrowRight, ChevronDown, CheckCircle2 } from 'lucide-react';
+import { GradientButton, GhostButton } from './ui-extensions';
+import { ParticleCanvas } from './particle-canvas';
+import { ThreeJSHero } from './threejs-hero';
 
 const METRICS = [
-  { value: "16+", label: "Projects" },
-  { value: "100%", label: "Satisfaction" },
-  { value: "4+", label: "Happy Clients" },
+  { value: '16+', label: 'Projects' },
+  { value: '100%', label: 'Satisfaction' },
+  { value: '4+', label: 'Happy Clients' },
 ];
 
 const PROOF_ITEMS = [
-  "Proven delivery framework",
-  "No fluff, just results",
-  "Business-first approach",
+  'Proven delivery framework',
+  'No fluff, just results',
+  'Business-first approach',
 ];
 
-export function Hero() {
+export function Hero({ enableThreeJS = false }: { enableThreeJS?: boolean }) {
   const shouldReduceMotion = useReducedMotion();
 
   const containerVariants = {
@@ -134,16 +34,19 @@ export function Hero() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
   };
 
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0a0e27] pt-20"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--bg-main)] pt-20"
     >
       {/* Particle Canvas */}
       <ParticleCanvas />
+
+      {/* Three.js 3D Hero (optional) */}
+      <ThreeJSHero enabled={enableThreeJS} />
 
       {/* Glow Orbs */}
       <div className="glow-orb-orange top-20 -left-40" />
@@ -164,16 +67,16 @@ export function Hero() {
         {/* Title */}
         <motion.h1
           variants={itemVariants}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-6"
+          className="heading-gradient text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-6"
         >
-          Build Your{" "}
+          Build Your{' '}
           <span className="gradient-text">Digital Empire</span>
         </motion.h1>
 
         {/* Subtitle */}
         <motion.p
           variants={itemVariants}
-          className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto mb-10"
+          className="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto mb-10"
         >
           We craft high-performance digital solutions that transform ambitious
           businesses into scalable, revenue-driving powerhouses. No guesswork.
@@ -190,7 +93,7 @@ export function Hero() {
             <ArrowRight className="w-5 h-5" />
           </GradientButton>
           <GhostButton onClick={() => {
-            document.querySelector("#services")?.scrollIntoView({ behavior: "smooth" });
+            document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' });
           }}>
             Explore Our Services
           </GhostButton>
@@ -206,7 +109,7 @@ export function Hero() {
               <div className="text-3xl md:text-4xl font-bold gradient-text">
                 {metric.value}
               </div>
-              <div className="text-sm text-white/50 mt-1">{metric.label}</div>
+              <div className="text-sm text-[var(--text-muted)] mt-1">{metric.label}</div>
             </div>
           ))}
         </motion.div>
@@ -214,8 +117,8 @@ export function Hero() {
         {/* Proof Strip */}
         <motion.div variants={itemVariants} className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
           {PROOF_ITEMS.map((item) => (
-            <div key={item} className="flex items-center gap-2 text-white/50 text-sm">
-              <CheckCircle2 className="w-4 h-4 text-[#ff9500]" />
+            <div key={item} className="flex items-center gap-2 text-[var(--text-secondary)] text-sm">
+              <CheckCircle2 className="w-4 h-4 text-[var(--orange-primary)]" />
               {item}
             </div>
           ))}
@@ -230,9 +133,9 @@ export function Hero() {
         >
           <motion.div
             animate={shouldReduceMotion ? {} : { y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
           >
-            <ChevronDown className="w-6 h-6 text-white/30" />
+            <ChevronDown className="w-6 h-6 text-[var(--text-muted)]" />
           </motion.div>
         </motion.div>
       </motion.div>

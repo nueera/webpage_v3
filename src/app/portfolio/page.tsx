@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import Breadcrumb from '@/components/breadcrumb';
 import { SectionWrapper, SectionHeader } from '@/components/section-utils';
+import { ImageLightbox } from '@/components/image-lightbox';
 
 const filters = ['All', 'Web', 'App', 'Marketing', 'Design'];
 
@@ -23,14 +24,38 @@ const projects = [
 
 export default function PortfolioPage() {
   const [activeFilter, setActiveFilter] = useState('All');
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   const filteredProjects = activeFilter === 'All'
     ? projects
     : projects.filter((p) => p.cat === activeFilter);
 
+  const lightboxImages = projects.map((p) => ({
+    src: p.img,
+    alt: p.title,
+  }));
+
+  const openLightbox = useCallback((index: number) => {
+    setLightboxIndex(index);
+    setLightboxOpen(true);
+  }, []);
+
+  const closeLightbox = useCallback(() => {
+    setLightboxOpen(false);
+  }, []);
+
   return (
     <>
       <Breadcrumb items={[{ label: 'Portfolio' }]} />
+
+      {/* Lightbox */}
+      <ImageLightbox
+        images={lightboxImages}
+        initialIndex={lightboxIndex}
+        isOpen={lightboxOpen}
+        onClose={closeLightbox}
+      />
 
       {/* Hero */}
       <section className="relative py-20 md:py-32 overflow-hidden">
@@ -88,8 +113,14 @@ export default function PortfolioPage() {
           {/* Projects Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProjects.map((project, i) => (
-              <div key={i} className="group relative rounded-2xl overflow-hidden glass-card">
-                <div className="h-56 relative overflow-hidden">
+              <div key={project.title + i} className="group relative rounded-2xl overflow-hidden glass-card">
+                <div
+                  className="h-56 relative overflow-hidden cursor-pointer"
+                  onClick={() => {
+                    const globalIndex = projects.findIndex((p) => p.title === project.title);
+                    openLightbox(globalIndex >= 0 ? globalIndex : 0);
+                  }}
+                >
                   <Image
                     src={project.img}
                     alt={project.title}
@@ -105,7 +136,7 @@ export default function PortfolioPage() {
                   {/* Overlay content */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <span className="px-4 py-2 rounded-xl text-sm font-semibold bg-white/10 backdrop-blur-sm border border-white/20 text-white inline-flex items-center gap-2">
-                      View Project <ExternalLink className="w-4 h-4" />
+                      <Eye className="w-4 h-4" /> View Image
                     </span>
                   </div>
                 </div>

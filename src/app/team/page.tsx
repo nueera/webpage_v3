@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Mail, Link as LinkIcon, Star } from 'lucide-react';
 import Breadcrumb from '@/components/breadcrumb';
 import { SectionWrapper, SectionHeader } from '@/components/section-utils';
+import { ParallaxCards } from '@/components/effects/parallax-cards';
 
 const teamMembers = [
   { name: 'Nil Shinde', role: 'Founder & CEO', img: '/assets/images/profiles/nil_shinde.webp', bio: 'Visionary leader driving NueEra\'s mission to democratize premium digital solutions.' },
@@ -42,28 +43,30 @@ export default function TeamPage() {
         <div className="container-nueera">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {teamMembers.map((member) => (
-              <div key={member.name} className="glass-card rounded-2xl p-6 text-center group">
-                <div className="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden ring-2 ring-[var(--border-soft)] group-hover:ring-[var(--blue-primary)] transition-all duration-300">
-                  <Image
-                    src={member.img}
-                    alt={member.name}
-                    fill
-                    className="object-cover"
-                    sizes="96px"
-                  />
+              <ParallaxCards key={member.name} maxRotation={10} className="rounded-2xl">
+                <div className="glass-card rounded-2xl p-6 text-center group">
+                  <div className="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden ring-2 ring-[var(--border-soft)] group-hover:ring-[var(--blue-primary)] transition-all duration-300">
+                    <Image
+                      src={member.img}
+                      alt={member.name}
+                      fill
+                      className="object-cover"
+                      sizes="96px"
+                    />
+                  </div>
+                  <h3 className="font-bold text-[var(--text-primary)] mb-1">{member.name}</h3>
+                  <p className="text-[var(--blue-primary)] text-xs font-medium mb-3">{member.role}</p>
+                  <p className="text-[var(--text-secondary)] text-xs leading-relaxed mb-4">{member.bio}</p>
+                  <div className="flex items-center justify-center gap-2">
+                    <button type="button" onClick={() => { window.location.href = 'mailto:hello@nueera.io'; }} className="w-8 h-8 rounded-lg flex items-center justify-center bg-[var(--bg-glass)] border border-[var(--border-soft)] text-[var(--text-muted)] hover:text-[var(--blue-primary)] hover:border-[var(--blue-primary)] transition-all cursor-pointer">
+                      <Mail className="w-3.5 h-3.5" />
+                    </button>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-lg flex items-center justify-center bg-[var(--bg-glass)] border border-[var(--border-soft)] text-[var(--text-muted)] hover:text-[var(--blue-primary)] hover:border-[var(--blue-primary)] transition-all">
+                      <LinkIcon className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
                 </div>
-                <h3 className="font-bold text-[var(--text-primary)] mb-1">{member.name}</h3>
-                <p className="text-[var(--blue-primary)] text-xs font-medium mb-3">{member.role}</p>
-                <p className="text-[var(--text-secondary)] text-xs leading-relaxed mb-4">{member.bio}</p>
-                <div className="flex items-center justify-center gap-2">
-                  <button type="button" onClick={() => { window.location.href = 'mailto:hello@nueera.io'; }} className="w-8 h-8 rounded-lg flex items-center justify-center bg-[var(--bg-glass)] border border-[var(--border-soft)] text-[var(--text-muted)] hover:text-[var(--blue-primary)] hover:border-[var(--blue-primary)] transition-all cursor-pointer">
-                    <Mail className="w-3.5 h-3.5" />
-                  </button>
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-lg flex items-center justify-center bg-[var(--bg-glass)] border border-[var(--border-soft)] text-[var(--text-muted)] hover:text-[var(--blue-primary)] hover:border-[var(--blue-primary)] transition-all">
-                    <LinkIcon className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-              </div>
+              </ParallaxCards>
             ))}
           </div>
         </div>

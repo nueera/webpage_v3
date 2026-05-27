@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Menu, X, MessageCircle } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import ThemeToggle from './theme-toggle';
+import { useSmoothScroll } from '@/hooks/use-smooth-scroll';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -22,6 +23,19 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
+  const { scrollToElement } = useSmoothScroll({ offset: 80 });
+
+  // Handle hash links with smooth scroll
+  const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.includes('#')) {
+      const hash = href.split('#')[1];
+      if (hash) {
+        e.preventDefault();
+        scrollToElement(hash);
+        setMobileOpen(false);
+      }
+    }
+  }, [scrollToElement]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -85,6 +99,7 @@ export default function Navbar() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
+                    onClick={(e) => handleNavClick(e, link.href)}
                     className={`relative font-semibold text-sm tracking-wide px-1 py-1.5 transition-colors duration-200
                       ${pathname === link.href
                         ? 'text-transparent bg-clip-text bg-gradient-to-r from-[var(--blue-primary)] to-[var(--orange-primary)]'
@@ -199,6 +214,12 @@ export default function Navbar() {
               >
                 <Link
                   href={link.href}
+                  onClick={(e) => {
+                    handleNavClick(e, link.href);
+                    if (!link.href.includes('#')) {
+                      setMobileOpen(false);
+                    }
+                  }}
                   className={`flex flex-col items-center justify-center gap-1 w-full min-h-[72px]
                     px-4 py-3 rounded-2xl font-bold text-sm uppercase tracking-widest
                     transition-all duration-250
@@ -207,7 +228,6 @@ export default function Navbar() {
                       : 'bg-[var(--bg-glass)] text-[var(--text-primary)] border border-[var(--border-soft)] hover:border-[var(--border-active)]'
                     }
                   `}
-                  onClick={() => setMobileOpen(false)}
                 >
                   {link.label}
                 </Link>
