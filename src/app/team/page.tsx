@@ -56,9 +56,9 @@ export default function TeamPage() {
                 <p className="text-[var(--blue-primary)] text-xs font-medium mb-3">{member.role}</p>
                 <p className="text-[var(--text-secondary)] text-xs leading-relaxed mb-4">{member.bio}</p>
                 <div className="flex items-center justify-center gap-2">
-                  <a href="mailto:hello@nueera.io" className="w-8 h-8 rounded-lg flex items-center justify-center bg-[var(--bg-glass)] border border-[var(--border-soft)] text-[var(--text-muted)] hover:text-[var(--blue-primary)] hover:border-[var(--blue-primary)] transition-all">
+                  <button type="button" onClick={() => { window.location.href = 'mailto:hello@nueera.io'; }} className="w-8 h-8 rounded-lg flex items-center justify-center bg-[var(--bg-glass)] border border-[var(--border-soft)] text-[var(--text-muted)] hover:text-[var(--blue-primary)] hover:border-[var(--blue-primary)] transition-all cursor-pointer">
                     <Mail className="w-3.5 h-3.5" />
-                  </a>
+                  </button>
                   <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-lg flex items-center justify-center bg-[var(--bg-glass)] border border-[var(--border-soft)] text-[var(--text-muted)] hover:text-[var(--blue-primary)] hover:border-[var(--blue-primary)] transition-all">
                     <LinkIcon className="w-3.5 h-3.5" />
                   </a>

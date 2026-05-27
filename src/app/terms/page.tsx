@@ -58,7 +58,7 @@ export default function TermsPage() {
             <section>
               <h2 className="text-xl font-bold text-[var(--text-primary)] mb-3">8. Contact</h2>
               <p>For questions about these Terms of Service, please contact us at:</p>
-              <p className="mt-2">Email: <a href="mailto:hello@nueera.io" className="text-[var(--blue-primary)]">hello@nueera.io</a></p>
+              <p className="mt-2">Email: <span className="text-[var(--blue-primary)] cursor-pointer" role="link" tabIndex={0} onClick={() => { window.location.href = 'mailto:hello@nueera.io'; }} onKeyDown={(e) => { if (e.key === 'Enter') window.location.href = 'mailto:hello@nueera.io'; }}>hello@nueera.io</span></p>
               <p>Address: Kothrud, Pune, Maharashtra, India</p>
             </section>
           </div>

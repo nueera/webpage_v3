@@ -43,15 +43,16 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               { icon: Phone, title: 'Strategy Call', desc: 'Book a free 30-minute strategy session to discuss your project.', action: 'Book a Call', href: 'https://wa.me/917066607424' },
-              { icon: Mail, title: 'General Inquiry', desc: 'Have questions? Drop us an email and we\'ll get back to you.', action: 'Send Email', href: 'mailto:hello@nueera.io' },
+              { icon: Mail, title: 'General Inquiry', desc: 'Have questions? Drop us an email and we\'ll get back to you.', action: 'Send Email', href: 'email', emailTo: 'hello@nueera.io' },
               { icon: MessageCircle, title: 'WhatsApp', desc: 'Quick chat? Reach us instantly on WhatsApp.', action: 'Chat Now', href: 'https://wa.me/917066607424' },
             ].map((opt) => (
               <a
                 key={opt.title}
-                href={opt.href}
+                href={opt.href === 'email' ? undefined : opt.href}
+                onClick={opt.href === 'email' ? (e) => { e.preventDefault(); window.location.href = `mailto:${opt.emailTo}`; } : undefined}
                 target={opt.href.startsWith('http') ? '_blank' : undefined}
                 rel={opt.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                className="glass-card rounded-2xl p-8 text-center block"
+                className="glass-card rounded-2xl p-8 text-center block cursor-pointer"
               >
                 <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-[var(--blue-primary)] to-[var(--orange-primary)] shadow-lg">
                   <opt.icon className="w-7 h-7 text-white" />
@@ -211,9 +212,15 @@ export default function ContactPage() {
                 <div className="p-6 rounded-2xl bg-[var(--bg-glass)] border border-[var(--border-soft)]">
                   <Mail className="w-6 h-6 text-[var(--blue-primary)] mb-2" />
                   <h3 className="font-bold text-[var(--text-primary)] mb-1">Email</h3>
-                  <a href="mailto:hello@nueera.io" className="text-[var(--text-secondary)] text-sm hover:text-[var(--blue-primary)] transition-colors">
+                  <span
+                    className="text-[var(--text-secondary)] text-sm hover:text-[var(--blue-primary)] transition-colors cursor-pointer"
+                    role="link"
+                    tabIndex={0}
+                    onClick={() => { window.location.href = 'mailto:hello@nueera.io'; }}
+                    onKeyDown={(e) => { if (e.key === 'Enter') window.location.href = 'mailto:hello@nueera.io'; }}
+                  >
                     hello@nueera.io
-                  </a>
+                  </span>
                 </div>
                 <div className="p-6 rounded-2xl bg-[var(--bg-glass)] border border-[var(--border-soft)]">
                   <Clock className="w-6 h-6 text-[var(--orange-primary)] mb-2" />

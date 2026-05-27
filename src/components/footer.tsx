@@ -21,9 +21,13 @@ const serviceLinks = [
   { href: '/services', label: 'Software Solutions' },
 ];
 
+function CurrentYear() {
+  return <span suppressHydrationWarning>{new Date().getFullYear()}</span>;
+}
+
 export default function Footer() {
   return (
-    <footer className="bg-[var(--bg-secondary)] border-t border-[var(--border-soft)] mt-auto">
+    <footer className="bg-[var(--bg-secondary)] border-t border-[var(--border-soft)] mt-auto" suppressHydrationWarning>
       <div className="container-nueera py-12 md:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Column 1: Logo + Social */}
@@ -126,9 +130,15 @@ export default function Footer() {
             <div className="space-y-3">
               <div>
                 <p className="text-[var(--text-muted)] text-xs uppercase tracking-wider mb-1">Email</p>
-                <a href="mailto:hello@nueera.io" className="text-[var(--text-secondary)] text-sm hover:text-[var(--blue-primary)] transition-colors">
+                <span
+                  className="text-[var(--text-secondary)] text-sm hover:text-[var(--blue-primary)] transition-colors cursor-pointer"
+                  role="link"
+                  tabIndex={0}
+                  onClick={() => { window.location.href = 'mailto:hello@nueera.io'; }}
+                  onKeyDown={(e) => { if (e.key === 'Enter') window.location.href = 'mailto:hello@nueera.io'; }}
+                >
                   hello@nueera.io
-                </a>
+                </span>
               </div>
               <div>
                 <p className="text-[var(--text-muted)] text-xs uppercase tracking-wider mb-1">Location</p>
@@ -154,7 +164,7 @@ export default function Footer() {
       <div className="border-t border-[var(--border-soft)]">
         <div className="container-nueera py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-[var(--text-muted)] text-xs">
-            &copy; {new Date().getFullYear()} NueEra. All rights reserved.
+            &copy; <CurrentYear /> NueEra. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <Link href="/privacy" className="text-[var(--text-muted)] text-xs hover:text-[var(--blue-primary)] transition-colors">
