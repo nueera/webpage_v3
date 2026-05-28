@@ -7,9 +7,8 @@ const quickLinks = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About Us' },
   { href: '/services', label: 'Services' },
-  { href: '/pricing', label: 'Pricing' },
   { href: '/portfolio', label: 'Portfolio' },
-  { href: '/blog', label: 'Blog' },
+  { href: '/contact', label: 'Contact' },
 ];
 
 const serviceLinks = [
@@ -36,57 +35,26 @@ export default function Footer() {
               <span className="text-2xl font-black tracking-tight gradient-text">NueEra</span>
             </Link>
             <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-6">
-              Building digital empires with precision, creativity, and cutting-edge technology. Your vision, our mission.
+              Building digital empires with precision, creativity, and cutting-edge technology.
             </p>
             <div className="flex items-center gap-3">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-xl flex items-center justify-center
-                  bg-[var(--bg-glass)] border border-[var(--border-soft)]
-                  text-[var(--text-muted)] transition-all duration-300
-                  hover:text-[var(--blue-primary)] hover:border-[var(--blue-primary)] hover:-translate-y-0.5"
-                aria-label="Facebook"
-              >
-                <Globe className="w-4 h-4" />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-xl flex items-center justify-center
-                  bg-[var(--bg-glass)] border border-[var(--border-soft)]
-                  text-[var(--text-muted)] transition-all duration-300
-                  hover:text-[var(--orange-primary)] hover:border-[var(--orange-primary)] hover:-translate-y-0.5"
-                aria-label="Instagram"
-              >
-                <Share2 className="w-4 h-4" />
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-xl flex items-center justify-center
-                  bg-[var(--bg-glass)] border border-[var(--border-soft)]
-                  text-[var(--text-muted)] transition-all duration-300
-                  hover:text-[var(--blue-primary)] hover:border-[var(--blue-primary)] hover:-translate-y-0.5"
-                aria-label="LinkedIn"
-              >
-                <LinkIcon className="w-4 h-4" />
-              </a>
-              <a
-                href="https://wa.me/917066607424"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-xl flex items-center justify-center
-                  bg-[var(--bg-glass)] border border-[var(--border-soft)]
-                  text-[var(--text-muted)] transition-all duration-300
-                  hover:text-green-500 hover:border-green-500 hover:-translate-y-0.5"
-                aria-label="WhatsApp"
-              >
-                <MessageCircle className="w-4 h-4" />
-              </a>
+              {[
+                { href: 'https://facebook.com', icon: Globe, label: 'Website', color: 'hover:text-[var(--blue-primary)] hover:border-[var(--blue-primary)]' },
+                { href: 'https://instagram.com', icon: Share2, label: 'Instagram', color: 'hover:text-[var(--orange-primary)] hover:border-[var(--orange-primary)]' },
+                { href: 'https://linkedin.com', icon: LinkIcon, label: 'LinkedIn', color: 'hover:text-[var(--blue-primary)] hover:border-[var(--blue-primary)]' },
+                { href: 'https://wa.me/917066607424', icon: MessageCircle, label: 'WhatsApp', color: 'hover:text-green-500 hover:border-green-500' },
+              ].map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`w-10 h-10 rounded-xl flex items-center justify-center bg-[var(--bg-glass)] border border-[var(--border-soft)] text-[var(--text-muted)] transition-all duration-300 ${social.color} hover:-translate-y-0.5`}
+                  aria-label={social.label}
+                >
+                  <social.icon className="w-4 h-4" />
+                </a>
+              ))}
             </div>
           </div>
 
@@ -96,10 +64,7 @@ export default function Footer() {
             <ul className="space-y-2.5">
               {quickLinks.map((link) => (
                 <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-[var(--text-secondary)] text-sm hover:text-[var(--blue-primary)] transition-colors duration-200"
-                  >
+                  <Link href={link.href} className="text-[var(--text-secondary)] text-sm hover:text-[var(--blue-primary)] transition-colors duration-200">
                     {link.label}
                   </Link>
                 </li>
@@ -113,10 +78,7 @@ export default function Footer() {
             <ul className="space-y-2.5">
               {serviceLinks.map((link, i) => (
                 <li key={i}>
-                  <Link
-                    href={link.href}
-                    className="text-[var(--text-secondary)] text-sm hover:text-[var(--blue-primary)] transition-colors duration-200"
-                  >
+                  <Link href={link.href} className="text-[var(--text-secondary)] text-sm hover:text-[var(--blue-primary)] transition-colors duration-200">
                     {link.label}
                   </Link>
                 </li>
@@ -132,8 +94,7 @@ export default function Footer() {
                 <p className="text-[var(--text-muted)] text-xs uppercase tracking-wider mb-1">Email</p>
                 <span
                   className="text-[var(--text-secondary)] text-sm hover:text-[var(--blue-primary)] transition-colors cursor-pointer"
-                  role="link"
-                  tabIndex={0}
+                  role="link" tabIndex={0}
                   onClick={() => { window.location.href = 'mailto:hello@nueera.io'; }}
                   onKeyDown={(e) => { if (e.key === 'Enter') window.location.href = 'mailto:hello@nueera.io'; }}
                 >
@@ -146,12 +107,7 @@ export default function Footer() {
               </div>
               <div>
                 <p className="text-[var(--text-muted)] text-xs uppercase tracking-wider mb-1">WhatsApp</p>
-                <a
-                  href="https://wa.me/917066607424"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[var(--text-secondary)] text-sm hover:text-green-500 transition-colors"
-                >
+                <a href="https://wa.me/917066607424" target="_blank" rel="noopener noreferrer" className="text-[var(--text-secondary)] text-sm hover:text-green-500 transition-colors">
                   +91 70666 07424
                 </a>
               </div>
@@ -166,14 +122,6 @@ export default function Footer() {
           <p className="text-[var(--text-muted)] text-xs">
             &copy; <CurrentYear /> NueEra. All rights reserved.
           </p>
-          <div className="flex items-center gap-4">
-            <Link href="/privacy" className="text-[var(--text-muted)] text-xs hover:text-[var(--blue-primary)] transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="/terms" className="text-[var(--text-muted)] text-xs hover:text-[var(--blue-primary)] transition-colors">
-              Terms of Service
-            </Link>
-          </div>
         </div>
       </div>
     </footer>
