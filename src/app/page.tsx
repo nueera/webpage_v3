@@ -20,6 +20,7 @@ import {
 import { CustomCursor } from '@/components/effects/custom-cursor';
 import { SectionProgress } from '@/components/section-progress';
 import { PagePrefetcher } from '@/components/page-prefetcher';
+import { HorizontalScrollPortfolio } from '@/components/horizontal-scroll-portfolio';
 
 export default function HomePage() {
   return (
@@ -27,7 +28,12 @@ export default function HomePage() {
       <CustomCursor />
       <SectionProgress />
       <PagePrefetcher />
-      <Hero />
+
+      {/* Film Grain + Vignette Overlays */}
+      <div className="film-grain-overlay" aria-hidden="true" />
+      <div className="vignette-overlay" aria-hidden="true" />
+
+      <Hero enableThreeJS={true} />
       <GrowthStory />
       <Welcome />
       <Features />
@@ -35,6 +41,10 @@ export default function HomePage() {
       <OurApproach />
       <StrategicArchitecture />
       <Showcase3D />
+
+      {/* Horizontal Scroll Portfolio Showcase */}
+      <HorizontalScrollPortfolio />
+
       <Services />
       <WhyChoose />
       <Process />

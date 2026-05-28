@@ -3,13 +3,13 @@ import { Outfit } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import PageLoader from "@/components/page-loader";
+import CinematicPreloader from "@/components/cinematic-preloader";
 import ScrollTopBtn from "@/components/scroll-top-btn";
 import WhatsAppFloat from "@/components/whatsapp-float";
 import MobileBottomNav from "@/components/mobile-bottom-nav";
 import CookieConsent, { ConsentProvider } from "@/components/cookie-consent";
 import ScrollProgress from "@/components/scroll-progress";
-import { PageTransition } from "@/components/page-transition";
+import { PageTransition } from "@/components/cinematic-page-transition";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { LayoutClientWrapper } from "@/components/layout-client-wrapper";
 import "./globals.css";
@@ -65,7 +65,7 @@ export default function RootLayout({
               Skip to main content
             </a>
             <ScrollProgress />
-            <PageLoader />
+            <CinematicPreloader />
             <Navbar />
             <main id="main-content" className="pt-20 min-h-screen pb-mobile-nav">
               <ErrorBoundary>

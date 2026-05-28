@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ChevronDown, CheckCircle2 } from 'lucide-react';
 import { GradientButton, GhostButton } from './ui-extensions';
+import { MagneticGlowButton, MotionKineticText } from './premium-effects';
 import { ParticleCanvas } from './particle-canvas';
 import { ThreeJSHero } from './threejs-hero';
 
@@ -234,13 +235,17 @@ export function Hero({ enableThreeJS = false }: { enableThreeJS?: boolean }) {
           <span className="section-badge">⚡ Transforming Digital Futures</span>
         </motion.div>
 
-        {/* Title */}
+        {/* Title - Kinetic Typography */}
         <motion.h1
           variants={itemVariants}
-          className="heading-gradient text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-4"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-4"
         >
-          Build Your{' '}
-          <span className="gradient-text">Digital Empire</span>
+          <span className="heading-gradient">
+            <MotionKineticText text="Build Your" as="span" delay={0.4} className="heading-gradient" />
+          </span>{' '}
+          <span className="gradient-text">
+            <MotionKineticText text="Digital Empire" as="span" delay={0.7} className="gradient-text" />
+          </span>
         </motion.h1>
 
         {/* Rotating Subtitle */}
@@ -266,10 +271,10 @@ export function Hero({ enableThreeJS = false }: { enableThreeJS?: boolean }) {
           variants={itemVariants}
           className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
         >
-          <GradientButton>
+          <MagneticGlowButton>
             Book Strategy Call
             <ArrowRight className="w-5 h-5" />
-          </GradientButton>
+          </MagneticGlowButton>
           <GhostButton onClick={() => {
             document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' });
           }}>

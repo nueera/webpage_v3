@@ -46,6 +46,7 @@ import {
   GlassCard,
   GradientButton,
 } from './ui-extensions';
+import { SpotlightCard, MotionKineticText, MagneticGlowButton } from './premium-effects';
 import { TestimonialCarousel } from './testimonial-carousel';
 import { TiltEffect } from './effects/tilt-effect';
 import { IntentCTA } from './intent-cta';
@@ -270,13 +271,13 @@ export function Features() {
         <StaggerContainer className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {FEATURES.map((feature) => (
             <StaggerItem key={feature.title}>
-              <GlassCard className="text-left h-full">
+              <SpotlightCard className="text-left h-full">
                 <div className="w-12 h-12 rounded-lg bg-[var(--orange-primary)]/10 flex items-center justify-center mb-4">
                   <feature.icon className="w-6 h-6 text-[var(--orange-primary)]" />
                 </div>
                 <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">{feature.title}</h3>
                 <p className="text-[var(--text-secondary)] text-sm">{feature.description}</p>
-              </GlassCard>
+              </SpotlightCard>
             </StaggerItem>
           ))}
         </StaggerContainer>
@@ -613,10 +614,10 @@ export function Services() {
         </StaggerContainer>
 
         <FadeUp delay={0.4} className="mt-10">
-          <GradientButton>
+          <MagneticGlowButton>
             View All Services
             <ArrowRight className="w-5 h-5" />
-          </GradientButton>
+          </MagneticGlowButton>
         </FadeUp>
       </div>
     </section>
@@ -996,7 +997,10 @@ export function CTASection() {
         </FadeUp>
 
         <FadeUp delay={0.4} className="mt-10">
-          <IntentCTA className="text-lg px-10 py-5" href="/contact" />
+          <MagneticGlowButton className="text-lg px-10 py-5">
+            Book Strategy Call
+            <ArrowRight className="w-5 h-5" />
+          </MagneticGlowButton>
           <p className="mt-4 text-[var(--text-muted)] text-sm">We respond within 24 hours</p>
         </FadeUp>
       </div>
