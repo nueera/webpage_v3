@@ -15,6 +15,7 @@ import {
   Testimonials,
   Blog,
   CTASection,
+  FAQ,
 } from '@/components/sections';
 import { CustomCursor } from '@/components/effects/custom-cursor';
 import { SectionProgress } from '@/components/section-progress';
@@ -39,6 +40,7 @@ export default function HomePage() {
       <Process />
       <Testimonials />
       <Blog />
+      <FAQ />
       <CTASection />
     </>
   );

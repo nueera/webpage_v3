@@ -1,5 +1,6 @@
 'use client';
 
+import { useRef, useEffect, useState } from 'react';
 import {
   Zap,
   Shield,
@@ -30,7 +31,11 @@ import {
   BookOpen,
   MessageSquare,
   ArrowRightLeft,
+  Star,
+  ChevronDown,
+  MapPin,
 } from 'lucide-react';
+import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import {
   FadeUp,
   StaggerContainer,
@@ -45,6 +50,12 @@ import { TestimonialCarousel } from './testimonial-carousel';
 import { TiltEffect } from './effects/tilt-effect';
 import { IntentCTA } from './intent-cta';
 import { GradientBorder } from './effects/gradient-border';
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from './ui/accordion';
 
 /* ──────────────────────────── Growth Story ──────────────────────────── */
 const GROWTH_STEPS = [
@@ -53,18 +64,21 @@ const GROWTH_STEPS = [
     title: 'Diagnose',
     description:
       'We audit your current systems, identify friction points, and map every opportunity for compounding improvement.',
+    icon: Search,
   },
   {
     kicker: 'Step 02',
     title: 'Design',
     description:
       "We architect solutions that don't just solve today's problems—they become the foundation for tomorrow's scale.",
+    icon: Lightbulb,
   },
   {
     kicker: 'Step 03',
     title: 'Deploy',
     description:
       'We ship with precision, measure relentlessly, and iterate until every system compounds your growth.',
+    icon: Rocket,
   },
 ];
 
@@ -82,25 +96,75 @@ export function GrowthStory() {
           compounding business outcomes.
         </SectionDescription>
 
-        <StaggerContainer className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-          {GROWTH_STEPS.map((step) => (
-            <StaggerItem key={step.kicker}>
-              <TiltEffect maxTilt={6} scale={1.01}>
-                <GlassCard className="text-center h-full">
-                  <span className="text-xs font-semibold text-[var(--orange-primary)] tracking-wider uppercase">
-                    {step.kicker}
-                  </span>
-                  <h3 className="text-xl font-bold text-[var(--text-primary)] mt-3 mb-3">
-                    {step.title}
-                  </h3>
-                  <p className="text-[var(--text-secondary)] text-sm leading-relaxed">
-                    {step.description}
-                  </p>
-                </GlassCard>
-              </TiltEffect>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
+        {/* Steps with connecting line */}
+        <div className="mt-12 relative">
+          {/* Connecting line - desktop only */}
+          <div className="hidden md:block absolute top-1/2 left-[16.67%] right-[16.67%] h-[2px] -translate-y-1/2 z-0">
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.5, ease: 'easeInOut' }}
+              className="w-full h-full origin-left"
+              style={{
+                background: 'linear-gradient(90deg, var(--blue-primary), var(--orange-primary))',
+              }}
+            />
+            {/* Progress dots */}
+            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-3 h-3 rounded-full bg-[var(--blue-primary)] ring-4 ring-[var(--bg-secondary)]" />
+            <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-[var(--orange-primary)] ring-4 ring-[var(--bg-secondary)]" />
+            <div className="absolute top-1/2 right-0 -translate-y-1/2 w-3 h-3 rounded-full bg-[var(--orange-primary)] ring-4 ring-[var(--bg-secondary)]" />
+          </div>
+
+          {/* Mobile connecting line */}
+          <div className="md:hidden absolute left-8 top-0 bottom-0 w-[2px] z-0">
+            <motion.div
+              initial={{ scaleY: 0 }}
+              whileInView={{ scaleY: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, ease: 'easeInOut' }}
+              className="w-full h-full origin-top"
+              style={{
+                background: 'linear-gradient(180deg, var(--blue-primary), var(--orange-primary))',
+              }}
+            />
+          </div>
+
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+            {GROWTH_STEPS.map((step, idx) => (
+              <StaggerItem key={step.kicker}>
+                <TiltEffect maxTilt={6} scale={1.01}>
+                  <GlassCard className="text-center h-full relative">
+                    {/* Step number circle */}
+                    <div className="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-[var(--blue-primary)] to-[var(--orange-primary)] shadow-lg">
+                      <step.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <span className="text-xs font-semibold text-[var(--orange-primary)] tracking-wider uppercase">
+                      {step.kicker}
+                    </span>
+                    <h3 className="text-xl font-bold text-[var(--text-primary)] mt-3 mb-3">
+                      {step.title}
+                    </h3>
+                    <p className="text-[var(--text-secondary)] text-sm leading-relaxed">
+                      {step.description}
+                    </p>
+                    {/* Arrow for mobile */}
+                    {idx < GROWTH_STEPS.length - 1 && (
+                      <div className="md:hidden flex justify-center mt-4">
+                        <motion.div
+                          animate={{ y: [0, 6, 0] }}
+                          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+                        >
+                          <ArrowRight className="w-5 h-5 text-[var(--orange-primary)] rotate-90" />
+                        </motion.div>
+                      </div>
+                    )}
+                  </GlassCard>
+                </TiltEffect>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
       </div>
     </section>
   );
@@ -221,12 +285,16 @@ export function Features() {
   );
 }
 
-/* ──────────────────────────── Trusted By ──────────────────────────── */
+/* ──────────────────────────── Trusted By (Marquee) ──────────────────────────── */
 const TRUST_CHIPS = [
-  'SaaS & Product Teams',
-  'Service Businesses',
-  'Founder-led Brands',
-  'Growth-Stage Startups',
+  { icon: '🏢', name: 'SaaS & Product Teams' },
+  { icon: '🤝', name: 'Service Businesses' },
+  { icon: '🚀', name: 'Founder-led Brands' },
+  { icon: '📈', name: 'Growth-Stage Startups' },
+  { icon: '🏥', name: 'Healthcare Tech' },
+  { icon: '🎓', name: 'EdTech Platforms' },
+  { icon: '🛒', name: 'E-Commerce Brands' },
+  { icon: '💰', name: 'FinTech Companies' },
 ];
 
 const TRUST_STATEMENTS = [
@@ -235,23 +303,43 @@ const TRUST_STATEMENTS = [
   { icon: TrendingUp, label: 'Scale Readiness' },
 ];
 
+/* Marquee item for infinite scroll */
+function MarqueeItem({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={`flex animate-marquee ${className}`}>
+      {children}
+      {children}
+    </div>
+  );
+}
+
 export function TrustedBy() {
   return (
-    <section className="relative py-16 md:py-20 bg-[var(--bg-main)] border-y border-[var(--border-soft)]">
+    <section className="relative py-16 md:py-20 bg-[var(--bg-main)] border-y border-[var(--border-soft)] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp className="text-center mb-8">
           <p className="text-sm text-[var(--text-muted)] uppercase tracking-widest font-medium mb-6">
             Trusted By
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4">
-            {TRUST_CHIPS.map((chip) => (
-              <span
-                key={chip}
-                className="px-4 py-2 rounded-full bg-[var(--bg-glass)] border border-[var(--border-soft)] text-[var(--text-secondary)] text-sm"
-              >
-                {chip}
-              </span>
-            ))}
+        </FadeUp>
+
+        {/* Marquee / Infinite Scroll */}
+        <FadeUp className="mb-8">
+          <div className="relative overflow-hidden">
+            {/* Fade edges */}
+            <div className="absolute left-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-r from-[var(--bg-main)] to-transparent pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-l from-[var(--bg-main)] to-transparent pointer-events-none" />
+            <MarqueeItem className="gap-4">
+              {TRUST_CHIPS.map((chip) => (
+                <span
+                  key={chip.name}
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[var(--bg-glass)] border border-[var(--border-soft)] text-[var(--text-secondary)] text-sm whitespace-nowrap shrink-0"
+                >
+                  <span className="text-base">{chip.icon}</span>
+                  {chip.name}
+                </span>
+              ))}
+            </MarqueeItem>
           </div>
         </FadeUp>
 
@@ -264,6 +352,20 @@ export function TrustedBy() {
           ))}
         </StaggerContainer>
       </div>
+
+      {/* Marquee animation styles */}
+      <style jsx>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          animation: marquee 25s linear infinite;
+        }
+        .animate-marquee:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
     </section>
   );
 }
@@ -615,28 +717,69 @@ const TESTIMONIAL_STATS = [
   { value: '100%', label: 'Satisfaction Rate' },
 ];
 
-export function Testimonials() {
-  const TESTIMONIAL_DATA = [
-    {
-      name: 'Ravi Kambale',
-      role: 'Founder',
-      company: 'TechVenture',
-      content:
-        'NueEra transformed our digital presence completely. Their systematic approach delivered results beyond our expectations. The team understood our vision and executed flawlessly.',
-      rating: 5,
-      initials: 'RK',
-    },
-    {
-      name: 'Vaibhav Nijampurkar',
-      role: 'CEO',
-      company: 'GrowthLabs',
-      content:
-        'Working with NueEra was a game-changer for our business. Their growth marketing system helped us achieve 3x revenue growth in just 6 months. Truly exceptional team.',
-      rating: 5,
-      initials: 'VN',
-    },
-  ];
+const TESTIMONIAL_DATA = [
+  {
+    name: 'Ravi Kambale',
+    role: 'Founder',
+    company: 'TechVenture',
+    content:
+      'NueEra transformed our digital presence completely. Their systematic approach delivered results beyond our expectations. The team understood our vision and executed flawlessly.',
+    rating: 5,
+    initials: 'RK',
+    avatar: '/assets/images/profiles/ravi_kambale.webp',
+  },
+  {
+    name: 'Vaibhav Nijampurkar',
+    role: 'CEO',
+    company: 'GrowthLabs',
+    content:
+      'Working with NueEra was a game-changer for our business. Their growth marketing system helped us achieve 3x revenue growth in just 6 months. Truly exceptional team.',
+    rating: 5,
+    initials: 'VN',
+    avatar: '/assets/images/profiles/vaibhav_nijampurkar.webp',
+  },
+  {
+    name: 'Saurabh Shinde',
+    role: 'CTO',
+    company: 'CloudScale Inc',
+    content:
+      'The technical expertise at NueEra is second to none. They built our entire cloud infrastructure from scratch with 99.99% uptime. Their DevOps practices are world-class.',
+    rating: 5,
+    initials: 'SS',
+    avatar: '/assets/images/profiles/saurabh_shinde.webp',
+  },
+  {
+    name: 'Vikrant Salunke',
+    role: 'Design Lead',
+    company: 'PixelCraft Studio',
+    content:
+      'NueEra\'s design team brought our brand to life in ways we never imagined. The attention to detail and user-centric approach resulted in a 40% increase in user engagement.',
+    rating: 5,
+    initials: 'VS',
+    avatar: '/assets/images/profiles/vikrant_salunke.webp',
+  },
+];
 
+/* Star rating display component */
+function StarRating({ rating, size = 'sm' }: { rating: number; size?: 'sm' | 'md' | 'lg' }) {
+  const sizeClass = size === 'lg' ? 'w-5 h-5' : size === 'md' ? 'w-4 h-4' : 'w-3.5 h-3.5';
+  return (
+    <div className="flex items-center gap-0.5">
+      {[...Array(5)].map((_, i) => (
+        <Star
+          key={i}
+          className={`${sizeClass} ${
+            i < rating
+              ? 'text-[var(--orange-primary)] fill-[var(--orange-primary)]'
+              : 'text-[var(--text-muted)]'
+          }`}
+        />
+      ))}
+    </div>
+  );
+}
+
+export function Testimonials() {
   return (
     <section className="relative py-20 md:py-28 bg-[var(--bg-secondary)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -659,14 +802,38 @@ export function Testimonials() {
           ))}
         </div>
 
-        {/* Testimonial Carousel */}
-        <FadeUp delay={0.2} className="mt-8 max-w-2xl mx-auto">
-          <TestimonialCarousel
-            testimonials={TESTIMONIAL_DATA}
-            autoPlay={true}
-            autoPlaySpeed={6000}
-          />
-        </FadeUp>
+        {/* Testimonial Cards Grid */}
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+          {TESTIMONIAL_DATA.map((testimonial, idx) => (
+            <FadeUp key={testimonial.name} delay={idx * 0.1}>
+              <GlassCard className="text-left h-full" hover={false}>
+                <div className="flex items-center gap-1 mb-3">
+                  <StarRating rating={testimonial.rating} size="sm" />
+                </div>
+                <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-4">
+                  &ldquo;{testimonial.content}&rdquo;
+                </p>
+                <div className="flex items-center gap-3 mt-auto">
+                  <div className="relative w-10 h-10 rounded-full overflow-hidden ring-2 ring-[var(--border-soft)]">
+                    <img
+                      src={testimonial.avatar}
+                      alt={testimonial.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-[var(--text-primary)] text-sm font-semibold">
+                      {testimonial.name}
+                    </p>
+                    <p className="text-[var(--text-muted)] text-xs">
+                      {testimonial.role}, {testimonial.company}
+                    </p>
+                  </div>
+                </div>
+              </GlassCard>
+            </FadeUp>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -680,6 +847,7 @@ const BLOG_POSTS = [
     title: '5 Systems Every Scaling Business Needs in 2025',
     excerpt: 'Discover the operational systems that separate scaling businesses from stagnating ones.',
     date: 'Jan 15, 2025',
+    slug: '/blog/post',
   },
   {
     icon: Settings,
@@ -687,6 +855,7 @@ const BLOG_POSTS = [
     title: 'Automation ROI: How to Calculate and Maximize Returns',
     excerpt: 'A practical framework for measuring and optimizing your automation investments.',
     date: 'Jan 8, 2025',
+    slug: '/blog/post',
   },
   {
     icon: Eye,
@@ -694,6 +863,7 @@ const BLOG_POSTS = [
     title: 'The Psychology of High-Converting Landing Pages',
     excerpt: 'Research-backed design principles that turn visitors into customers.',
     date: 'Dec 28, 2024',
+    slug: '/blog/post',
   },
 ];
 
@@ -710,21 +880,28 @@ export function Blog() {
         <StaggerContainer className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           {BLOG_POSTS.map((post) => (
             <StaggerItem key={post.title}>
-              <GlassCard className="text-left h-full">
-                <div className="w-10 h-10 rounded-lg bg-[var(--orange-primary)]/10 flex items-center justify-center mb-4">
-                  <post.icon className="w-5 h-5 text-[var(--orange-primary)]" />
-                </div>
-                <span className="text-xs font-medium text-[var(--blue-primary)] uppercase tracking-wider">
-                  {post.category}
-                </span>
-                <h3 className="text-base font-bold text-[var(--text-primary)] mt-2 mb-2 line-clamp-2">
-                  {post.title}
-                </h3>
-                <p className="text-[var(--text-secondary)] text-sm mb-3 line-clamp-2">
-                  {post.excerpt}
-                </p>
-                <span className="text-[var(--text-muted)] text-xs">{post.date}</span>
-              </GlassCard>
+              <a href={post.slug} className="block h-full group">
+                <GlassCard className="text-left h-full relative overflow-hidden">
+                  <div className="w-10 h-10 rounded-lg bg-[var(--orange-primary)]/10 flex items-center justify-center mb-4">
+                    <post.icon className="w-5 h-5 text-[var(--orange-primary)]" />
+                  </div>
+                  <span className="text-xs font-medium text-[var(--blue-primary)] uppercase tracking-wider">
+                    {post.category}
+                  </span>
+                  <h3 className="text-base font-bold text-[var(--text-primary)] mt-2 mb-2 line-clamp-2 group-hover:text-[var(--blue-primary)] transition-colors">
+                    {post.title}
+                  </h3>
+                  <p className="text-[var(--text-secondary)] text-sm mb-3 line-clamp-2">
+                    {post.excerpt}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[var(--text-muted)] text-xs">{post.date}</span>
+                    <span className="inline-flex items-center gap-1 text-[var(--blue-primary)] text-xs font-semibold opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                      Read More <ArrowRight className="w-3 h-3" />
+                    </span>
+                  </div>
+                </GlassCard>
+              </a>
             </StaggerItem>
           ))}
         </StaggerContainer>
@@ -740,10 +917,44 @@ const CTA_FEATURES = [
   { icon: CheckCircle2, text: 'Zero Obligation' },
 ];
 
+/* Animated gradient background for CTA */
+function AnimatedGradientBG() {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      <motion.div
+        animate={{
+          background: [
+            'radial-gradient(ellipse at 20% 50%, var(--blue-glow) 0%, transparent 50%)',
+            'radial-gradient(ellipse at 80% 50%, var(--orange-glow) 0%, transparent 50%)',
+            'radial-gradient(ellipse at 50% 20%, var(--blue-glow) 0%, transparent 50%)',
+            'radial-gradient(ellipse at 20% 50%, var(--blue-glow) 0%, transparent 50%)',
+          ],
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute inset-0 opacity-30"
+      />
+      <motion.div
+        animate={{
+          background: [
+            'radial-gradient(ellipse at 80% 80%, var(--orange-glow) 0%, transparent 50%)',
+            'radial-gradient(ellipse at 20% 20%, var(--blue-glow) 0%, transparent 50%)',
+            'radial-gradient(ellipse at 80% 80%, var(--orange-glow) 0%, transparent 50%)',
+          ],
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute inset-0 opacity-20"
+      />
+    </div>
+  );
+}
+
 export function CTASection() {
   return (
     <section id="contact" className="relative py-20 md:py-28 bg-[var(--bg-secondary)] overflow-hidden">
-      {/* Glow */}
+      {/* Animated Gradient Background */}
+      <AnimatedGradientBG />
+
+      {/* Original glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[var(--orange-primary)]/5 blur-[120px]" />
       </div>
@@ -765,6 +976,16 @@ export function CTASection() {
           </p>
         </FadeUp>
 
+        {/* Urgency element */}
+        <FadeUp delay={0.25}>
+          <div className="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--bg-glass)] border border-[var(--border-soft)]">
+            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+            <span className="text-sm text-[var(--text-secondary)]">
+              <span className="font-semibold text-[var(--text-primary)]">3 spots left</span> this month for new strategy calls
+            </span>
+          </div>
+        </FadeUp>
+
         <FadeUp delay={0.3} className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-6">
           {CTA_FEATURES.map((feat) => (
             <div key={feat.text} className="flex items-center gap-2 text-[var(--text-secondary)]">
@@ -777,6 +998,95 @@ export function CTASection() {
         <FadeUp delay={0.4} className="mt-10">
           <IntentCTA className="text-lg px-10 py-5" href="/contact" />
           <p className="mt-4 text-[var(--text-muted)] text-sm">We respond within 24 hours</p>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+/* ──────────────────────────── FAQ Section ──────────────────────────── */
+const FAQ_ITEMS = [
+  {
+    question: 'What services does NueEra offer?',
+    answer: 'We offer comprehensive digital solutions including web and mobile app development, growth marketing systems, tech automation, UI/UX design, and branding & strategy. Each service is designed to work as part of an integrated growth system, not in isolation.',
+  },
+  {
+    question: 'How long does a typical project take?',
+    answer: 'Project timelines vary based on scope and complexity. A standard website takes 4-6 weeks, while complex web applications can take 8-16 weeks. We provide a detailed timeline during our strategy phase so you know exactly what to expect.',
+  },
+  {
+    question: 'What is your pricing model?',
+    answer: 'We offer project-based pricing tailored to your specific needs. After our initial strategy call, we provide a transparent proposal with clear deliverables and timelines. No hidden fees, no surprises. We also offer retainer packages for ongoing support.',
+  },
+  {
+    question: 'Do you work with startups or only established businesses?',
+    answer: 'We work with both! From early-stage startups to established enterprises. Our methodology adapts to your stage of growth — whether you need an MVP to validate your idea or a full-scale platform to handle millions of users.',
+  },
+  {
+    question: 'What technologies do you use?',
+    answer: 'We use modern, battle-tested technologies including React, Next.js, Node.js, TypeScript, React Native, and cloud platforms like AWS and Vercel. Our tech stack is chosen for performance, scalability, and long-term maintainability.',
+  },
+  {
+    question: 'How do you ensure project quality?',
+    answer: 'Quality is built into our process at every step. We follow agile methodology with regular sprints, conduct thorough code reviews, implement automated testing, and provide detailed QA reports. Our 100% client satisfaction rate speaks to our commitment.',
+  },
+  {
+    question: 'What happens after the project is delivered?',
+    answer: 'We provide post-launch support including bug fixes, performance monitoring, and optimization recommendations. We also offer ongoing maintenance packages and are always available for enhancements as your business grows.',
+  },
+  {
+    question: 'How do I get started with NueEra?',
+    answer: 'Simply book a free 30-minute strategy call through our website. We\'ll discuss your goals, challenges, and vision. After the call, we\'ll send you a tailored proposal with a clear roadmap, timeline, and investment details — no obligation required.',
+  },
+];
+
+export function FAQ() {
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
+    <section className="relative py-20 md:py-28 bg-[var(--bg-main)]">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <SectionBadge>FAQ</SectionBadge>
+          <SectionTitle className="mt-4">
+            Frequently Asked{' '}
+            <span className="gradient-text">Questions</span>
+          </SectionTitle>
+          <SectionDescription className="mx-auto mt-4">
+            Everything you need to know about working with NueEra. Can&apos;t find what you&apos;re looking for? Reach out to us directly.
+          </SectionDescription>
+        </div>
+
+        <FadeUp delay={0.2} className="mt-12">
+          <div className="glass-card rounded-2xl p-6 md:p-8">
+            <Accordion type="single" collapsible className="w-full">
+              {FAQ_ITEMS.map((item, idx) => (
+                <AccordionItem
+                  key={idx}
+                  value={`faq-${idx}`}
+                  className="border-[var(--border-soft)]"
+                >
+                  <AccordionTrigger className="text-[var(--text-primary)] text-left text-base font-semibold hover:no-underline hover:text-[var(--blue-primary)] transition-colors py-5">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-[var(--text-secondary)] text-sm leading-relaxed pb-5">
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </FadeUp>
+
+        {/* CTA under FAQ */}
+        <FadeUp delay={0.3} className="mt-8 text-center">
+          <p className="text-[var(--text-secondary)] text-sm">
+            Still have questions?{' '}
+            <a href="/contact" className="text-[var(--blue-primary)] font-semibold hover:underline">
+              Contact us
+            </a>{' '}
+            and we&apos;ll be happy to help.
+          </p>
         </FadeUp>
       </div>
     </section>
