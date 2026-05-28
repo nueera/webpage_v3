@@ -54,7 +54,85 @@ function getBreadcrumbs(pathname: string): { label: string; href: string }[] {
   return crumbs;
 }
 
-/* ──────────────────────── Dock-Style Navbar ──────────────────────── */
+/* ──────────────────────── Dock-Style Navbar with Magnification ──────────────────────── */
+
+const DOCK_ICON_MAP: Record<string, React.ElementType> = {
+  '/': Home,
+  '/about': Palette,
+  '/services': Settings,
+  '/portfolio': Code,
+  '/pricing': Megaphone,
+  '/blog': FileText,
+  '/help-center': MessageCircle,
+  '/contact': MessageCircle,
+};
+
+function DockItem({
+  link,
+  isActive,
+  scale,
+  onNavigate,
+}: {
+  link: { href: string; label: string };
+  isActive: boolean;
+  scale: number;
+  onNavigate: (e: React.MouseEvent<HTMLAnchorElement>, href: string) => void;
+}) {
+  const shouldReduceMotion = useReducedMotion();
+  const BASE_SIZE = 36;
+  const iconSize = BASE_SIZE * scale;
+  const translateY = shouldReduceMotion ? 0 : -(scale - 1) * 14;
+  const Icon = DOCK_ICON_MAP[link.href] || Code;
+
+  return (
+    <Link
+      href={link.href}
+      onClick={(e) => onNavigate(e, link.href)}
+      className="relative flex flex-col items-center justify-end gap-1 group"
+      style={{
+        width: iconSize + 8,
+        transition: shouldReduceMotion ? 'none' : 'width 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
+      }}
+    >
+      <span
+        className="absolute -top-8 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-lg text-[11px] font-semibold whitespace-nowrap
+          bg-[var(--bg-main)] border border-[var(--border-soft)] text-[var(--text-primary)]
+          opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none shadow-lg"
+      >
+        {link.label}
+      </span>
+      <motion.div
+        className="flex items-center justify-center rounded-xl"
+        animate={{ scale, y: translateY }}
+        transition={{ type: 'spring', stiffness: 350, damping: 25, mass: 0.8 }}
+        style={{
+          width: iconSize,
+          height: iconSize,
+          background: isActive
+            ? 'linear-gradient(135deg, var(--blue-primary), var(--orange-primary))'
+            : 'var(--bg-glass)',
+          border: isActive ? 'none' : '1px solid var(--border-soft)',
+        }}
+      >
+        <Icon
+          className="transition-colors duration-200"
+          style={{
+            width: iconSize * 0.48,
+            height: iconSize * 0.48,
+            color: isActive ? '#ffffff' : 'var(--text-secondary)',
+          }}
+        />
+      </motion.div>
+      {isActive && (
+        <motion.div
+          layoutId="dock-dot"
+          className="w-1 h-1 rounded-full bg-gradient-to-r from-[var(--blue-primary)] to-[var(--orange-primary)]"
+          transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+        />
+      )}
+    </Link>
+  );
+}
 
 function DockNav({
   scrolled,
@@ -68,50 +146,62 @@ function DockNav({
   handleNavClick: (e: React.MouseEvent<HTMLAnchorElement>, href: string) => void;
 }) {
   const shouldReduceMotion = useReducedMotion();
+  const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const [scales, setScales] = useState<Record<string, number>>({});
+  const MAGNIFICATION_RANGE = 120;
+  const MAX_SCALE = 1.45;
+
+  const updateScales = useCallback((clientX: number) => {
+    const newScales: Record<string, number> = {};
+    navLinks.forEach((link) => {
+      const el = itemRefs.current.get(link.href);
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const center = rect.left + rect.width / 2;
+      const distance = Math.abs(clientX - center);
+      newScales[link.href] = distance < MAGNIFICATION_RANGE
+        ? MAX_SCALE - ((MAX_SCALE - 1) * distance) / MAGNIFICATION_RANGE
+        : 1;
+    });
+    setScales(newScales);
+  }, []);
+
+  const resetScales = useCallback(() => {
+    const reset: Record<string, number> = {};
+    navLinks.forEach((link) => { reset[link.href] = 1; });
+    setScales(reset);
+  }, []);
 
   if (!scrolled) return null;
 
   return (
     <motion.div
-      initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: -20, scale: 0.9 }}
+      initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: -30, scale: 0.85 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={shouldReducedMotion ? { opacity: 0 } : { opacity: 0, y: -20, scale: 0.9 }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed top-4 left-1/2 -translate-x-1/2 z-[2002] hidden lg:flex items-center gap-1 px-2 py-2 rounded-2xl navbar-dock"
+      exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -30, scale: 0.85 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      className="fixed top-4 left-1/2 -translate-x-1/2 z-[2002] hidden lg:flex items-end gap-1.5 px-3 pb-2 pt-2.5 rounded-2xl navbar-dock"
+      onMouseMove={(e) => updateScales(e.clientX)}
+      onMouseLeave={resetScales}
     >
-      {navLinks.map((link) => {
-        const isActive = activeLink === link.href;
-        return (
-          <Link
-            key={link.href}
-            href={link.href}
-            onClick={(e) => {
-              handleNavClick(e, link.href);
-              setActiveLink(link.href);
+      {navLinks.map((link) => (
+        <div
+          key={link.href}
+          ref={(el) => {
+            if (el) itemRefs.current.set(link.href, el);
+          }}
+        >
+          <DockItem
+            link={link}
+            isActive={activeLink === link.href}
+            scale={shouldReduceMotion ? 1 : (scales[link.href] ?? 1)}
+            onNavigate={(e, href) => {
+              handleNavClick(e, href);
+              setActiveLink(href);
             }}
-            className={`relative flex items-center justify-center px-3 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all duration-300
-              ${isActive ? 'text-white' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-glass)]'}
-            `}
-            onMouseEnter={(e) => {
-              if (!isActive) {
-                (e.currentTarget as HTMLElement).style.transform = 'scale(1.15) translateY(-4px)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.transform = '';
-            }}
-          >
-            {isActive && (
-              <motion.div
-                layoutId="dock-active-pill"
-                className="absolute inset-0 rounded-xl bg-gradient-to-r from-[var(--blue-primary)] to-[var(--orange-primary)]"
-                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-              />
-            )}
-            <span className="relative z-10">{link.label}</span>
-          </Link>
-        );
-      })}
+          />
+        </div>
+      ))}
     </motion.div>
   );
 }

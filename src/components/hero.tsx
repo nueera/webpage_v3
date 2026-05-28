@@ -238,7 +238,7 @@ export function Hero({ enableThreeJS = false }: { enableThreeJS?: boolean }) {
         {/* Title - Kinetic Typography */}
         <motion.h1
           variants={itemVariants}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-4"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-4 font-display"
         >
           <span className="heading-gradient">
             <MotionKineticText text="Build Your" as="span" delay={0.4} className="heading-gradient" />

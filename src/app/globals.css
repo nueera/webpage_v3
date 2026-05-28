@@ -12,6 +12,7 @@
   --color-background: var(--bg-main);
   --color-foreground: var(--text-primary);
   --font-sans: var(--font-outfit);
+  --font-display: var(--font-display);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--orange-primary);
   --color-sidebar-border: var(--border-soft);
@@ -239,6 +240,23 @@
     font-weight: 700;
     letter-spacing: -0.5px;
     line-height: 1.2;
+  }
+
+  /* Display font for hero & section headings */
+  .font-display {
+    font-family: var(--font-display), var(--font-outfit), sans-serif;
+    letter-spacing: -0.03em;
+    font-weight: 700;
+  }
+
+  h1 {
+    font-family: var(--font-display), var(--font-outfit), sans-serif;
+    letter-spacing: -0.03em;
+  }
+
+  h2 {
+    font-family: var(--font-display), var(--font-outfit), sans-serif;
+    letter-spacing: -0.02em;
   }
 
   p {

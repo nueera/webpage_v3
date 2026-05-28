@@ -1,65 +1,17 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
-import { ArrowRight, Eye, ExternalLink } from 'lucide-react';
+import { ArrowRight, Eye } from 'lucide-react';
 import { SectionBadge, SectionTitle, SectionDescription } from './ui-extensions';
-
-const PORTFOLIO_ITEMS = [
-  {
-    title: 'E-Commerce Platform',
-    category: 'Web Development',
-    description: 'Full-stack e-commerce solution with real-time inventory management and AI-powered recommendations.',
-    img: '/assets/images/img1.webp',
-    color: 'blue',
-    metrics: '+42% Conversion',
-  },
-  {
-    title: 'Health & Fitness App',
-    category: 'Mobile App',
-    description: 'Cross-platform mobile application with AI-powered workout plans and health tracking.',
-    img: '/assets/images/img2.webp',
-    color: 'orange',
-    metrics: '50K+ Downloads',
-  },
-  {
-    title: 'SaaS Dashboard',
-    category: 'Web Application',
-    description: 'Analytics dashboard with real-time data visualization, reporting, and team collaboration.',
-    img: '/assets/images/img3.webp',
-    color: 'blue',
-    metrics: '3x Data Speed',
-  },
-  {
-    title: 'Brand Identity System',
-    category: 'Design',
-    description: 'Complete brand identity including logo, guidelines, and marketing collateral.',
-    img: '/assets/images/img4.webp',
-    color: 'orange',
-    metrics: '+60% Recognition',
-  },
-  {
-    title: 'Growth Marketing Campaign',
-    category: 'Marketing',
-    description: 'Multi-channel campaign that drove 3x increase in organic traffic and lead generation.',
-    img: '/assets/images/img5.webp',
-    color: 'blue',
-    metrics: '3x Traffic Growth',
-  },
-  {
-    title: 'Real Estate Platform',
-    category: 'Web Development',
-    description: 'Property listing platform with virtual tours, smart search, and mortgage calculators.',
-    img: '/assets/images/img6.webp',
-    color: 'orange',
-    metrics: '$2M+ Transactions',
-  },
-];
+import { CaseStudyOverlay, CASE_STUDY_DATA } from './case-study-overlay';
+import type { CaseStudyData } from './case-study-overlay';
 
 export function HorizontalScrollPortfolio() {
   const containerRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
+  const [activeStudy, setActiveStudy] = useState<CaseStudyData | null>(null);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -77,7 +29,7 @@ export function HorizontalScrollPortfolio() {
           <span className="gradient-text">Drive Results</span>
         </SectionTitle>
         <SectionDescription className="mx-auto mt-4">
-          Scroll to explore our portfolio of impactful digital solutions across industries.
+          Click any project to explore the full case study with challenges, solutions, and measurable results.
         </SectionDescription>
       </div>
 
@@ -91,7 +43,7 @@ export function HorizontalScrollPortfolio() {
           className="horizontal-scroll-track pl-8 pr-8"
           style={shouldReduceMotion ? {} : { x }}
         >
-          {PORTFOLIO_ITEMS.map((project, i) => (
+          {CASE_STUDY_DATA.map((project, i) => (
             <motion.div
               key={project.title}
               className="horizontal-scroll-card"
@@ -100,7 +52,10 @@ export function HorizontalScrollPortfolio() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
             >
-              <div className="glass-card rounded-2xl overflow-hidden h-full group cursor-pointer">
+              <div
+                className="glass-card rounded-2xl overflow-hidden h-full group cursor-pointer"
+                onClick={() => setActiveStudy(project)}
+              >
                 {/* Image */}
                 <div className="relative h-52 overflow-hidden">
                   <Image
@@ -112,10 +67,10 @@ export function HorizontalScrollPortfolio() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-main)] via-transparent to-transparent" />
 
-                  {/* Hover overlay */}
+                  {/* Hover overlay - updated to say "View Case Study" */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/40 backdrop-blur-sm">
                     <span className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-white/10 border border-white/20 text-white inline-flex items-center gap-2">
-                      <Eye className="w-4 h-4" /> View Project
+                      <Eye className="w-4 h-4" /> View Case Study
                     </span>
                   </div>
 
@@ -138,14 +93,14 @@ export function HorizontalScrollPortfolio() {
                   }`}>
                     {project.category}
                   </span>
-                  <h3 className="text-lg font-bold text-[var(--text-primary)] mt-3 mb-2 group-hover:text-[var(--blue-primary)] transition-colors">
+                  <h3 className="text-lg font-bold text-[var(--text-primary)] mt-3 mb-2 group-hover:text-[var(--blue-primary)] transition-colors font-display">
                     {project.title}
                   </h3>
                   <p className="text-[var(--text-secondary)] text-sm line-clamp-2">{project.description}</p>
 
                   {/* CTA */}
                   <div className="mt-4 flex items-center gap-2 text-[var(--blue-primary)] text-sm font-semibold opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                    View Details <ArrowRight className="w-4 h-4" />
+                    View Case Study <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
               </div>
@@ -153,6 +108,9 @@ export function HorizontalScrollPortfolio() {
           ))}
         </motion.div>
       </div>
+
+      {/* Full-screen Case Study Overlay */}
+      <CaseStudyOverlay study={activeStudy} onClose={() => setActiveStudy(null)} />
     </section>
   );
 }
