@@ -56,6 +56,7 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   reactStrictMode: false,
+  transpilePackages: ['@react-three/fiber', '@react-three/postprocessing', 'three', '@splinetool/react-spline', '@splinetool/runtime'],
   async headers() {
     return [
       {
