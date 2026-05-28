@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Eye, TrendingUp, Clock, Zap, Star } from 'lucide-react';
-import { SectionBadge, SectionTitle, GlassCard, FadeUp, StaggerContainer, StaggerItem } from '@/components/ui-extensions';
+import { SectionBadge, GlassCard, FadeUp } from '@/components/ui-extensions';
 
 const filters = ['All', 'Web', 'App', 'Marketing', 'Design'];
 
@@ -27,13 +27,19 @@ export default function PortfolioPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative py-20 md:py-32 overflow-hidden">
+      <section className="relative py-24 md:py-32 overflow-hidden">
         <div className="container-nueera relative z-10 text-center">
-          <SectionBadge>Portfolio</SectionBadge>
-          <h1 className="heading-gradient text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 mt-4">Our Work Speaks</h1>
-          <p className="text-[var(--text-secondary)] text-lg max-w-2xl mx-auto">
-            Explore our portfolio of successful projects across industries and technologies.
-          </p>
+          <FadeUp>
+            <SectionBadge>Portfolio</SectionBadge>
+          </FadeUp>
+          <FadeUp delay={0.1}>
+            <h1 className="heading-gradient text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 mt-4">Our Work Speaks</h1>
+          </FadeUp>
+          <FadeUp delay={0.2}>
+            <p className="text-[var(--text-secondary)] text-lg max-w-2xl mx-auto">
+              Explore our portfolio of successful projects across industries and technologies.
+            </p>
+          </FadeUp>
         </div>
       </section>
 
@@ -46,8 +52,8 @@ export default function PortfolioPage() {
               { value: '100%', label: 'Satisfaction', icon: Star },
               { value: '3.8x', label: 'ROI', icon: TrendingUp },
               { value: '24h', label: 'Response', icon: Clock },
-            ].map((s) => (
-              <FadeUp key={s.label}>
+            ].map((s, idx) => (
+              <FadeUp key={s.label} delay={idx * 0.1}>
                 <div className="text-center p-6 rounded-2xl bg-[var(--bg-glass)] border border-[var(--border-soft)]">
                   <s.icon className="w-6 h-6 mx-auto mb-2 text-[var(--blue-primary)]" />
                   <div className="text-2xl md:text-3xl font-extrabold gradient-text mb-1">{s.value}</div>
@@ -60,7 +66,7 @@ export default function PortfolioPage() {
       </section>
 
       {/* Filter + Projects */}
-      <section className="py-20 md:py-28">
+      <section className="py-24 md:py-32">
         <div className="container-nueera">
           <div className="flex flex-wrap justify-center gap-3 mb-12">
             {filters.map((f) => (
@@ -78,47 +84,51 @@ export default function PortfolioPage() {
             ))}
           </div>
 
-          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProjects.map((project, i) => (
-              <StaggerItem key={project.title + i}>
-                <GlassCard className="group relative overflow-hidden !p-0">
-                  <div className="h-56 relative overflow-hidden">
-                    <Image
-                      src={project.img}
-                      alt={project.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-main)] via-transparent to-transparent" />
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <span className="px-4 py-2 rounded-xl text-sm font-semibold bg-white/10 backdrop-blur-sm border border-white/20 text-white inline-flex items-center gap-2">
-                        <Eye className="w-4 h-4" /> View
-                      </span>
-                    </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProjects.map((project) => (
+              <GlassCard key={project.title} className="group relative overflow-hidden !p-0">
+                <div className="h-56 relative overflow-hidden">
+                  <Image
+                    src={project.img}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-main)] via-transparent to-transparent" />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span className="px-4 py-2 rounded-xl text-sm font-semibold bg-white/10 backdrop-blur-sm border border-white/20 text-white inline-flex items-center gap-2">
+                      <Eye className="w-4 h-4" /> View
+                    </span>
                   </div>
-                  <div className="p-6">
-                    <span className="px-3 py-1 rounded-full text-xs font-medium bg-[var(--blue-primary)]/10 text-[var(--blue-primary)]">{project.cat}</span>
-                    <h3 className="font-bold text-[var(--text-primary)] mt-3 mb-2">{project.title}</h3>
-                    <p className="text-[var(--text-secondary)] text-sm">{project.desc}</p>
-                  </div>
-                </GlassCard>
-              </StaggerItem>
+                </div>
+                <div className="p-6">
+                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-[var(--blue-primary)]/10 text-[var(--blue-primary)]">{project.cat}</span>
+                  <h3 className="font-bold text-[var(--text-primary)] mt-3 mb-2">{project.title}</h3>
+                  <p className="text-[var(--text-secondary)] text-sm">{project.desc}</p>
+                </div>
+              </GlassCard>
             ))}
-          </StaggerContainer>
+          </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-20 md:py-28 bg-[var(--bg-secondary)]">
+      <section className="py-24 md:py-32 bg-[var(--bg-secondary)]">
         <div className="container-nueera text-center">
-          <h2 className="heading-gradient text-3xl md:text-4xl font-extrabold mb-6">Ready to Start Your Project?</h2>
-          <p className="text-[var(--text-secondary)] text-lg max-w-xl mx-auto mb-8">
-            Let&apos;s create something remarkable together. Your project could be our next success story.
-          </p>
-          <Link href="/contact" className="btn-primary-gradient inline-flex items-center gap-2 px-8 py-3.5 rounded-xl text-sm font-semibold text-white">
-            Start Your Project <ArrowRight className="w-4 h-4" />
-          </Link>
+          <FadeUp>
+            <h2 className="heading-gradient text-3xl md:text-4xl font-extrabold mb-6">Ready to Start Your Project?</h2>
+          </FadeUp>
+          <FadeUp delay={0.1}>
+            <p className="text-[var(--text-secondary)] text-lg max-w-xl mx-auto mb-8">
+              Let&apos;s create something remarkable together. Your project could be our next success story.
+            </p>
+          </FadeUp>
+          <FadeUp delay={0.2}>
+            <Link href="/contact" className="btn-primary-gradient inline-flex items-center gap-2 px-8 py-3.5 rounded-xl text-sm font-semibold text-white">
+              Start Your Project <ArrowRight className="w-4 h-4" />
+            </Link>
+          </FadeUp>
         </div>
       </section>
     </>

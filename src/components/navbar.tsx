@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, MessageCircle, ChevronDown } from 'lucide-react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { Menu, X, MessageCircle } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import ThemeToggle from './theme-toggle';
-import { MagneticGlowButton } from './premium-effects';
+import { PremiumButton } from './premium-button';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -21,13 +20,6 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
-  const shouldReduceMotion = useReducedMotion();
-
-  useEffect(() => {
-    setActiveLink(pathname);
-  }, [pathname]);
-
-  const [activeLink, setActiveLink] = useState('/');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -108,13 +100,11 @@ export default function Navbar() {
                   >
                     {link.label}
                     {isActive && (
-                      <motion.div
+                      <span
                         className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full"
                         style={{
                           background: 'linear-gradient(135deg, var(--blue-primary), var(--orange-primary))',
                         }}
-                        layoutId="nav-indicator"
-                        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                       />
                     )}
                   </Link>
@@ -126,13 +116,13 @@ export default function Navbar() {
           {/* Right side */}
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            <MagneticGlowButton
+            <PremiumButton
               className="!px-5 !py-2.5 !text-sm hidden md:inline-flex"
               onClick={() => window.open('https://wa.me/917066607424', '_blank')}
             >
               <MessageCircle className="w-4 h-4" />
               WhatsApp
-            </MagneticGlowButton>
+            </PremiumButton>
             <button
               onClick={() => setMobileOpen(true)}
               className="lg:hidden flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--bg-mobile-btn)] border border-[var(--border-mobile-btn)] transition-all hover:border-[var(--blue-primary)]"
@@ -145,79 +135,74 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="fixed inset-0 z-[2005]"
-              style={{ background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(18px)' }}
-              onClick={() => setMobileOpen(false)}
-            />
-            <motion.div
-              initial={shouldReduceMotion ? { x: 0 } : { x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed right-0 top-0 h-full w-[85vw] max-w-[390px] flex flex-col z-[2006] mobile-drawer"
-              style={{ background: 'var(--bg-main)' }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[var(--blue-primary)] via-[var(--orange-primary)] to-[var(--blue-primary)]" />
+      {mobileOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-[2005] animate-fade-in"
+            style={{ background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(18px)' }}
+            onClick={() => setMobileOpen(false)}
+          />
+          <div
+            className="fixed right-0 top-0 h-full w-[85vw] max-w-[390px] flex flex-col z-[2006] mobile-drawer"
+            style={{
+              background: 'var(--bg-main)',
+              animation: 'slideInRight 0.3s ease-out forwards',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[var(--blue-primary)] via-[var(--orange-primary)] to-[var(--blue-primary)]" />
 
-              <div className="flex items-center justify-between p-6 pb-4 border-b border-[var(--border-soft)]">
-                <div className="flex items-center gap-2">
-                  <Image src="/assets/images/lightlogo.webp" alt="NueEra" width={100} height={32} className="h-8 w-auto object-contain block dark:hidden" />
-                  <Image src="/assets/images/darklogo.webp" alt="NueEra" width={100} height={32} className="h-8 w-auto object-contain hidden dark:block" />
-                </div>
-                <button
-                  onClick={() => setMobileOpen(false)}
-                  className="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--bg-glass)] border border-[var(--border-soft)] hover:border-[var(--border-active)]"
-                  aria-label="Close menu"
-                >
-                  <X className="w-5 h-5 text-[var(--text-primary)]" />
-                </button>
+            <div className="flex items-center justify-between p-6 pb-4 border-b border-[var(--border-soft)]">
+              <div className="flex items-center gap-2">
+                <Image src="/assets/images/lightlogo.webp" alt="NueEra" width={100} height={32} className="h-8 w-auto object-contain block dark:hidden" />
+                <Image src="/assets/images/darklogo.webp" alt="NueEra" width={100} height={32} className="h-8 w-auto object-contain hidden dark:block" />
               </div>
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--bg-glass)] border border-[var(--border-soft)] hover:border-[var(--border-active)] transition-colors"
+                aria-label="Close menu"
+              >
+                <X className="w-5 h-5 text-[var(--text-primary)]" />
+              </button>
+            </div>
 
-              <ul className="flex flex-col list-none gap-2 p-6 flex-1 overflow-y-auto">
-                {navLinks.map((link, i) => (
-                  <motion.li
-                    key={link.href}
-                    initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: 40 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.06, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            <ul className="flex flex-col list-none gap-2 p-6 flex-1 overflow-y-auto">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={`flex items-center justify-between px-4 py-3.5 rounded-2xl font-semibold text-sm transition-all
+                      ${pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
+                        ? 'bg-gradient-to-r from-[var(--blue-primary)]/15 to-[var(--orange-primary)]/15 text-[var(--blue-primary)] border border-[var(--border-active)]'
+                        : 'text-[var(--text-primary)] border border-transparent hover:bg-[var(--bg-glass)] hover:border-[var(--border-soft)]'
+                      }`}
                   >
-                    <Link
-                      href={link.href}
-                      onClick={() => setMobileOpen(false)}
-                      className={`flex items-center justify-between px-4 py-3.5 rounded-2xl font-semibold text-sm transition-all
-                        ${pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
-                          ? 'bg-gradient-to-r from-[var(--blue-primary)]/15 to-[var(--orange-primary)]/15 text-[var(--blue-primary)] border border-[var(--border-active)]'
-                          : 'text-[var(--text-primary)] border border-transparent hover:bg-[var(--bg-glass)] hover:border-[var(--border-soft)]'
-                        }`}
-                    >
-                      <span className="uppercase tracking-wider text-xs">{link.label}</span>
-                    </Link>
-                  </motion.li>
-                ))}
-              </ul>
+                    <span className="uppercase tracking-wider text-xs">{link.label}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
 
-              <div className="p-6 pt-4 border-t border-[var(--border-soft)]">
-                <MagneticGlowButton
-                  className="!w-full !justify-center"
-                  onClick={() => window.open('https://wa.me/917066607424', '_blank')}
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  WhatsApp Us
-                </MagneticGlowButton>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+            <div className="p-6 pt-4 border-t border-[var(--border-soft)]">
+              <PremiumButton
+                className="!w-full !justify-center"
+                onClick={() => window.open('https://wa.me/917066607424', '_blank')}
+              >
+                <MessageCircle className="w-4 h-4" />
+                WhatsApp Us
+              </PremiumButton>
+            </div>
+          </div>
+        </>
+      )}
+
+      <style jsx>{`
+        @keyframes slideInRight {
+          from { transform: translateX(100%); }
+          to { transform: translateX(0); }
+        }
+      `}</style>
     </>
   );
 }

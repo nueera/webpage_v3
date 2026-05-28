@@ -1,26 +1,16 @@
 'use client';
 
 import { Hero } from '@/components/hero';
-import {
-  GrowthStory,
-  Welcome,
-  Features,
-  Services,
-  Testimonials,
-  CTASection,
-  FAQ,
-} from '@/components/sections';
+import { ServicesSection } from '@/components/services-section';
+import { TestimonialsSection } from '@/components/testimonials-section';
+import { CTASection } from '@/components/cta-section';
 
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <GrowthStory />
-      <Welcome />
-      <Features />
-      <Services />
-      <Testimonials />
-      <FAQ />
+      <ServicesSection />
+      <TestimonialsSection />
       <CTASection />
     </>
   );

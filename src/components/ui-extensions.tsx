@@ -1,112 +1,79 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
+
+/* ──────────────────────── FadeUp (CSS-only) ──────────────────────── */
 
 interface FadeUpProps {
   children: ReactNode;
   className?: string;
   delay?: number;
-  duration?: number;
 }
 
-export function FadeUp({ children, className = '', delay = 0, duration = 0.6 }: FadeUpProps) {
-  const shouldReduceMotion = useReducedMotion();
+export function FadeUp({ children, className = '', delay = 0 }: FadeUpProps) {
+  const ref = useRef<HTMLDivElement>(null);
 
-  if (shouldReduceMotion) {
-    return <div className={className}>{children}</div>;
-  }
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.style.transitionDelay = `${delay}s`;
+          el.classList.add('is-visible');
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.1, rootMargin: '-50px' }
+    );
+
+    el.classList.add('reveal-section');
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, [delay]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration, delay, ease: 'easeOut' }}
-      className={className}
-    >
+    <div ref={ref} className={className}>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
-interface StaggerContainerProps {
-  children: ReactNode;
-  className?: string;
-  staggerDelay?: number;
-}
-
-export function StaggerContainer({ children, className = '', staggerDelay = 0.1 }: StaggerContainerProps) {
-  const shouldReduceMotion = useReducedMotion();
-
-  if (shouldReduceMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
-  return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-50px' }}
-      variants={{
-        visible: {
-          transition: {
-            staggerChildren: staggerDelay,
-          },
-        },
-      }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-export function StaggerItem({ children, className = '' }: { children: ReactNode; className?: string }) {
-  const shouldReduceMotion = useReducedMotion();
-
-  if (shouldReduceMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
-  return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 30 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
-      }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
+/* ──────────────────────── SectionBadge ──────────────────────── */
 
 export function SectionBadge({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return (
-    <FadeUp>
-      <span className={`section-badge ${className}`}>{children}</span>
-    </FadeUp>
-  );
+  return <span className={`section-badge ${className}`}>{children}</span>;
 }
+
+/* ──────────────────────── SectionTitle ──────────────────────── */
 
 export function SectionTitle({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
-    <FadeUp delay={0.1}>
-      <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--text-primary)] leading-tight font-display ${className}`}>
-        {children}
-      </h2>
-    </FadeUp>
+    <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--text-primary)] leading-tight font-display ${className}`}>
+      {children}
+    </h2>
   );
 }
 
+/* ──────────────────────── SectionDescription ──────────────────────── */
+
 export function SectionDescription({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
-    <FadeUp delay={0.2}>
-      <p className={`text-lg text-[var(--text-secondary)] max-w-2xl ${className}`}>{children}</p>
-    </FadeUp>
+    <p className={`text-lg text-[var(--text-secondary)] max-w-2xl ${className}`}>{children}</p>
   );
 }
+
+/* ──────────────────────── GlassCard (Simplified) ──────────────────────── */
 
 export function GlassCard({
   children,
@@ -118,30 +85,40 @@ export function GlassCard({
   hover?: boolean;
 }) {
   return (
-    <div className={`glass-card rounded-2xl p-6 ${hover ? 'cursor-pointer' : ''} ${className}`}>
+    <div className={`${hover ? 'glass-card' : 'glass-card-no-hover'} rounded-2xl p-6 ${className}`}>
       {children}
     </div>
   );
 }
 
+/* ──────────────────────── GradientButton ──────────────────────── */
+
 export function GradientButton({
   children,
   className = '',
   onClick,
+  type = 'button',
+  disabled = false,
 }: {
   children: ReactNode;
   className?: string;
   onClick?: () => void;
+  type?: 'button' | 'submit';
+  disabled?: boolean;
 }) {
   return (
     <button
+      type={type}
       onClick={onClick}
-      className={`inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[var(--orange-primary)] to-[var(--orange-soft)] text-white font-semibold text-base transition-all duration-300 hover:shadow-[0_0_30px_var(--orange-glow)] hover:scale-105 active:scale-95 ${className}`}
+      disabled={disabled}
+      className={`inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[var(--orange-primary)] to-[var(--orange-soft)] text-white font-semibold text-base transition-all duration-300 hover:shadow-[0_0_30px_var(--orange-glow)] hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed ${className}`}
     >
       {children}
     </button>
   );
 }
+
+/* ──────────────────────── GhostButton ──────────────────────── */
 
 export function GhostButton({
   children,
@@ -155,7 +132,7 @@ export function GhostButton({
   return (
     <button
       onClick={onClick}
-      className={`inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-[var(--border-soft)] text-[var(--text-primary)] font-semibold text-base transition-all duration-300 hover:bg-[var(--bg-glass)] hover:border-[var(--border-active)] active:scale-95 ${className}`}
+      className={`inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-[var(--border-soft)] text-[var(--text-primary)] font-semibold text-base transition-all duration-300 hover:bg-[var(--bg-glass)] hover:border-[var(--border-active)] active:scale-[0.98] ${className}`}
     >
       {children}
     </button>

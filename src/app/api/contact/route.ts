@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/lib/db';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, phone, company, service, budget, message } = body;
+    const { name, email, message } = body;
 
     // Validation
     const errors: string[] = [];
@@ -28,17 +27,16 @@ export async function POST(request: Request) {
       );
     }
 
-    // Store submission
-    await db.contactSubmission.create({
-      data: {
-        name: name.trim(),
-        email: email.trim(),
-        phone: phone?.trim() || null,
-        company: company?.trim() || null,
-        service: service || null,
-        budget: budget || null,
-        message: message.trim(),
-      },
+    // Log the submission (no database dependency)
+    console.log('Contact form submission:', {
+      name: name.trim(),
+      email: email.trim(),
+      phone: body.phone?.trim() || null,
+      company: body.company?.trim() || null,
+      service: body.service || null,
+      budget: body.budget || null,
+      message: message.trim(),
+      timestamp: new Date().toISOString(),
     });
 
     return NextResponse.json(
