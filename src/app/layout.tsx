@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import CinematicPreloader from "@/components/cinematic-preloader";
@@ -47,6 +47,26 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Inline theme script for FOUC (Flash of Unstyled Content) prevention.
+ * Runs BEFORE React hydrates so the correct `dark`/`light` class is on <html>.
+ * This replaces the <script> injection that next-themes used (which caused
+ * React 19's "Encountered a script tag" warning in Next.js 16).
+ */
+const themeInitScript = `
+(function(){
+  try{
+    var t=localStorage.getItem("theme");
+    if(t==="light"){
+      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.add("light");
+    } else {
+      document.documentElement.classList.remove("light");
+      document.documentElement.classList.add("dark");
+    }
+  }catch(e){}
+})()`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -54,8 +74,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className={`${outfit.variable} antialiased`} suppressHydrationWarning>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+        <ThemeProvider>
           <ConsentProvider>
             {/* Skip to main content - accessibility */}
             <a
