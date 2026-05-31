@@ -2,22 +2,22 @@
 
 import Link from 'next/link';
 import {
-  Globe, Cpu, Palette, Megaphone, Lightbulb,
-  Layers, Zap, Target, ArrowRight, CheckCircle2,
+  Layers, Zap, Target, ArrowRight,
   Code2, Video, Camera, Star, Wrench, FileText, Settings,
+  Palette, Megaphone,
 } from 'lucide-react';
 import { SectionBadge, SectionTitle, SectionDescription, GlassCard, FadeUp } from '@/components/ui-extensions';
 
 const services = [
-  { icon: Video, title: 'Video Production', description: 'Promotional videos, social media content, motion graphics, and testimonial videos that tell your story.' },
-  { icon: Palette, title: 'UI/UX Design', description: 'User research, wireframes, prototypes, design systems, and usability testing for conversion-optimized interfaces.' },
-  { icon: Camera, title: 'Photography', description: 'Product photography, brand shoots, event coverage, and editorial content that differentiates your brand.' },
-  { icon: Code2, title: 'Website Development', description: 'Custom web applications, e-commerce platforms, CMS development, and performance optimization.' },
-  { icon: Megaphone, title: 'Digital Marketing', description: 'SEO & SEM strategy, social media marketing, content marketing, and analytics & reporting.' },
-  { icon: Star, title: 'Branding', description: 'Brand strategy, logo & visual identity, brand guidelines, and brand messaging.' },
-  { icon: Wrench, title: 'Maintenance & Support', description: '24/7 monitoring, regular updates, security patches, and performance tuning.' },
-  { icon: Settings, title: 'Software Solutions', description: 'Custom software, API integrations, automation tools, and cloud migration.' },
-  { icon: FileText, title: 'Content Strategy', description: 'Content audits, editorial calendars, copywriting, and distribution strategy.' },
+  { icon: Video, title: 'Video Production', description: 'Promotional videos, social media content, motion graphics, and testimonial videos that tell your story.', color: 'orange' },
+  { icon: Palette, title: 'UI/UX Design', description: 'User research, wireframes, prototypes, design systems, and usability testing for conversion-optimized interfaces.', color: 'blue' },
+  { icon: Camera, title: 'Photography', description: 'Product photography, brand shoots, event coverage, and editorial content that differentiates your brand.', color: 'orange' },
+  { icon: Code2, title: 'Website Development', description: 'Custom web applications, e-commerce platforms, CMS development, and performance optimization.', color: 'blue' },
+  { icon: Megaphone, title: 'Digital Marketing', description: 'SEO & SEM strategy, social media marketing, content marketing, and analytics & reporting.', color: 'orange' },
+  { icon: Star, title: 'Branding', description: 'Brand strategy, logo & visual identity, brand guidelines, and brand messaging.', color: 'blue' },
+  { icon: Wrench, title: 'Maintenance & Support', description: '24/7 monitoring, regular updates, security patches, and performance tuning.', color: 'orange' },
+  { icon: Settings, title: 'Software Solutions', description: 'Custom software, API integrations, automation tools, and cloud migration.', color: 'blue' },
+  { icon: FileText, title: 'Content Strategy', description: 'Content audits, editorial calendars, copywriting, and distribution strategy.', color: 'orange' },
 ];
 
 const values = [
@@ -31,6 +31,10 @@ export default function ServicesPage() {
     <>
       {/* Hero */}
       <section className="relative py-24 md:py-32 overflow-hidden">
+        <div className="hero-mesh" aria-hidden="true">
+          <div className="orb orb-blue" style={{ opacity: 0.3 }} />
+          <div className="orb orb-orange" style={{ opacity: 0.25 }} />
+        </div>
         <div className="container-nueera relative z-10 text-center">
           <FadeUp>
             <SectionBadge>Our Services</SectionBadge>
@@ -61,7 +65,7 @@ export default function ServicesPage() {
             {values.map((item, idx) => (
               <FadeUp key={item.title} delay={0.1 + idx * 0.1}>
                 <GlassCard className="text-center h-full">
-                  <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-[var(--blue-primary)] to-[var(--orange-primary)] shadow-lg">
+                  <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-[var(--blue-primary)] to-[var(--orange-primary)] shadow-[0_8px_24px_var(--glow-blue)]">
                     <item.icon className="w-7 h-7 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-[var(--text-primary)] mb-2">{item.title}</h3>
@@ -90,10 +94,15 @@ export default function ServicesPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((s, idx) => (
               <FadeUp key={s.title} delay={0.05 + idx * 0.05}>
-                <GlassCard className="h-full">
+                <GlassCard className="h-full group">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-lg bg-[var(--orange-primary)]/10 flex items-center justify-center flex-shrink-0">
-                      <s.icon className="w-6 h-6 text-[var(--orange-primary)]" />
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110
+                      ${s.color === 'blue'
+                        ? 'bg-[var(--blue-primary)]/10 group-hover:bg-[var(--blue-primary)]/20'
+                        : 'bg-[var(--orange-primary)]/10 group-hover:bg-[var(--orange-primary)]/20'
+                      }`}
+                    >
+                      <s.icon className={`w-6 h-6 ${s.color === 'blue' ? 'text-[var(--blue-primary)]' : 'text-[var(--orange-primary)]'}`} />
                     </div>
                     <h3 className="font-bold text-[var(--text-primary)]">{s.title}</h3>
                   </div>
@@ -106,8 +115,11 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 md:py-32 bg-[var(--bg-secondary)]">
-        <div className="container-nueera text-center">
+      <section className="py-24 md:py-32 bg-[var(--bg-secondary)] relative overflow-hidden">
+        <div className="cta-mesh" aria-hidden="true">
+          <div className="glow glow-center" />
+        </div>
+        <div className="container-nueera text-center relative z-10">
           <FadeUp>
             <h2 className="heading-gradient text-3xl md:text-4xl font-extrabold mb-6">Ready to Get Started?</h2>
           </FadeUp>

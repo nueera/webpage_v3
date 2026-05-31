@@ -1,15 +1,20 @@
 'use client';
 
-import { ArrowRight, Rocket, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Rocket, CheckCircle2, Sparkles } from 'lucide-react';
 import { FadeUp } from './ui-extensions';
 import { PremiumButton } from './premium-button';
 
 export function CTASection() {
   return (
     <section id="contact" className="relative py-24 md:py-32 bg-[var(--bg-secondary)] overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[var(--orange-primary)]/5 blur-[120px]" />
+      {/* Premium CTA mesh */}
+      <div className="cta-mesh" aria-hidden="true">
+        <div className="glow glow-center animate-float-orb" style={{ animationDuration: '25s' }} />
+        <div className="glow glow-left animate-float-orb" style={{ animationDelay: '-10s', animationDuration: '30s' }} />
       </div>
+
+      {/* Dot grid */}
+      <div className="dot-grid" aria-hidden="true" style={{ opacity: 0.2 }} />
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <FadeUp>
@@ -30,11 +35,11 @@ export function CTASection() {
           {[
             { icon: Rocket, text: 'Strategic Roadmap' },
             { icon: CheckCircle2, text: '30-min Consultation' },
-            { icon: CheckCircle2, text: 'Zero Obligation' },
+            { icon: Sparkles, text: 'Zero Obligation' },
           ].map((feat) => (
             <div key={feat.text} className="hidden sm:flex items-center gap-2 text-[var(--text-secondary)]">
               <feat.icon className="w-5 h-5 text-[var(--orange-primary)]" />
-              <span className="text-sm">{feat.text}</span>
+              <span className="text-sm font-medium">{feat.text}</span>
             </div>
           ))}
         </FadeUp>

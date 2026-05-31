@@ -7,6 +7,7 @@ import { Menu, X, MessageCircle } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import ThemeToggle from './theme-toggle';
 import { PremiumButton } from './premium-button';
+import { ScrollProgress } from './ui-extensions';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -40,6 +41,8 @@ export default function Navbar() {
 
   return (
     <>
+      <ScrollProgress />
+
       <nav
         className={`fixed top-0 left-0 right-0 z-[2001] flex items-center px-4 md:px-8 transition-all duration-500 ${
           scrolled ? 'navbar-scrolled' : 'navbar-top'
@@ -92,7 +95,7 @@ export default function Navbar() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className={`relative font-semibold text-sm tracking-wide px-4 py-2 rounded-lg transition-colors duration-200
+                    className={`relative font-semibold text-sm tracking-wide px-4 py-2 rounded-lg transition-all duration-300
                       ${isActive
                         ? 'text-transparent bg-clip-text bg-gradient-to-r from-[var(--blue-primary)] to-[var(--orange-primary)]'
                         : 'text-[var(--text-primary)] hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-[var(--blue-primary)] hover:to-[var(--orange-primary)]'
@@ -100,10 +103,10 @@ export default function Navbar() {
                   >
                     {link.label}
                     {isActive && (
-                      <span
-                        className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full"
+                      <span className="nav-link-active-dot absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full"
                         style={{
                           background: 'linear-gradient(135deg, var(--blue-primary), var(--orange-primary))',
+                          boxShadow: '0 0 8px var(--glow-blue)',
                         }}
                       />
                     )}
@@ -125,7 +128,7 @@ export default function Navbar() {
             </PremiumButton>
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--bg-mobile-btn)] border border-[var(--border-mobile-btn)] transition-all hover:border-[var(--blue-primary)]"
+              className="lg:hidden flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--bg-mobile-btn)] border border-[var(--border-mobile-btn)] transition-all hover:border-[var(--blue-primary)] hover:shadow-[0_0_12px_var(--glow-blue)]"
               aria-label="Open menu"
             >
               <Menu className="w-5 h-5 text-[var(--blue-primary)]" />
@@ -196,7 +199,6 @@ export default function Navbar() {
           </div>
         </>
       )}
-
     </>
   );
 }

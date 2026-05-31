@@ -1,8 +1,8 @@
 'use client';
 
-import { Star } from 'lucide-react';
+import { Star, Quote } from 'lucide-react';
 import Image from 'next/image';
-import { SectionBadge, SectionTitle, GlassCard, FadeUp } from './ui-extensions';
+import { SectionBadge, SectionTitle, FadeUp } from './ui-extensions';
 
 const TESTIMONIAL_DATA = [
   {
@@ -46,8 +46,18 @@ function StarRating({ rating }: { rating: number }) {
 
 export function TestimonialsSection() {
   return (
-    <section className="relative py-24 md:py-32 bg-[var(--bg-main)]">
-      <div className="container-nueera text-center">
+    <section className="relative py-24 md:py-32 bg-[var(--bg-main)] overflow-hidden">
+      {/* Subtle background accents */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute w-[400px] h-[400px] rounded-full opacity-[0.03] top-[20%] left-[5%]"
+          style={{ background: 'radial-gradient(circle, var(--blue-primary) 0%, transparent 70%)' }}
+        />
+        <div className="absolute w-[350px] h-[350px] rounded-full opacity-[0.03] bottom-[10%] right-[5%]"
+          style={{ background: 'radial-gradient(circle, var(--orange-primary) 0%, transparent 70%)' }}
+        />
+      </div>
+
+      <div className="container-nueera relative z-10 text-center">
         <FadeUp>
           <SectionBadge>Success Stories</SectionBadge>
         </FadeUp>
@@ -60,25 +70,31 @@ export function TestimonialsSection() {
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           {TESTIMONIAL_DATA.map((testimonial, idx) => (
             <FadeUp key={testimonial.name} delay={0.1 + idx * 0.1}>
-              <GlassCard className="text-left h-full" hover={false}>
-                <div className="flex items-center gap-1 mb-3">
+              <div className="testimonial-card text-left h-full flex flex-col">
+                {/* Quote icon */}
+                <div className="mb-3 flex items-center justify-between">
                   <StarRating rating={testimonial.rating} />
+                  <Quote className="w-8 h-8 text-[var(--blue-primary)] opacity-20" />
                 </div>
-                <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-4">
+
+                <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-5 flex-1">
                   &ldquo;{testimonial.content}&rdquo;
                 </p>
-                <div className="flex items-center gap-3 mt-auto">
-                  <div className="relative w-10 h-10 rounded-full overflow-hidden ring-2 ring-[var(--border-soft)] bg-[var(--bg-secondary)] flex items-center justify-center">
+
+                <div className="flex items-center gap-3 pt-4 border-t border-[var(--border-soft)]">
+                  <div className="relative w-11 h-11 rounded-full overflow-hidden ring-2 ring-[var(--border-soft)] bg-[var(--bg-secondary)] flex items-center justify-center flex-shrink-0">
                     <Image
                       src={testimonial.avatar}
                       alt={testimonial.name}
                       fill
                       className="object-cover"
-                      sizes="40px"
+                      sizes="44px"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.style.display = 'none';
-                        target.parentElement!.innerHTML = `<span style="font-size:14px;font-weight:700;color:var(--blue-primary)">${testimonial.name.charAt(0)}</span>`;
+                        if (target.parentElement) {
+                          target.parentElement.innerHTML = `<span style="font-size:16px;font-weight:700;color:var(--blue-primary)">${testimonial.name.charAt(0)}</span>`;
+                        }
                       }}
                     />
                   </div>
@@ -87,7 +103,7 @@ export function TestimonialsSection() {
                     <p className="text-[var(--text-muted)] text-xs">{testimonial.role}, {testimonial.company}</p>
                   </div>
                 </div>
-              </GlassCard>
+              </div>
             </FadeUp>
           ))}
         </div>

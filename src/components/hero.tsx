@@ -1,13 +1,13 @@
 'use client';
 
 import { ArrowRight, ChevronDown, CheckCircle2 } from 'lucide-react';
-import { GhostButton } from './ui-extensions';
+import { GhostButton, AnimatedCounter } from './ui-extensions';
 import { PremiumButton } from './premium-button';
 
 const METRICS = [
-  { value: '16+', label: 'Projects' },
-  { value: '100%', label: 'Satisfaction' },
-  { value: '4+', label: 'Happy Clients' },
+  { value: 16, suffix: '+', label: 'Projects' },
+  { value: 100, suffix: '%', label: 'Satisfaction' },
+  { value: 4, suffix: '+', label: 'Happy Clients' },
 ];
 
 const PROOF_ITEMS = [
@@ -22,23 +22,15 @@ export function Hero() {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--bg-main)] pt-20"
     >
-      {/* Subtle gradient background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        <div
-          className="absolute w-[800px] h-[800px] rounded-full opacity-[0.06]"
-          style={{
-            background: 'radial-gradient(circle, var(--blue-primary) 0%, transparent 70%)',
-            top: '-20%', right: '-10%',
-          }}
-        />
-        <div
-          className="absolute w-[600px] h-[600px] rounded-full opacity-[0.05]"
-          style={{
-            background: 'radial-gradient(circle, var(--orange-primary) 0%, transparent 70%)',
-            bottom: '-15%', left: '-5%',
-          }}
-        />
+      {/* Premium gradient mesh background */}
+      <div className="hero-mesh" aria-hidden="true">
+        <div className="orb orb-blue animate-float-orb" />
+        <div className="orb orb-orange animate-float-orb" style={{ animationDelay: '-7s', animationDuration: '25s' }} />
+        <div className="orb orb-accent animate-float-orb" style={{ animationDelay: '-14s', animationDuration: '30s' }} />
       </div>
+
+      {/* Dot grid overlay */}
+      <div className="dot-grid" aria-hidden="true" />
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 text-center">
@@ -51,7 +43,7 @@ export function Hero() {
           <span className="gradient-text">Digital Empire</span>
         </h1>
 
-        <p className="animate-fade-in-up stagger-3 text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--text-primary)] mb-6">
+        <p className="animate-fade-in-up stagger-3 text-xl sm:text-2xl md:text-3xl font-bold text-[var(--text-primary)] mb-6">
           <span className="gradient-text">We Engineer Growth Systems</span>
         </p>
 
@@ -73,11 +65,12 @@ export function Hero() {
           </GhostButton>
         </div>
 
+        {/* Animated metric counters */}
         <div className="animate-fade-in-up stagger-6 flex flex-wrap items-center justify-center gap-8 md:gap-16 mb-10">
           {METRICS.map((metric) => (
             <div key={metric.label} className="text-center">
               <div className="text-3xl md:text-4xl font-bold gradient-text">
-                {metric.value}
+                <AnimatedCounter value={metric.value} suffix={metric.suffix} />
               </div>
               <div className="text-sm text-[var(--text-muted)] mt-1">{metric.label}</div>
             </div>

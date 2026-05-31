@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import type { ReactNode } from 'react';
 
 /* ──────────────────────── FadeUp (CSS-only) ──────────────────────── */
@@ -49,6 +49,97 @@ export function FadeUp({ children, className = '', delay = 0 }: FadeUpProps) {
   );
 }
 
+/* ──────────────────────── AnimatedCounter ──────────────────────── */
+
+export function AnimatedCounter({
+  value,
+  suffix = '',
+  prefix = '',
+  decimals = 0,
+  className = '',
+}: {
+  value: number;
+  suffix?: string;
+  prefix?: string;
+  decimals?: number;
+  className?: string;
+}) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const hasAnimated = useRef(false);
+
+  const animate = useCallback(() => {
+    if (hasAnimated.current) return;
+    hasAnimated.current = true;
+    const duration = 2000;
+    const startTime = performance.now();
+
+    const step = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const rawValue = eased * value;
+      const displayValue = decimals > 0 ? parseFloat(rawValue.toFixed(decimals)) : Math.round(rawValue);
+      setCount(displayValue as number);
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      }
+    };
+
+    requestAnimationFrame(step);
+  }, [value, decimals]);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      setCount(value);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          animate();
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [animate, value]);
+
+  return (
+    <span ref={ref} className={className}>
+      {prefix}{count}{suffix}
+    </span>
+  );
+}
+
+/* ──────────────────────── ScrollProgress ──────────────────────── */
+
+export function ScrollProgress() {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      setProgress(scrollPercent);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return <div className="scroll-progress" style={{ width: `${progress}%` }} />;
+}
+
 /* ──────────────────────── SectionBadge ──────────────────────── */
 
 export function SectionBadge({ children, className = '' }: { children: ReactNode; className?: string }) {
@@ -73,7 +164,7 @@ export function SectionDescription({ children, className = '' }: { children: Rea
   );
 }
 
-/* ──────────────────────── GlassCard (Simplified) ──────────────────────── */
+/* ──────────────────────── GlassCard (Premium) ──────────────────────── */
 
 export function GlassCard({
   children,
