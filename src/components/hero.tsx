@@ -47,6 +47,7 @@ export function Hero() {
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 text-center">
+        <div className="hero-content-glass">
         <div className="animate-fade-in-up stagger-1 mb-6">
           <span className="section-badge">Transforming Digital Futures</span>
         </div>
@@ -102,6 +103,7 @@ export function Hero() {
         <div className="mt-16 flex justify-center animate-bounce-gentle">
           <ChevronDown className="w-6 h-6 text-[var(--text-muted)]" />
         </div>
+        </div>{/* end hero-content-glass */}
       </div>
     </section>
   );
