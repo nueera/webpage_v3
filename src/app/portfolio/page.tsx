@@ -3,18 +3,54 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Eye, TrendingUp, Clock, Zap, Star } from 'lucide-react';
+import { ArrowRight, Eye, TrendingUp, Clock, Zap, Star, ExternalLink } from 'lucide-react';
 import { SectionBadge, GlassCard, FadeUp } from '@/components/ui-extensions';
 
 const filters = ['All', 'Web', 'App', 'Marketing', 'Design'];
 
 const projects = [
-  { title: 'E-Commerce Platform', cat: 'Web', desc: 'Full-stack e-commerce solution with real-time inventory management.', img: '/assets/images/img1.webp' },
-  { title: 'Health & Fitness App', cat: 'App', desc: 'Cross-platform mobile application with AI-powered workout plans.', img: '/assets/images/img2.webp' },
-  { title: 'SaaS Dashboard', cat: 'Web', desc: 'Analytics dashboard with real-time data visualization and reporting.', img: '/assets/images/img3.webp' },
-  { title: 'Brand Identity System', cat: 'Design', desc: 'Complete brand identity including logo, guidelines, and collateral.', img: '/assets/images/img4.webp' },
-  { title: 'Growth Marketing Campaign', cat: 'Marketing', desc: 'Multi-channel campaign that drove 3x increase in organic traffic.', img: '/assets/images/img5.webp' },
-  { title: 'Real Estate Platform', cat: 'Web', desc: 'Property listing platform with virtual tours and smart search.', img: '/assets/images/img6.webp' },
+  {
+    title: 'FreshBite Organics',
+    cat: 'Web',
+    desc: 'Full-stack e-commerce platform with real-time inventory management, integrated payment gateway, and automated order tracking for a premium organic food brand.',
+    tech: ['Next.js', 'Node.js', 'Stripe', 'PostgreSQL'],
+    img: '/assets/images/img1.webp',
+  },
+  {
+    title: 'UrbanFit Mobile App',
+    cat: 'App',
+    desc: 'Cross-platform fitness application with AI-powered workout plans, progress tracking, and social features for a growing gym chain across India.',
+    tech: ['React Native', 'Firebase', 'TensorFlow Lite'],
+    img: '/assets/images/img2.webp',
+  },
+  {
+    title: 'MediConnect Dashboard',
+    cat: 'Web',
+    desc: 'Healthcare analytics dashboard with real-time patient monitoring, HIPAA-compliant data handling, and automated reporting for medical professionals.',
+    tech: ['React', 'Python', 'AWS', 'Docker'],
+    img: '/assets/images/img3.webp',
+  },
+  {
+    title: 'Luxe Interiors Brand',
+    cat: 'Design',
+    desc: 'Complete brand identity system including logo design, comprehensive brand guidelines, and marketing collateral for a premium interior design firm.',
+    tech: ['Figma', 'Illustrator', 'Brand Strategy'],
+    img: '/assets/images/img4.webp',
+  },
+  {
+    title: 'TechVenture Growth Campaign',
+    cat: 'Marketing',
+    desc: 'Multi-channel digital marketing campaign that achieved a 3x increase in organic traffic and doubled qualified leads within six months.',
+    tech: ['SEO', 'Google Ads', 'Content Strategy', 'Analytics'],
+    img: '/assets/images/img5.webp',
+  },
+  {
+    title: 'PropSearch Platform',
+    cat: 'Web',
+    desc: 'Real estate listing platform with virtual tours, AI-powered smart search, and neighborhood analytics for property buyers in Maharashtra.',
+    tech: ['Next.js', 'MapBox', 'MongoDB', 'WebGL'],
+    img: '/assets/images/img6.webp',
+  },
 ];
 
 export default function PortfolioPage() {
@@ -37,7 +73,7 @@ export default function PortfolioPage() {
           </FadeUp>
           <FadeUp delay={0.2}>
             <p className="text-[var(--text-secondary)] text-lg max-w-2xl mx-auto">
-              Explore our portfolio of successful projects across industries and technologies.
+              Explore our portfolio of successful projects across industries and technologies. Each project reflects our commitment to quality and measurable results.
             </p>
           </FadeUp>
         </div>
@@ -68,11 +104,13 @@ export default function PortfolioPage() {
       {/* Filter + Projects */}
       <section className="py-24 md:py-32">
         <div className="container-nueera">
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
+          <div className="flex flex-wrap justify-center gap-3 mb-12" role="tablist" aria-label="Project categories">
             {filters.map((f) => (
               <button
                 key={f}
                 onClick={() => setActiveFilter(f)}
+                role="tab"
+                aria-selected={activeFilter === f}
                 className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300
                   ${activeFilter === f
                     ? 'bg-gradient-to-r from-[var(--blue-primary)] to-[var(--orange-primary)] text-white'
@@ -90,7 +128,7 @@ export default function PortfolioPage() {
                 <div className="h-56 relative overflow-hidden">
                   <Image
                     src={project.img}
-                    alt={project.title}
+                    alt={`${project.title} - ${project.cat} project by NueEra`}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -98,14 +136,23 @@ export default function PortfolioPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-main)] via-transparent to-transparent" />
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <span className="px-4 py-2 rounded-xl text-sm font-semibold bg-white/10 backdrop-blur-sm border border-white/20 text-white inline-flex items-center gap-2">
-                      <Eye className="w-4 h-4" /> View
+                      <ExternalLink className="w-4 h-4" /> Case Study
                     </span>
                   </div>
                 </div>
                 <div className="p-6">
-                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-[var(--blue-primary)]/10 text-[var(--blue-primary)]">{project.cat}</span>
-                  <h3 className="font-bold text-[var(--text-primary)] mt-3 mb-2">{project.title}</h3>
-                  <p className="text-[var(--text-secondary)] text-sm">{project.desc}</p>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="px-3 py-1 rounded-full text-xs font-medium bg-[var(--blue-primary)]/10 text-[var(--blue-primary)]">{project.cat}</span>
+                  </div>
+                  <h3 className="font-bold text-[var(--text-primary)] mb-2">{project.title}</h3>
+                  <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-4">{project.desc}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tech.map((t) => (
+                      <span key={t} className="px-2.5 py-1 rounded-md text-xs font-medium bg-[var(--bg-glass)] border border-[var(--border-soft)] text-[var(--text-muted)]">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </GlassCard>
             ))}

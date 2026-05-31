@@ -22,7 +22,10 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "NueEra - IT & Digital Solutions | Build Your Digital Empire",
+  title: {
+    default: "NueEra - IT & Digital Solutions | Build Your Digital Empire",
+    template: "%s | NueEra",
+  },
   description:
     "NueEra delivers premium IT & digital solutions: web development, mobile apps, growth marketing, tech automation, UI/UX design, and branding strategy.",
   keywords: [
@@ -33,13 +36,42 @@ export const metadata: Metadata = {
     "Mobile Apps",
     "Growth Marketing",
     "UI/UX Design",
+    "Branding",
+    "Software Development",
+    "Pune",
+    "India",
   ],
   authors: [{ name: "NueEra" }],
+  creator: "NueEra",
+  publisher: "NueEra",
+  metadataBase: new URL("https://nueera.io"),
+  alternates: {
+    canonical: "/",
+  },
   icons: { icon: "/favicon.ico" },
   openGraph: {
     title: "NueEra - IT & Digital Solutions",
     description: "Build Your Digital Empire with NueEra's premium IT & digital solutions.",
     type: "website",
+    locale: "en_IN",
+    url: "https://nueera.io",
+    siteName: "NueEra",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "NueEra - IT & Digital Solutions",
+    description: "Build Your Digital Empire with NueEra's premium IT & digital solutions.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
@@ -68,6 +100,37 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className={`${outfit.variable} ${spaceGrotesk.variable} antialiased`} suppressHydrationWarning>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "NueEra",
+              "url": "https://nueera.io",
+              "logo": "https://nueera.io/assets/images/lightlogo.webp",
+              "description": "NueEra delivers premium IT & digital solutions: web development, mobile apps, growth marketing, tech automation, UI/UX design, and branding strategy.",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Pune",
+                "addressRegion": "Maharashtra",
+                "addressCountry": "IN"
+              },
+              "email": "hello@nueera.io",
+              "telephone": "+917066607424",
+              "sameAs": [
+                "https://linkedin.com/company/nueera",
+                "https://instagram.com/nueera"
+              ],
+              "foundingDate": "2023",
+              "founders": [
+                { "@type": "Person", "name": "Nil Shinde", "jobTitle": "Founder & CEO" },
+                { "@type": "Person", "name": "Dipanshu Awandkar", "jobTitle": "Co-Founder & CTO" }
+              ],
+              "knowsAbout": ["Web Development", "Mobile Apps", "UI/UX Design", "Digital Marketing", "Branding", "Software Solutions"]
+            }),
+          }}
+        />
         <ThemeProvider>
           <a
             href="#main-content"

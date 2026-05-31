@@ -1,32 +1,33 @@
 'use client';
 
 import { Star } from 'lucide-react';
+import Image from 'next/image';
 import { SectionBadge, SectionTitle, GlassCard, FadeUp } from './ui-extensions';
 
 const TESTIMONIAL_DATA = [
   {
-    name: 'Ravi Kambale',
+    name: 'Priya Mehta',
     role: 'Founder',
-    company: 'TechVenture',
-    content: 'NueEra transformed our digital presence completely. Their systematic approach delivered results beyond our expectations.',
+    company: 'FreshBite Organics',
+    content: 'NueEra built our e-commerce platform from scratch and it transformed how we reach customers. Our online sales grew 4x within three months of launch. Their team understood our vision perfectly and delivered beyond expectations.',
     rating: 5,
-    avatar: '/assets/images/profiles/ravi_kambale.webp',
+    avatar: '/assets/images/testimonials/priya_mehta.webp',
   },
   {
-    name: 'Vaibhav Nijampurkar',
+    name: 'Amit Deshmukh',
     role: 'CEO',
-    company: 'GrowthLabs',
-    content: 'Working with NueEra was a game-changer for our business. Their growth marketing system helped us achieve 3x revenue growth in just 6 months.',
+    company: 'UrbanFit Gyms',
+    content: 'The growth marketing system NueEra implemented drove a 3x increase in organic traffic and doubled our lead generation. Their data-driven approach and consistent reporting gave us complete confidence in the strategy.',
     rating: 5,
-    avatar: '/assets/images/profiles/vaibhav_nijampurkar.webp',
+    avatar: '/assets/images/testimonials/amit_deshmukh.webp',
   },
   {
-    name: 'Saurabh Shinde',
+    name: 'Sneha Kulkarni',
     role: 'CTO',
-    company: 'CloudScale Inc',
-    content: 'The technical expertise at NueEra is second to none. They built our entire cloud infrastructure from scratch with 99.99% uptime.',
+    company: 'MediConnect Health',
+    content: 'We needed a reliable partner to build our healthcare platform with strict security requirements. NueEra delivered a HIPAA-compliant solution with 99.9% uptime. Their technical expertise and attention to detail are exceptional.',
     rating: 5,
-    avatar: '/assets/images/profiles/saurabh_shinde.webp',
+    avatar: '/assets/images/testimonials/sneha_kulkarni.webp',
   },
 ];
 
@@ -67,8 +68,19 @@ export function TestimonialsSection() {
                   &ldquo;{testimonial.content}&rdquo;
                 </p>
                 <div className="flex items-center gap-3 mt-auto">
-                  <div className="relative w-10 h-10 rounded-full overflow-hidden ring-2 ring-[var(--border-soft)]">
-                    <img src={testimonial.avatar} alt={testimonial.name} className="w-full h-full object-cover" />
+                  <div className="relative w-10 h-10 rounded-full overflow-hidden ring-2 ring-[var(--border-soft)] bg-[var(--bg-secondary)] flex items-center justify-center">
+                    <Image
+                      src={testimonial.avatar}
+                      alt={testimonial.name}
+                      fill
+                      className="object-cover"
+                      sizes="40px"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        target.parentElement!.innerHTML = `<span style="font-size:14px;font-weight:700;color:var(--blue-primary)">${testimonial.name.charAt(0)}</span>`;
+                      }}
+                    />
                   </div>
                   <div>
                     <p className="text-[var(--text-primary)] text-sm font-semibold">{testimonial.name}</p>
