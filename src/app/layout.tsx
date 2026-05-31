@@ -48,7 +48,15 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
-  icons: { icon: "/favicon.ico" },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/icon.webp", type: "image/webp", sizes: "512x512" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180" },
+    ],
+  },
   openGraph: {
     title: "NueEra - IT & Digital Solutions",
     description: "Build Your Digital Empire with NueEra's premium IT & digital solutions.",
