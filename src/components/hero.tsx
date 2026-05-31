@@ -47,12 +47,11 @@ export function Hero() {
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 text-center">
-        <div className="hero-content-glass">
         <div className="animate-fade-in-up stagger-1 mb-6">
           <span className="section-badge">Transforming Digital Futures</span>
         </div>
 
-        <h1 className="animate-fade-in-up stagger-2 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-4 font-display">
+        <h1 className="hero-heading animate-fade-in-up stagger-2 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-4 font-display">
           <span className="heading-gradient">Build Your</span>{' '}
           <span className="gradient-text">Digital Empire</span>
         </h1>
@@ -61,7 +60,7 @@ export function Hero() {
           <span className="gradient-text">We Engineer Growth Systems</span>
         </p>
 
-        <p className="animate-fade-in-up stagger-4 text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto mb-10">
+        <p className="hero-description animate-fade-in-up stagger-4 text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto mb-10">
           We craft high-performance digital solutions that transform ambitious
           businesses into scalable, revenue-driving powerhouses. No guesswork.
           Just engineered growth.
@@ -82,7 +81,7 @@ export function Hero() {
         {/* Animated metric counters */}
         <div className="animate-fade-in-up stagger-6 flex flex-wrap items-center justify-center gap-8 md:gap-16 mb-10">
           {METRICS.map((metric) => (
-            <div key={metric.label} className="text-center">
+            <div key={metric.label} className="text-center hero-metric-item">
               <div className="text-3xl md:text-4xl font-bold gradient-text">
                 <AnimatedCounter value={metric.value} suffix={metric.suffix} />
               </div>
@@ -93,7 +92,7 @@ export function Hero() {
 
         <div className="animate-fade-in-up stagger-6 flex flex-wrap items-center justify-center gap-4 md:gap-6">
           {PROOF_ITEMS.map((item) => (
-            <div key={item} className="flex items-center gap-2 text-[var(--text-secondary)] text-sm">
+            <div key={item} className="hero-proof-item flex items-center gap-2 text-[var(--text-secondary)] text-sm">
               <CheckCircle2 className="w-4 h-4 text-[var(--orange-primary)]" />
               {item}
             </div>
@@ -103,7 +102,6 @@ export function Hero() {
         <div className="mt-16 flex justify-center animate-bounce-gentle">
           <ChevronDown className="w-6 h-6 text-[var(--text-muted)]" />
         </div>
-        </div>{/* end hero-content-glass */}
       </div>
     </section>
   );
