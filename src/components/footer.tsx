@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Globe, Share2, Link as LinkIcon, MessageCircle, Mail, ArrowRight } from 'lucide-react';
 
 const quickLinks = [
@@ -35,7 +36,8 @@ export default function Footer() {
           {/* Column 1: Logo + Description + Social */}
           <div className="sm:col-span-2 lg:col-span-2">
             <Link href="/" className="inline-block mb-4">
-              <span className="text-2xl font-black tracking-tight gradient-text">NueEra</span>
+              <Image src="/assets/images/lightlogo.webp" alt="NueEra" width={120} height={46} className="h-10 w-auto object-contain block dark:hidden" />
+              <Image src="/assets/images/darklogo.webp" alt="NueEra" width={120} height={46} className="h-10 w-auto object-contain hidden dark:block" />
             </Link>
             <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-6 max-w-xs">
               Building digital empires with precision, creativity, and cutting-edge technology. Your vision, our expertise.

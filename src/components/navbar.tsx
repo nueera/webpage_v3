@@ -72,7 +72,7 @@ export default function Navbar() {
                 src="/assets/images/lightlogo.webp"
                 alt="NueEra"
                 width={140}
-                height={44}
+                height={54}
                 className="h-11 w-auto object-contain block dark:hidden"
                 priority
               />
@@ -80,7 +80,7 @@ export default function Navbar() {
                 src="/assets/images/darklogo.webp"
                 alt="NueEra"
                 width={140}
-                height={44}
+                height={54}
                 className="h-11 w-auto object-contain hidden dark:block"
                 priority
               />
@@ -157,8 +157,8 @@ export default function Navbar() {
 
             <div className="flex items-center justify-between p-6 pb-4 border-b border-[var(--border-soft)]">
               <div className="flex items-center gap-2">
-                <Image src="/assets/images/lightlogo.webp" alt="NueEra" width={100} height={32} className="h-8 w-auto object-contain block dark:hidden" />
-                <Image src="/assets/images/darklogo.webp" alt="NueEra" width={100} height={32} className="h-8 w-auto object-contain hidden dark:block" />
+                <Image src="/assets/images/lightlogo.webp" alt="NueEra" width={100} height={39} className="h-8 w-auto object-contain block dark:hidden" />
+                <Image src="/assets/images/darklogo.webp" alt="NueEra" width={100} height={39} className="h-8 w-auto object-contain hidden dark:block" />
               </div>
               <button
                 onClick={() => setMobileOpen(false)}
