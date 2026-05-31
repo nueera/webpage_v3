@@ -937,6 +937,29 @@
 }
 
 /* ==========================================
+   PAGE TRANSITION PROGRESS BAR
+   ========================================== */
+
+.page-transition-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 10000;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.page-transition-progress {
+  height: 100%;
+  border-radius: 0 2px 2px 0;
+  background: linear-gradient(90deg, var(--blue-primary), var(--orange-primary));
+  box-shadow: 0 0 12px var(--glow-blue), 0 0 4px var(--glow-orange);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+}
+
+/* ==========================================
    REDUCED MOTION
    ========================================== */
 
