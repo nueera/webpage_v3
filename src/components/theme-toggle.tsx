@@ -19,6 +19,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      suppressHydrationWarning
       className="relative w-10 h-10 rounded-full flex items-center justify-center
         bg-[var(--bg-glass)] border border-[var(--border-soft)]
         text-[var(--text-secondary)] text-xl

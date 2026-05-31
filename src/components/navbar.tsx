@@ -128,6 +128,7 @@ export default function Navbar() {
             </PremiumButton>
             <button
               onClick={() => setMobileOpen(true)}
+              suppressHydrationWarning
               className="lg:hidden flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--bg-mobile-btn)] border border-[var(--border-mobile-btn)] transition-all hover:border-[var(--blue-primary)] hover:shadow-[0_0_12px_var(--glow-blue)]"
               aria-label="Open menu"
             >
@@ -162,6 +163,7 @@ export default function Navbar() {
               </div>
               <button
                 onClick={() => setMobileOpen(false)}
+                suppressHydrationWarning
                 className="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--bg-glass)] border border-[var(--border-soft)] hover:border-[var(--border-active)] transition-colors"
                 aria-label="Close menu"
               >

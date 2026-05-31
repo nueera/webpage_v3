@@ -202,6 +202,7 @@ export function GradientButton({
       type={type}
       onClick={onClick}
       disabled={disabled}
+      suppressHydrationWarning
       className={`inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[var(--orange-primary)] to-[var(--orange-soft)] text-white font-semibold text-base transition-all duration-300 hover:shadow-[0_0_30px_var(--orange-glow)] hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed ${className}`}
     >
       {children}
@@ -223,6 +224,7 @@ export function GhostButton({
   return (
     <button
       onClick={onClick}
+      suppressHydrationWarning
       className={`inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-[var(--border-soft)] text-[var(--text-primary)] font-semibold text-base transition-all duration-300 hover:bg-[var(--bg-glass)] hover:border-[var(--border-active)] active:scale-[0.98] ${className}`}
     >
       {children}

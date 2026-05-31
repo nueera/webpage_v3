@@ -19,6 +19,7 @@ export default function ScrollTopBtn() {
   return (
     <button
       onClick={scrollUp}
+      suppressHydrationWarning
       className="fixed bottom-24 md:bottom-8 right-6 z-50 w-12 h-12 rounded-full
         flex items-center justify-center
         bg-gradient-to-r from-[var(--blue-primary)] to-[var(--orange-primary)]

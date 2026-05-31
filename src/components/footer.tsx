@@ -101,11 +101,13 @@ export default function Footer() {
                 <input
                   type="email"
                   placeholder="Your email"
+                  suppressHydrationWarning
                   className="w-full pl-9 pr-3 py-2.5 rounded-xl text-sm bg-[var(--input-bg)] border border-[var(--input-border)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--blue-primary)] focus:outline-none transition-colors"
                 />
               </div>
               <button
                 type="submit"
+                suppressHydrationWarning
                 className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-r from-[var(--blue-primary)] to-[var(--orange-primary)] text-white hover:shadow-[0_0_16px_var(--glow-blue)] transition-all duration-300"
                 aria-label="Subscribe"
               >

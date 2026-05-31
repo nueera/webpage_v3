@@ -137,6 +137,7 @@ export default function ContactPage() {
                       <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">Full Name <span className="text-red-400">*</span></label>
                       <input
                         type="text" required value={formData.name}
+                        suppressHydrationWarning
                         onChange={(e) => handleInputChange('name', e.target.value)}
                         className={`w-full px-4 py-3 rounded-xl text-sm bg-[var(--input-bg)] border ${errors.name ? 'border-red-400' : 'border-[var(--input-border)]'} text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--blue-primary)] focus:outline-none transition-colors`}
                         placeholder="John Doe"
@@ -147,6 +148,7 @@ export default function ContactPage() {
                       <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">Email <span className="text-red-400">*</span></label>
                       <input
                         type="email" required value={formData.email}
+                        suppressHydrationWarning
                         onChange={(e) => handleInputChange('email', e.target.value)}
                         className={`w-full px-4 py-3 rounded-xl text-sm bg-[var(--input-bg)] border ${errors.email ? 'border-red-400' : 'border-[var(--input-border)]'} text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--blue-primary)] focus:outline-none transition-colors`}
                         placeholder="john@example.com"
@@ -157,14 +159,14 @@ export default function ContactPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">Phone</label>
-                      <input type="tel" value={formData.phone} onChange={(e) => handleInputChange('phone', e.target.value)}
+                      <input type="tel" value={formData.phone} suppressHydrationWarning onChange={(e) => handleInputChange('phone', e.target.value)}
                         className="w-full px-4 py-3 rounded-xl text-sm bg-[var(--input-bg)] border border-[var(--input-border)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--blue-primary)] focus:outline-none transition-colors"
                         placeholder="+91 98765 43210"
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">Company</label>
-                      <input type="text" value={formData.company} onChange={(e) => handleInputChange('company', e.target.value)}
+                      <input type="text" value={formData.company} suppressHydrationWarning onChange={(e) => handleInputChange('company', e.target.value)}
                         className="w-full px-4 py-3 rounded-xl text-sm bg-[var(--input-bg)] border border-[var(--input-border)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--blue-primary)] focus:outline-none transition-colors"
                         placeholder="Acme Inc"
                       />
@@ -203,6 +205,7 @@ export default function ContactPage() {
                     <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">Message <span className="text-red-400">*</span></label>
                     <textarea
                       required rows={5} value={formData.message}
+                      suppressHydrationWarning
                       onChange={(e) => handleInputChange('message', e.target.value)}
                       className={`w-full px-4 py-3 rounded-xl text-sm bg-[var(--input-bg)] border ${errors.message ? 'border-red-400' : 'border-[var(--input-border)]'} text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--blue-primary)] focus:outline-none transition-colors resize-none`}
                       placeholder="Tell us about your project..."
@@ -211,6 +214,7 @@ export default function ContactPage() {
                   </div>
                   <button
                     type="submit" disabled={isSubmitting}
+                    suppressHydrationWarning
                     className="btn-primary-gradient inline-flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-semibold text-white w-full sm:w-auto justify-center disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</> : <><Send className="w-4 h-4" /> Send Message</>}

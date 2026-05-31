@@ -22,6 +22,7 @@ export function PremiumButton({
       type={type}
       onClick={onClick}
       disabled={disabled}
+      suppressHydrationWarning
       className={`inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl
         bg-gradient-to-r from-[var(--orange-primary)] to-[var(--orange-soft)]
         text-white font-semibold text-base
