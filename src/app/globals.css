@@ -594,11 +594,11 @@
   height: 100%;
   object-fit: cover;
   object-position: center top;
-  opacity: 0.18;
+  opacity: 0.55;
   transition: opacity 0.5s ease;
 }
 .dark .hero-wallpaper-img {
-  opacity: 0.12;
+  opacity: 0.4;
 }
 
 /* Overlay for text readability on top of wallpaper */
@@ -609,17 +609,17 @@
   z-index: 1;
   background: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0.82) 0%,
-    rgba(255, 255, 255, 0.6) 40%,
-    rgba(255, 255, 255, 0.85) 100%
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.25) 40%,
+    rgba(255, 255, 255, 0.55) 100%
   );
 }
 .dark .hero-wallpaper-overlay {
   background: linear-gradient(
     180deg,
-    rgba(11, 15, 20, 0.78) 0%,
-    rgba(11, 15, 20, 0.55) 40%,
-    rgba(11, 15, 20, 0.85) 100%
+    rgba(11, 15, 20, 0.5) 0%,
+    rgba(11, 15, 20, 0.2) 40%,
+    rgba(11, 15, 20, 0.55) 100%
   );
 }
 
