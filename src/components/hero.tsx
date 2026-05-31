@@ -22,6 +22,19 @@ export function Hero() {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--bg-main)] pt-20"
     >
+      {/* Background wallpaper image */}
+      <div className="hero-wallpaper" aria-hidden="true">
+        <img
+          src="/assets/images/homewallpaper.webp"
+          alt=""
+          role="presentation"
+          className="hero-wallpaper-img"
+        />
+      </div>
+
+      {/* Dark/light overlay for text readability */}
+      <div className="hero-wallpaper-overlay" aria-hidden="true" />
+
       {/* Premium gradient mesh background */}
       <div className="hero-mesh" aria-hidden="true">
         <div className="orb orb-blue animate-float-orb" />

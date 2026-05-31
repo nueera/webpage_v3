@@ -579,6 +579,51 @@
 }
 
 /* ==========================================
+   HERO WALLPAPER BACKGROUND
+   ========================================== */
+
+.hero-wallpaper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-wallpaper-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 0.18;
+  transition: opacity 0.5s ease;
+}
+.dark .hero-wallpaper-img {
+  opacity: 0.12;
+}
+
+/* Overlay for text readability on top of wallpaper */
+.hero-wallpaper-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.82) 0%,
+    rgba(255, 255, 255, 0.6) 40%,
+    rgba(255, 255, 255, 0.85) 100%
+  );
+}
+.dark .hero-wallpaper-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(11, 15, 20, 0.78) 0%,
+    rgba(11, 15, 20, 0.55) 40%,
+    rgba(11, 15, 20, 0.85) 100%
+  );
+}
+
+/* ==========================================
    HERO GRADIENT MESH
    ========================================== */
 
@@ -587,6 +632,7 @@
   inset: 0;
   overflow: hidden;
   pointer-events: none;
+  z-index: 2;
 }
 .hero-mesh .orb {
   position: absolute;
@@ -627,6 +673,7 @@
   background-size: 32px 32px;
   opacity: 0.4;
   pointer-events: none;
+  z-index: 3;
 }
 
 /* ==========================================
