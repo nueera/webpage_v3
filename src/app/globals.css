@@ -672,6 +672,271 @@
 }
 
 /* ==========================================
+   NUEERA PLANETARY LOADER
+   ========================================== */
+
+.nueera-loader {
+  background: var(--bg-main);
+}
+
+/* Orbital system container */
+.loader-orbital-system {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Glow rings behind the sun */
+.loader-glow-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  animation: loaderPulseRing 3s ease-in-out infinite;
+}
+.loader-glow-ring-outer {
+  width: 260px;
+  height: 260px;
+  border-color: rgba(31, 106, 255, 0.08);
+  box-shadow: 0 0 40px rgba(31, 106, 255, 0.06), inset 0 0 40px rgba(31, 106, 255, 0.03);
+}
+.loader-glow-ring-inner {
+  width: 200px;
+  height: 200px;
+  border-color: rgba(255, 154, 31, 0.1);
+  box-shadow: 0 0 30px rgba(255, 154, 31, 0.05), inset 0 0 30px rgba(255, 154, 31, 0.02);
+  animation-delay: 0.5s;
+}
+
+@keyframes loaderPulseRing {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.06); opacity: 0.6; }
+}
+
+/* Orbit path - visible elliptical ring */
+.loader-orbit-path {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  border: 1px dashed rgba(31, 106, 255, 0.15);
+  animation: loaderOrbitRotate 20s linear infinite;
+}
+.dark .loader-orbit-path {
+  border-color: rgba(77, 141, 255, 0.2);
+}
+
+@keyframes loaderOrbitRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Sun - the core logo image */
+.loader-sun {
+  position: relative;
+  z-index: 10;
+  animation: loaderSunPulse 3s ease-in-out infinite;
+}
+
+.loader-sun-glow {
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--orange-glow) 0%, var(--blue-glow) 40%, transparent 70%);
+  animation: loaderSunGlow 2s ease-in-out infinite alternate;
+  z-index: -1;
+}
+
+@keyframes loaderSunPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+@keyframes loaderSunGlow {
+  0% { opacity: 0.5; transform: scale(0.95); }
+  100% { opacity: 0.9; transform: scale(1.1); }
+}
+
+.loader-sun-image {
+  width: 100px !important;
+  height: 100px !important;
+  object-fit: contain;
+  border-radius: 50%;
+  filter: drop-shadow(0 0 12px rgba(255, 154, 31, 0.3));
+}
+
+/* Planet orbit containers - these rotate to move the planet */
+.loader-planet-orbit {
+  position: absolute;
+  inset: 0;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.loader-orbit-1 {
+  animation: loaderPlanetOrbit1 3.5s linear infinite;
+}
+
+.loader-orbit-2 {
+  animation: loaderPlanetOrbit2 5s linear infinite;
+}
+
+.loader-orbit-3 {
+  animation: loaderPlanetOrbit3 7s linear infinite;
+}
+
+@keyframes loaderPlanetOrbit1 {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes loaderPlanetOrbit2 {
+  from { transform: rotate(120deg); }
+  to { transform: rotate(480deg); }
+}
+
+@keyframes loaderPlanetOrbit3 {
+  from { transform: rotate(240deg); }
+  to { transform: rotate(600deg); }
+}
+
+/* Planet body - positioned at the orbit edge */
+.loader-planet {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.loader-planet-blue .loader-planet-body {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--blue-soft), var(--blue-primary));
+  box-shadow: 0 0 10px var(--blue-glow), 0 0 20px rgba(31, 106, 255, 0.2);
+  animation: loaderPlanetBob 1.5s ease-in-out infinite;
+}
+
+.loader-planet-orange .loader-planet-body {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--orange-soft), var(--orange-primary));
+  box-shadow: 0 0 10px var(--orange-glow), 0 0 20px rgba(255, 154, 31, 0.2);
+  animation: loaderPlanetBob 2s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.loader-planet-small .loader-planet-body {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #78A8FF, var(--blue-primary));
+  box-shadow: 0 0 6px var(--blue-glow);
+  animation: loaderPlanetBob 2.5s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+@keyframes loaderPlanetBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* Planet trails */
+.loader-planet-trail {
+  position: absolute;
+  width: 30px;
+  height: 4px;
+  border-radius: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 100%;
+  opacity: 0.6;
+}
+
+.loader-trail-blue {
+  background: linear-gradient(to left, var(--blue-primary), transparent);
+}
+
+.loader-trail-orange {
+  background: linear-gradient(to left, var(--orange-primary), transparent);
+}
+
+/* Sparkle particles around the sun */
+.loader-sparkle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--core-gold);
+  animation: loaderSparkle 2s ease-in-out infinite;
+}
+
+.loader-sparkle-1 { top: 20%; left: 15%; animation-delay: 0s; }
+.loader-sparkle-2 { top: 12%; right: 20%; animation-delay: 0.5s; }
+.loader-sparkle-3 { bottom: 18%; left: 22%; animation-delay: 1s; }
+.loader-sparkle-4 { bottom: 15%; right: 15%; animation-delay: 1.5s; }
+
+@keyframes loaderSparkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
+
+/* Text container below the orbital system */
+.loader-text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.loader-text {
+  font-family: var(--font-display), var(--font-outfit), sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-orange) 50%, var(--accent-blue) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: loaderTextShimmer 3s linear infinite;
+}
+
+@keyframes loaderTextShimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.loader-subtext-bar {
+  width: 120px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--bg-glass);
+  overflow: hidden;
+  position: relative;
+}
+
+.loader-subtext-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 40%;
+  border-radius: 3px;
+  background: var(--gradient-blue-orange);
+  animation: loaderProgress 1.8s ease-in-out infinite;
+}
+
+@keyframes loaderProgress {
+  0% { left: -40%; width: 40%; }
+  50% { left: 30%; width: 50%; }
+  100% { left: 100%; width: 40%; }
+}
+
+/* ==========================================
    REDUCED MOTION
    ========================================== */
 
@@ -684,5 +949,7 @@
   .animate-float-orb { animation: none; }
   .animate-rotate-slow { animation: none; }
   .section-badge::before { animation: none; }
+  .loader-orbital-system * { animation: none !important; }
+  .loader-sun-image { filter: none; }
   html { scroll-behavior: auto; }
 }
