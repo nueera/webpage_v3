@@ -12,6 +12,7 @@ const TESTIMONIAL_DATA = [
     content: 'NueEra built our e-commerce platform from scratch and it transformed how we reach customers. Our online sales grew 4x within three months of launch. Their team understood our vision perfectly and delivered beyond expectations.',
     rating: 5,
     avatar: '/assets/images/testimonials/priya_mehta.webp',
+    companyColor: 'from-[var(--orange-primary)] to-[var(--orange-soft)]',
   },
   {
     name: 'Amit Deshmukh',
@@ -20,6 +21,7 @@ const TESTIMONIAL_DATA = [
     content: 'The growth marketing system NueEra implemented drove a 3x increase in organic traffic and doubled our lead generation. Their data-driven approach and consistent reporting gave us complete confidence in the strategy.',
     rating: 5,
     avatar: '/assets/images/testimonials/amit_deshmukh.webp',
+    companyColor: 'from-[var(--blue-primary)] to-[var(--blue-soft)]',
   },
   {
     name: 'Sneha Kulkarni',
@@ -28,6 +30,7 @@ const TESTIMONIAL_DATA = [
     content: 'We needed a reliable partner to build our healthcare platform with strict security requirements. NueEra delivered a HIPAA-compliant solution with 99.9% uptime. Their technical expertise and attention to detail are exceptional.',
     rating: 5,
     avatar: '/assets/images/testimonials/sneha_kulkarni.webp',
+    companyColor: 'from-[var(--orange-primary)] to-[var(--orange-soft)]',
   },
 ];
 
@@ -44,9 +47,17 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
+function CompanyLogo({ name, gradient }: { name: string; gradient: string }) {
+  return (
+    <div className={`w-9 h-9 rounded-lg flex items-center justify-center bg-gradient-to-br ${gradient} flex-shrink-0`}>
+      <span className="text-white text-xs font-bold">{name.charAt(0)}</span>
+    </div>
+  );
+}
+
 export function TestimonialsSection() {
   return (
-    <section className="relative py-24 md:py-32 bg-[var(--bg-main)] overflow-hidden">
+    <section id="testimonials" className="relative py-24 md:py-32 bg-[var(--bg-main)] overflow-hidden">
       {/* Subtle background accents */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="absolute w-[400px] h-[400px] rounded-full opacity-[0.03] top-[20%] left-[5%]"
@@ -70,14 +81,14 @@ export function TestimonialsSection() {
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           {TESTIMONIAL_DATA.map((testimonial, idx) => (
             <FadeUp key={testimonial.name} delay={0.1 + idx * 0.1}>
-              <div className="testimonial-card text-left h-full flex flex-col">
-                {/* Quote icon */}
-                <div className="mb-3 flex items-center justify-between">
+              <div className="testimonial-card text-left h-full flex flex-col p-6">
+                {/* Quote icon and stars */}
+                <div className="mb-4 flex items-center justify-between">
                   <StarRating rating={testimonial.rating} />
                   <Quote className="w-8 h-8 text-[var(--blue-primary)] opacity-20" />
                 </div>
 
-                <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-5 flex-1">
+                <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-6 flex-1 relative z-10">
                   &ldquo;{testimonial.content}&rdquo;
                 </p>
 
@@ -98,6 +109,7 @@ export function TestimonialsSection() {
                       }}
                     />
                   </div>
+                  <CompanyLogo name={testimonial.company} gradient={testimonial.companyColor} />
                   <div>
                     <p className="text-[var(--text-primary)] text-sm font-semibold">{testimonial.name}</p>
                     <p className="text-[var(--text-muted)] text-xs">{testimonial.role}, {testimonial.company}</p>

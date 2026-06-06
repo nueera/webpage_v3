@@ -44,25 +44,37 @@ export function ServicesSection() {
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {SERVICES.map((service, idx) => (
             <FadeUp key={service.title} delay={0.1 + idx * 0.08}>
-              <GlassCard className="text-left h-full group">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110
-                  ${service.color === 'blue'
-                    ? 'bg-[var(--blue-primary)]/10 group-hover:bg-[var(--blue-primary)]/20'
-                    : 'bg-[var(--orange-primary)]/10 group-hover:bg-[var(--orange-primary)]/20'
-                  }`}
-                  style={{ boxShadow: 'none' }}
-                >
-                  <service.icon className={`w-6 h-6 ${service.color === 'blue' ? 'text-[var(--blue-primary)]' : 'text-[var(--orange-primary)]'}`} />
-                </div>
-                <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">{service.title}</h3>
-                <p className="text-[var(--text-secondary)] text-sm leading-relaxed">{service.description}</p>
-              </GlassCard>
+              <div className={`relative ${service.color === 'blue' ? 'service-glow-blue' : 'service-glow-orange'}`}>
+                <GlassCard className="text-left h-full group">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110
+                      ${service.color === 'blue'
+                        ? 'bg-[var(--blue-primary)]/10 group-hover:bg-[var(--blue-primary)]/20'
+                        : 'bg-[var(--orange-primary)]/10 group-hover:bg-[var(--orange-primary)]/20'
+                      }`}
+                      style={{ boxShadow: 'none' }}
+                    >
+                      <service.icon className={`w-6 h-6 ${service.color === 'blue' ? 'text-[var(--blue-primary)]' : 'text-[var(--orange-primary)]'}`} />
+                    </div>
+                    <ArrowRight className={`w-5 h-5 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 ${service.color === 'blue' ? 'text-[var(--blue-primary)]' : 'text-[var(--orange-primary)]'}`} />
+                  </div>
+                  <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">{service.title}</h3>
+                  <p className="text-[var(--text-secondary)] text-sm leading-relaxed">{service.description}</p>
+                  <div className="mt-4 pt-3 border-t border-[var(--border-soft)]">
+                    <span className={`text-sm font-semibold cursor-pointer transition-colors duration-200 ${service.color === 'blue' ? 'text-[var(--blue-primary)] hover:text-[var(--blue-soft)]' : 'text-[var(--orange-primary)] hover:text-[var(--orange-soft)]'}`}>
+                      Learn More <ArrowRight className="w-3.5 h-3.5 inline ml-1" />
+                    </span>
+                  </div>
+                </GlassCard>
+              </div>
             </FadeUp>
           ))}
         </div>
 
         <FadeUp delay={0.5} className="mt-10">
-          <PremiumButton onClick={() => window.location.href = '/services'}>
+          <PremiumButton onClick={() => {
+            document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+          }}>
             View All Services
             <ArrowRight className="w-5 h-5" />
           </PremiumButton>

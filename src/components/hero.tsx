@@ -1,8 +1,60 @@
 'use client';
 
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { ArrowRight, ChevronDown, CheckCircle2 } from 'lucide-react';
 import { GhostButton, AnimatedCounter } from './ui-extensions';
 import { PremiumButton } from './premium-button';
+
+/* ──────────────────────── Typing Animation ──────────────────────── */
+
+const TYPING_PHRASES = [
+  'We Engineer Growth Systems',
+  'We Build Digital Empires',
+  'We Drive Business Results',
+];
+
+function useTypewriter(phrases: string[], typingSpeed = 60, deletingSpeed = 35, pauseDuration = 2000) {
+  const [displayText, setDisplayText] = useState('');
+  const stateRef = useRef({ textIndex: 0, charIndex: 0, isDeleting: false });
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+
+  useEffect(() => {
+    function tick() {
+      const { textIndex, charIndex, isDeleting } = stateRef.current;
+      const currentPhrase = phrases[textIndex];
+
+      if (!isDeleting) {
+        if (charIndex < currentPhrase.length) {
+          stateRef.current.charIndex = charIndex + 1;
+          setDisplayText(currentPhrase.slice(0, charIndex + 1));
+          timeoutRef.current = setTimeout(tick, typingSpeed + Math.random() * 40);
+        } else {
+          stateRef.current.isDeleting = true;
+          timeoutRef.current = setTimeout(tick, pauseDuration);
+        }
+      } else {
+        if (charIndex > 0) {
+          stateRef.current.charIndex = charIndex - 1;
+          setDisplayText(currentPhrase.slice(0, charIndex - 1));
+          timeoutRef.current = setTimeout(tick, deletingSpeed);
+        } else {
+          stateRef.current.isDeleting = false;
+          stateRef.current.textIndex = (textIndex + 1) % phrases.length;
+          timeoutRef.current = setTimeout(tick, typingSpeed);
+        }
+      }
+    }
+
+    timeoutRef.current = setTimeout(tick, typingSpeed);
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [phrases, typingSpeed, deletingSpeed, pauseDuration]);
+
+  return displayText;
+}
+
+/* ──────────────────────── Hero Component ──────────────────────── */
 
 const METRICS = [
   { value: 16, suffix: '+', label: 'Projects' },
@@ -16,7 +68,18 @@ const PROOF_ITEMS = [
   'Business-first approach',
 ];
 
+const TRUSTED_COMPANIES = [
+  'FreshBite Organics',
+  'UrbanFit Gyms',
+  'MediConnect Health',
+  'TechVenture Labs',
+  'GreenLeaf Solutions',
+  'CloudNine Systems',
+];
+
 export function Hero() {
+  const typedText = useTypewriter(TYPING_PHRASES);
+
   return (
     <section
       id="home"
@@ -56,8 +119,10 @@ export function Hero() {
           <span className="gradient-text">Digital Empire</span>
         </h1>
 
+        {/* Typing Animation */}
         <p className="animate-fade-in-up stagger-3 text-xl sm:text-2xl md:text-3xl font-bold text-[var(--text-primary)] mb-6">
-          <span className="gradient-text">We Engineer Growth Systems</span>
+          <span className="gradient-text">{typedText}</span>
+          <span className="animate-blink gradient-text">|</span>
         </p>
 
         <p className="hero-description animate-fade-in-up stagger-4 text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto mb-10">
@@ -99,7 +164,22 @@ export function Hero() {
           ))}
         </div>
 
-        <div className="mt-16 flex justify-center animate-bounce-gentle">
+        {/* Trusted by strip */}
+        <div className="animate-fade-in-up stagger-6 mt-12 mb-4">
+          <p className="text-xs text-[var(--text-muted)] uppercase tracking-widest mb-4 font-semibold">Trusted by innovative companies</p>
+          <div className="flex flex-wrap items-center justify-center gap-3 md:gap-6">
+            {TRUSTED_COMPANIES.map((company) => (
+              <span
+                key={company}
+                className="px-4 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] bg-[var(--bg-glass)] border border-[var(--border-soft)] backdrop-blur-sm transition-all duration-300 hover:text-[var(--text-secondary)] hover:border-[var(--border-active)]"
+              >
+                {company}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-10 flex justify-center animate-bounce-gentle">
           <ChevronDown className="w-6 h-6 text-[var(--text-muted)]" />
         </div>
       </div>
