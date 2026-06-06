@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import {
   ArrowRight, Mail, MessageCircle, Calendar, Clock,
@@ -245,6 +246,9 @@ export default function ContactPage() {
     <>
       {/* ═══════════ 1. HERO (enhanced) ═══════════ */}
       <section className="relative py-28 md:py-36 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image src="/assets/images/about.webp" alt="" fill className="object-cover opacity-20" sizes="100vw" />
+        </div>
         {/* Hero mesh overlay */}
         <div className="hero-mesh" aria-hidden="true">
           <div className="orb orb-blue" style={{ opacity: 0.3 }} />
