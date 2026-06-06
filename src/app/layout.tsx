@@ -119,7 +119,7 @@ export default function RootLayout({
               "@type": "Organization",
               "name": "NueEra",
               "url": "https://nueera.io",
-              "logo": "https://nueera.io/assets/images/lightlogo.webp",
+              "logo": "https://nueera.io/assets/images/nueera-logo.png",
               "description": "NueEra delivers premium IT & digital solutions: web development, mobile apps, growth marketing, tech automation, UI/UX design, and branding strategy.",
               "address": {
                 "@type": "PostalAddress",

@@ -81,8 +81,7 @@ export default function Footer() {
           {/* Column 1: Logo + Description + Social - Always visible */}
           <div className="sm:col-span-2 lg:col-span-2">
             <Link href="/" className="inline-block mb-4">
-              <Image src="/assets/images/lightlogo.webp" alt="NueEra" width={120} height={46} className="h-10 w-auto object-contain block dark:hidden" />
-              <Image src="/assets/images/darklogo.webp" alt="NueEra" width={120} height={46} className="h-10 w-auto object-contain hidden dark:block" />
+              <Image src="/assets/images/nueera-logo.png" alt="NueEra" width={120} height={46} className="h-10 w-auto object-contain" />
             </Link>
             <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-6 max-w-xs">
               Building digital empires with precision, creativity, and cutting-edge technology. Your vision, our expertise.

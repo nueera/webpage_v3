@@ -87,19 +87,11 @@ export default function Navbar() {
           <Link href="/" className="flex items-center gap-2">
             <div className="relative flex items-center overflow-hidden rounded-lg" style={{ transform: scrolled ? 'scale(0.85)' : 'scale(1)', transition: 'transform 0.3s' }}>
               <Image
-                src="/assets/images/lightlogo.webp"
+                src="/assets/images/nueera-logo.png"
                 alt="NueEra"
                 width={140}
                 height={54}
-                className="h-11 w-auto object-contain block dark:hidden"
-                priority
-              />
-              <Image
-                src="/assets/images/darklogo.webp"
-                alt="NueEra"
-                width={140}
-                height={54}
-                className="h-11 w-auto object-contain hidden dark:block"
+                className="h-11 w-auto object-contain"
                 priority
               />
             </div>
@@ -176,8 +168,7 @@ export default function Navbar() {
 
             <div className="flex items-center justify-between p-6 pb-4 border-b border-[var(--border-soft)]">
               <div className="flex items-center gap-2">
-                <Image src="/assets/images/lightlogo.webp" alt="NueEra" width={100} height={39} className="h-8 w-auto object-contain block dark:hidden" />
-                <Image src="/assets/images/darklogo.webp" alt="NueEra" width={100} height={39} className="h-8 w-auto object-contain hidden dark:block" />
+                <Image src="/assets/images/nueera-logo.png" alt="NueEra" width={100} height={39} className="h-8 w-auto object-contain" />
               </div>
               <button
                 onClick={() => setMobileOpen(false)}
