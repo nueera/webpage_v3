@@ -16,7 +16,7 @@ const TYPING_PHRASES = [
 function useTypewriter(phrases: string[], typingSpeed = 60, deletingSpeed = 35, pauseDuration = 2000) {
   const [displayText, setDisplayText] = useState('');
   const stateRef = useRef({ textIndex: 0, charIndex: 0, isDeleting: false });
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     function tick() {
