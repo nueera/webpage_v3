@@ -19,8 +19,8 @@ const contactCards = [
   {
     icon: Mail,
     title: 'Email',
-    value: 'hello@nueera.io',
-    href: 'mailto:hello@nueera.io',
+    value: 'hello@nueera.com',
+    href: 'mailto:hello@nueera.com',
     color: 'blue' as const,
   },
   {

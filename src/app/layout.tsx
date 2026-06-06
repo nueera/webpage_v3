@@ -127,11 +127,12 @@ export default function RootLayout({
                 "addressRegion": "Maharashtra",
                 "addressCountry": "IN"
               },
-              "email": "hello@nueera.io",
+              "email": "hello@nueera.com",
               "telephone": "+917066607424",
               "sameAs": [
-                "https://linkedin.com/company/nueera",
-                "https://instagram.com/nueera"
+                "https://www.facebook.com/nueera",
+                "https://www.instagram.com/_nueera_",
+                "https://www.linkedin.com/company/115797053"
               ],
               "foundingDate": "2023",
               "founders": [

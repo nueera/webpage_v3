@@ -84,7 +84,7 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               { icon: Phone, title: 'Strategy Call', desc: 'Book a free 30-minute strategy session.', action: 'Book a Call', href: 'https://wa.me/917066607424' },
-              { icon: Mail, title: 'General Inquiry', desc: 'Drop us an email and we\'ll get back to you.', action: 'Send Email', href: 'email', emailTo: 'hello@nueera.io' },
+              { icon: Mail, title: 'General Inquiry', desc: 'Drop us an email and we\'ll get back to you.', action: 'Send Email', href: 'email', emailTo: 'hello@nueera.com' },
               { icon: MessageCircle, title: 'WhatsApp', desc: 'Quick chat? Reach us instantly.', action: 'Chat Now', href: 'https://wa.me/917066607424' },
             ].map((opt, idx) => (
               <FadeUp key={opt.title} delay={idx * 0.1}>
@@ -230,7 +230,7 @@ export default function ContactPage() {
               <FadeUp delay={0.2}>
                 <div className="space-y-4">
                   {[
-                    { icon: Mail, title: 'Email', value: 'hello@nueera.io', href: 'mailto:hello@nueera.io', color: 'blue' },
+                    { icon: Mail, title: 'Email', value: 'hello@nueera.com', href: 'mailto:hello@nueera.com', color: 'blue' },
                     { icon: Clock, title: 'Response Time', value: 'Within 24 hours', color: 'orange' },
                     { icon: MessageCircle, title: 'WhatsApp', value: '+91 70666 07424', href: 'https://wa.me/917066607424', color: 'green' },
                     { icon: MapPin, title: 'Location', value: 'Pune, Maharashtra, India', color: 'orange' },
