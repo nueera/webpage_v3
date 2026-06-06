@@ -1,56 +1,149 @@
 import { NextResponse } from 'next/server';
 
+/* ─── In-memory rate limiting (5 submissions per IP per hour) ─── */
+
+const submissions = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+
+function isRateLimited(clientIp: string): boolean {
+  const now = Date.now();
+  const entry = submissions.get(clientIp);
+
+  if (!entry) {
+    submissions.set(clientIp, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+
+  // Window expired — reset
+  if (now > entry.resetTime) {
+    submissions.set(clientIp, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+
+  if (entry.count >= RATE_LIMIT_MAX) {
+    return true;
+  }
+
+  entry.count += 1;
+  return false;
+}
+
+/* ─── Sanitization helpers ─── */
+
+function trimString(val: unknown): string {
+  if (typeof val !== 'string') return '';
+  return val.trim();
+}
+
+function stripHtml(text: string): string {
+  return text.replace(/<[^>]*>/g, '');
+}
+
+/* ─── POST handler ─── */
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, message } = body;
 
-    // Validation
-    const errors: string[] = [];
-
-    if (!name || typeof name !== 'string' || name.trim().length < 2) {
-      errors.push('Name must be at least 2 characters');
+    // ── Honeypot check: bots fill hidden fields, humans don't ──
+    if (body.website && body.website.trim().length > 0) {
+      // Return fake success silently — don't log, don't process
+      return NextResponse.json({
+        success: true,
+        message: 'Thank you! We\'ll get back to you soon.',
+      });
     }
 
-    if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      errors.push('Please provide a valid email address');
-    }
-
-    if (!message || typeof message !== 'string' || message.trim().length < 10) {
-      errors.push('Message must be at least 10 characters');
-    }
-
-    if (errors.length > 0) {
+    // ── Rate limiting ──
+    const clientIp = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+    if (isRateLimited(clientIp)) {
       return NextResponse.json(
-        { success: false, errors },
-        { status: 400 }
+        {
+          success: false,
+          errors: ['Too many submissions. Please try again later.'],
+        },
+        { status: 429 }
       );
     }
 
-    // Log the submission (no database dependency)
-    console.log('Contact form submission:', {
-      name: name.trim(),
-      email: email.trim(),
-      phone: body.phone?.trim() || null,
-      company: body.company?.trim() || null,
-      service: body.service || null,
-      budget: body.budget || null,
-      message: message.trim(),
+    // ── Extract & sanitize fields ──
+    const name = trimString(body.name);
+    const email = trimString(body.email);
+    const phone = trimString(body.phone);
+    const company = trimString(body.company);
+    const service = trimString(body.service);
+    const budget = trimString(body.budget);
+    const timeline = trimString(body.timeline);
+    const source = trimString(body.source);
+    const message = stripHtml(trimString(body.message));
+
+    // ── Validation ──
+    const errors: string[] = [];
+
+    if (!name || name.length < 2) {
+      errors.push('Name must be at least 2 characters.');
+    }
+    if (name.length > 100) {
+      errors.push('Name must be under 100 characters.');
+    }
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errors.push('Please provide a valid email address.');
+    }
+
+    if (!message || message.length < 10) {
+      errors.push('Message must be at least 10 characters.');
+    }
+    if (message.length > 5000) {
+      errors.push('Message must be under 5,000 characters.');
+    }
+
+    // Phone is optional but if provided must be valid
+    if (phone && phone.length > 0) {
+      const phoneClean = phone.replace(/[\s\-()]/g, '');
+      if (!/^\+?\d{7,15}$/.test(phoneClean)) {
+        errors.push('Please provide a valid phone number.');
+      }
+    }
+
+    if (errors.length > 0) {
+      return NextResponse.json({ success: false, errors }, { status: 400 });
+    }
+
+    // ── Log the submission (for review, not persistent storage) ──
+    console.log('📧 Contact form submission:', {
       timestamp: new Date().toISOString(),
+      ip: clientIp,
+      name,
+      email,
+      phone: phone || null,
+      company: company || null,
+      service: service || null,
+      budget: budget || null,
+      timeline: timeline || null,
+      source: source || null,
+      message,
     });
 
-    return NextResponse.json(
-      { success: true, message: 'Thank you for your message! We\'ll get back to you within 24 hours.' },
-      { status: 200 }
-    );
+    // ── Success response ──
+    return NextResponse.json({
+      success: true,
+      message: 'Thank you for your inquiry! Our team will review your details and reach out within 24 hours to schedule a free strategy call.',
+    });
   } catch (error) {
     console.error('Contact form error:', error);
     return NextResponse.json(
-      { success: false, errors: ['Something went wrong. Please try again later.'] },
+      {
+        success: false,
+        errors: ['Something went wrong. Please try again later.'],
+      },
       { status: 500 }
     );
   }
 }
+
+/* ─── GET handler (health check) ─── */
 
 export async function GET() {
   return NextResponse.json({ message: 'Contact API endpoint' });
