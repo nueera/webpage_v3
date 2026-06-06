@@ -104,7 +104,7 @@ export default function AboutPage() {
 
       {/* ═══════════ 1. HERO (enhanced) ═══════════ */}
       <section className="relative py-28 md:py-36 overflow-hidden">
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 hidden md:block">
           <Image src="/assets/images/about.webp" alt="" fill className="object-cover opacity-20" sizes="100vw" />
         </div>
         {/* Hero mesh overlay */}
