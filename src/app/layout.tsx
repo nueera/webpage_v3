@@ -6,6 +6,7 @@ import Footer from "@/components/footer";
 import ScrollTopBtn from "@/components/scroll-top-btn";
 import MobileBottomNav from "@/components/mobile-bottom-nav";
 import InitialLoader from "@/components/initial-loader";
+import PageTransitionLoader from "@/components/page-transition-loader";
 import CookieConsent from "@/components/cookie-consent";
 import "./globals.css";
 
@@ -145,6 +146,7 @@ export default function RootLayout({
         />
         <ThemeProvider>
           <InitialLoader />
+          <PageTransitionLoader />
           <a
             href="#main-content"
             className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-[var(--blue-primary)] focus:text-white focus:text-sm focus:font-semibold focus:outline-none"
