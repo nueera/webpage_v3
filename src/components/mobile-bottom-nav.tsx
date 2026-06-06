@@ -1,74 +1,96 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { House, Layers, Briefcase, MessageCircle } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { id: 'home', label: 'Home', icon: House, target: '#home' },
-  { id: 'services', label: 'Services', icon: Layers, target: '#services' },
-  { id: 'portfolio', label: 'Portfolio', icon: Briefcase, target: '#portfolio' },
-  { id: 'contact', label: 'Contact', icon: MessageCircle, target: null },
+  { id: 'home', label: 'Home', icon: House, href: '/', sectionId: 'home' },
+  { id: 'services', label: 'Services', icon: Layers, href: '/services', sectionId: 'services' },
+  { id: 'portfolio', label: 'Portfolio', icon: Briefcase, href: '/portfolio', sectionId: 'portfolio' },
+  { id: 'contact', label: 'Contact', icon: MessageCircle, href: '/contact', sectionId: null },
 ];
 
 export default function MobileBottomNav() {
-  const [activeSection, setActiveSection] = useState('home');
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
+  const [activeSection, setActiveSection] = useState(isHomePage ? 'home' : '');
   const [springKey, setSpringKey] = useState(0);
-  const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const prevActiveRef = useRef('home');
+  const prevActiveRef = useRef(isHomePage ? 'home' : '');
 
-  const scrollToSection = useCallback((target: string | null) => {
-    if (target) {
-      document.querySelector(target)?.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, []);
-
+  // Determine active based on pathname when not on home
   useEffect(() => {
-    const sections = ['home', 'services', 'portfolio'];
-    const observerOptions: IntersectionObserverInit = {
-      root: null,
-      rootMargin: '-40% 0px -40% 0px',
-      threshold: 0,
-    };
+    if (!isHomePage) {
+      const match = NAV_ITEMS.find((item) => item.href === pathname);
+      const newActive = match ? match.id : '';
+      if (prevActiveRef.current !== newActive) {
+        prevActiveRef.current = newActive;
+        setActiveSection(newActive);
+        setSpringKey((k) => k + 1);
+      }
+    }
+  }, [pathname, isHomePage]);
 
-    observerRef.current = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const newActive = entry.target.id;
-          setActiveSection(newActive);
-          if (prevActiveRef.current !== newActive) {
-            prevActiveRef.current = newActive;
-            setSpringKey((k) => k + 1);
+  // IntersectionObserver — only on home page
+  useEffect(() => {
+    if (!isHomePage) return;
+
+    const sections = ['home', 'services', 'portfolio'];
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const newActive = entry.target.id;
+            if (prevActiveRef.current !== newActive) {
+              prevActiveRef.current = newActive;
+              setActiveSection(newActive);
+              setSpringKey((k) => k + 1);
+            }
           }
-        }
-      });
-    }, observerOptions);
+        });
+      },
+      { root: null, rootMargin: '-40% 0px -40% 0px', threshold: 0 }
+    );
 
     sections.forEach((id) => {
       const el = document.getElementById(id);
-      if (el) {
-        sectionRefs.current.set(id, el);
-        observerRef.current?.observe(el);
-      }
+      if (el) observerRef.current?.observe(el);
     });
 
-    return () => {
-      observerRef.current?.disconnect();
-    };
+    return () => { observerRef.current?.disconnect(); };
+  }, [isHomePage]);
+
+  const scrollToSection = useCallback((target: string) => {
+    document.querySelector(target)?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
-  const handleNavClick = (item: typeof NAV_ITEMS[number]) => {
-    if (item.id !== activeSection) {
-      setActiveSection(item.id);
-      prevActiveRef.current = item.id;
+  const handleNavClick = useCallback((item: typeof NAV_ITEMS[number]) => {
+    const newId = item.id;
+    if (prevActiveRef.current !== newId) {
+      prevActiveRef.current = newId;
+      setActiveSection(newId);
       setSpringKey((k) => k + 1);
     }
-    if (item.id === 'contact') {
-      window.open('https://wa.me/917066607424', '_blank');
-    } else {
-      scrollToSection(item.target);
+
+    // If we're on home page, scroll to section
+    if (isHomePage && item.sectionId) {
+      scrollToSection(`#${item.sectionId}`);
+      return;
     }
-  };
+
+    // If navigating to home, go to / and then scroll to section
+    if (item.href === '/' && !isHomePage) {
+      window.location.href = '/';
+      return;
+    }
+
+    // For other pages, navigate to the page route
+    if (!isHomePage) {
+      window.location.href = item.href;
+    }
+  }, [isHomePage, scrollToSection]);
 
   return (
     <nav className="bubble-nav-container md:hidden" aria-label="Mobile navigation">
@@ -90,9 +112,7 @@ export default function MobileBottomNav() {
             >
               {/* Active bubble background */}
               <div className={`bubble-nav-bubble ${isActive ? 'active' : ''}`}>
-                {/* Inner glow ring */}
                 <div className="bubble-nav-bubble-glow" />
-                {/* Gradient fill */}
                 <div className="bubble-nav-bubble-fill" />
               </div>
 
