@@ -15,6 +15,30 @@ interface FormErrors {
   general?: string;
 }
 
+const contactCards = [
+  {
+    icon: Mail,
+    title: 'Email',
+    value: 'hello@nueera.io',
+    href: 'mailto:hello@nueera.io',
+    color: 'blue' as const,
+  },
+  {
+    icon: MessageCircle,
+    title: 'WhatsApp',
+    value: '+91 70666 07424',
+    href: 'https://wa.me/917066607424',
+    color: 'green' as const,
+  },
+  {
+    icon: MapPin,
+    title: 'Location',
+    value: 'Pune, MH, India',
+    href: undefined,
+    color: 'orange' as const,
+  },
+];
+
 export function HomeContactSection() {
   const [formData, setFormData] = useState({
     name: '', email: '', phone: '', service: '', budget: '', message: '',
@@ -244,29 +268,7 @@ export function HomeContactSection() {
           <FadeUp delay={0.3} className="lg:col-span-2 space-y-6">
             {/* Contact Cards */}
             <div className="space-y-4">
-              {[
-                {
-                  icon: Mail,
-                  title: 'Email',
-                  value: 'hello@nueera.io',
-                  href: 'mailto:hello@nueera.io',
-                  color: 'blue' as const,
-                },
-                {
-                  icon: MessageCircle,
-                  title: 'WhatsApp',
-                  value: '+91 70666 07424',
-                  href: 'https://wa.me/917066607424',
-                  color: 'green' as const,
-                },
-                {
-                  icon: MapPin,
-                  title: 'Location',
-                  value: 'Pune, MH, India',
-                  href: undefined,
-                  color: 'orange' as const,
-                },
-              ].map((item) => (
+              {contactCards.map((item) => (
                 <GlassCard key={item.title} className="flex items-center gap-4 p-4" hover={false}>
                   <div
                     className={`w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center ${
