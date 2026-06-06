@@ -111,7 +111,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, errors }, { status: 400 });
     }
 
-    // ── Log the submission (for review, not persistent storage) ──
+    // ── Log the submission ──
     console.log('📧 Contact form submission:', {
       timestamp: new Date().toISOString(),
       ip: clientIp,
@@ -125,6 +125,35 @@ export async function POST(request: Request) {
       source: source || null,
       message,
     });
+
+    // ── Store in Google Sheet ──
+    const sheetsWebhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+    if (sheetsWebhookUrl) {
+      try {
+        await fetch(sheetsWebhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name,
+            email,
+            phone: phone || '',
+            company: company || '',
+            service: service || '',
+            budget: budget || '',
+            timeline: timeline || '',
+            source: source || '',
+            message,
+            ip: clientIp,
+          }),
+        });
+        console.log('✅ Submission saved to Google Sheets');
+      } catch (sheetErr) {
+        console.error('⚠️ Google Sheets write failed:', sheetErr);
+        // Don't fail the form submission if Sheets is down
+      }
+    } else {
+      console.warn('⚠️ GOOGLE_SHEETS_WEBHOOK_URL not set — submissions not saved to Google Sheets');
+    }
 
     // ── Success response ──
     return NextResponse.json({
