@@ -9,17 +9,17 @@ import {
 import { SectionBadge, SectionTitle, SectionDescription, FadeUp, AnimatedCounter } from '@/components/ui-extensions';
 
 const teamMembers = [
-  { name: 'Nil Shinde', role: 'Founder & CEO', img: '/assets/images/profiles/nil_shinde.webp', highlight: true },
-  { name: 'Dipanshu Awandkar', role: 'Co-Founder & CTO', img: '/assets/images/profiles/dipanshu_awandkar.webp', highlight: true },
-  { name: 'Vaibhav Nijampurkar', role: 'Lead Developer', img: '/assets/images/profiles/vaibhav_nijampurkar.webp', highlight: false },
+  { name: 'Nil Shinde', role: 'Founder & Business Growth Lead', img: '/assets/images/profiles/nil_shinde.webp', highlight: true },
+  { name: 'Dipanshu Awandkar', role: 'Co-Founder & Technology Lead', img: '/assets/images/profiles/dipanshu_awandkar.webp', highlight: true },
+  { name: 'Vaibhav Nijampurkar', role: 'Process & Business Development Lead', img: '/assets/images/profiles/vaibhav_nijampurkar.webp', highlight: false },
   { name: 'Vivek Tethgure', role: 'Senior Developer', img: '/assets/images/profiles/vivek_tethgure.webp', highlight: false },
-  { name: 'Vikrant Salunke', role: 'UI/UX Designer', img: '/assets/images/profiles/vikrant_salunke.webp', highlight: false },
-  { name: 'Ravi Kambale', role: 'Full Stack Developer', img: '/assets/images/profiles/ravi_kambale.webp', highlight: false },
-  { name: 'Nagesh Banger', role: 'Backend Developer', img: '/assets/images/profiles/nagesh_banger.webp', highlight: false },
-  { name: 'Saurabh Shinde', role: 'DevOps Engineer', img: '/assets/images/profiles/saurabh_shinde.webp', highlight: false },
+  { name: 'Vikrant Salunke', role: 'Quality Assurance Lead', img: '/assets/images/profiles/vikrant_salunke.webp', highlight: false },
+  { name: 'Ravi Kambale', role: 'Operations & Delivery Lead', img: '/assets/images/profiles/ravi_kambale.webp', highlight: false },
+  { name: 'Nagesh Banger', role: 'Motion Graphics & Video Content Lead', img: '/assets/images/profiles/nagesh_banger.webp', highlight: false },
+  { name: 'Saurabh Shinde', role: 'Process Optimization Lead', img: '/assets/images/profiles/saurabh_shinde.webp', highlight: false },
   { name: 'Sandhya Shinde', role: 'Project Manager', img: '/assets/images/profiles/sandhya_shinde.webp', highlight: false },
-  { name: 'Tisha Dalavi', role: 'Marketing Specialist', img: '/assets/images/profiles/tisha_dalavi.webp', highlight: false },
-  { name: 'Mrunmayee Jawale', role: 'Content Strategist', img: '/assets/images/profiles/mrunmayee_Jawale.webp', highlight: false },
+  { name: 'Tisha Dalavi', role: 'Marketing & Growth Lead', img: '/assets/images/profiles/tisha_dalavi.webp', highlight: false },
+  { name: 'Mrunmayee Jawale', role: 'Product Strategy Lead', img: '/assets/images/profiles/mrunmayee_Jawale.webp', highlight: false },
 ];
 
 const philosophyItems = [
