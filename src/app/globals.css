@@ -1151,48 +1151,213 @@
   .loader-sun-image { filter: none; }
   html { scroll-behavior: auto; }
   .animate-marquee { animation: none; }
+  .bubble-nav-icon-wrap.active { animation: none; transform: translateY(-13px) scale(1.1); }
+  .bubble-nav-bubble-glow { animation: none !important; }
 }
 
 /* ==========================================
-   MOBILE BOTTOM NAV
+   MORPHING BUBBLE NAV (Mobile)
+   Instagram Reels-style with spring animations
    ========================================== */
-.mobile-bottom-nav {
+
+/* Spring bounce keyframe */
+@keyframes bubbleSpring {
+  0% { transform: translateY(0) scale(1); }
+  30% { transform: translateY(-14px) scale(1.15); }
+  50% { transform: translateY(-12px) scale(1.08); }
+  70% { transform: translateY(-14px) scale(1.12); }
+  85% { transform: translateY(-13px) scale(1.1); }
+  100% { transform: translateY(-13px) scale(1.1); }
+}
+
+/* Bubble glow pulse */
+@keyframes bubbleGlowPulse {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+}
+
+/* Container - glassmorphic floating bar */
+.bubble-nav-container {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 100;
   background: var(--bg-navbar);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-top: 1px solid var(--border-soft);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-.mobile-nav-item {
+/* Gradient glow line on top */
+.bubble-nav-glow-line {
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 5%,
+    var(--blue-primary) 30%,
+    var(--orange-primary) 70%,
+    transparent 95%
+  );
+  opacity: 0.7;
+  box-shadow: 0 0 12px var(--glow-blue), 0 0 6px var(--glow-orange);
+}
+
+/* Inner nav row */
+.bubble-nav-inner {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  padding: 6px 8px 4px;
+  position: relative;
+}
+
+/* Individual nav item */
+.bubble-nav-item {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 2px;
-  padding: 8px 4px;
-  min-height: 52px;
-  color: var(--text-muted);
-  transition: all 0.2s ease;
-  -webkit-tap-highlight-color: transparent;
+  justify-content: flex-end;
+  gap: 3px;
+  min-width: 64px;
+  min-height: 60px;
+  padding: 0 4px;
+  background: none;
+  border: none;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
-.mobile-nav-item:active {
-  transform: scale(0.92);
+/* The glowing bubble behind active icon */
+.bubble-nav-bubble {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
 }
 
-.mobile-nav-item.active {
+.bubble-nav-bubble.active {
+  opacity: 1;
+  width: 52px;
+  height: 52px;
+}
+
+/* Inner gradient fill of bubble */
+.bubble-nav-bubble-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue-primary) 0%, var(--orange-primary) 100%);
+  box-shadow:
+    0 4px 20px var(--glow-blue),
+    0 2px 8px var(--glow-orange),
+    0 0 30px rgba(31, 106, 255, 0.15);
+}
+
+/* Outer glow ring that pulses */
+.bubble-nav-bubble-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--blue-glow) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+
+.bubble-nav-bubble.active .bubble-nav-bubble-glow {
+  opacity: 1;
+  animation: bubbleGlowPulse 2.5s ease-in-out infinite;
+}
+
+/* Icon wrapper - handles elevation and spring */
+.bubble-nav-icon-wrap {
+  position: relative;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.bubble-nav-icon-wrap.active {
+  animation: bubbleSpring 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* The icon itself */
+.bubble-nav-icon {
+  color: var(--text-muted);
+  width: 22px;
+  height: 22px;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.bubble-nav-icon.active {
+  color: #ffffff;
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.2));
+}
+
+/* Label text below icon */
+.bubble-nav-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  z-index: 2;
+}
+
+.bubble-nav-label.active {
   color: var(--blue-primary);
+  font-weight: 700;
+  font-size: 10.5px;
 }
 
-.mobile-nav-item.active .mobile-nav-icon {
-  filter: drop-shadow(0 0 8px var(--glow-blue));
+/* Active dot indicator below label */
+.bubble-nav-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  z-index: 2;
+}
+
+.bubble-nav-dot.active {
+  opacity: 1;
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--gradient-blue-orange);
+  box-shadow: 0 0 6px var(--glow-blue);
+}
+
+/* Press effect for non-active items */
+.bubble-nav-item:not(.active):active .bubble-nav-icon-wrap {
+  transform: scale(0.88);
+}
+.bubble-nav-item:not(.active):active .bubble-nav-icon {
+  color: var(--blue-primary);
 }
 
 /* ==========================================
@@ -1267,7 +1432,7 @@
    ========================================== */
 
 /* Prevent text selection on interactive elements */
-button, a, .snap-carousel, .mobile-nav-item {
+button, a, .snap-carousel, .bubble-nav-item {
   -webkit-user-select: none;
   user-select: none;
 }

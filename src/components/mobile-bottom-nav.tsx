@@ -12,8 +12,10 @@ const NAV_ITEMS = [
 
 export default function MobileBottomNav() {
   const [activeSection, setActiveSection] = useState('home');
+  const [springKey, setSpringKey] = useState(0);
   const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const prevActiveRef = useRef('home');
 
   const scrollToSection = useCallback((target: string | null) => {
     if (target) {
@@ -22,7 +24,6 @@ export default function MobileBottomNav() {
   }, []);
 
   useEffect(() => {
-    // Observe section elements for active state
     const sections = ['home', 'services', 'portfolio'];
     const observerOptions: IntersectionObserverInit = {
       root: null,
@@ -33,7 +34,12 @@ export default function MobileBottomNav() {
     observerRef.current = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
+          const newActive = entry.target.id;
+          setActiveSection(newActive);
+          if (prevActiveRef.current !== newActive) {
+            prevActiveRef.current = newActive;
+            setSpringKey((k) => k + 1);
+          }
         }
       });
     }, observerOptions);
@@ -52,6 +58,11 @@ export default function MobileBottomNav() {
   }, []);
 
   const handleNavClick = (item: typeof NAV_ITEMS[number]) => {
+    if (item.id !== activeSection) {
+      setActiveSection(item.id);
+      prevActiveRef.current = item.id;
+      setSpringKey((k) => k + 1);
+    }
     if (item.id === 'contact') {
       window.open('https://wa.me/917066607424', '_blank');
     } else {
@@ -60,37 +71,56 @@ export default function MobileBottomNav() {
   };
 
   return (
-    <nav className="mobile-bottom-nav md:hidden" aria-label="Mobile navigation">
-      {/* Gradient top border */}
-      <div
-        className="h-[1px] w-full"
-        style={{
-          background: 'linear-gradient(90deg, var(--blue-primary), var(--orange-primary))',
-        }}
-      />
-      <div className="flex items-center justify-around px-2">
+    <nav className="bubble-nav-container md:hidden" aria-label="Mobile navigation">
+      {/* Top glow line */}
+      <div className="bubble-nav-glow-line" />
+
+      <div className="bubble-nav-inner">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
           const isActive = activeSection === item.id;
+
           return (
             <button
               key={item.id}
               onClick={() => handleNavClick(item)}
-              className={`mobile-nav-item touch-press ${isActive ? 'active' : ''}`}
+              className={`bubble-nav-item ${isActive ? 'active' : ''}`}
               aria-label={item.label}
               aria-current={isActive ? 'page' : undefined}
             >
-              <Icon
-                className={`mobile-nav-icon w-5 h-5 transition-all duration-200 ${
-                  isActive ? 'scale-110' : ''
-                }`}
-                strokeWidth={isActive ? 2.5 : 2}
-              />
-              <span className="text-[10px] font-medium leading-tight">{item.label}</span>
+              {/* Active bubble background */}
+              <div className={`bubble-nav-bubble ${isActive ? 'active' : ''}`}>
+                {/* Inner glow ring */}
+                <div className="bubble-nav-bubble-glow" />
+                {/* Gradient fill */}
+                <div className="bubble-nav-bubble-fill" />
+              </div>
+
+              {/* Icon with spring animation */}
+              <div
+                className={`bubble-nav-icon-wrap ${isActive ? 'active' : ''}`}
+                style={isActive ? { animationName: 'bubbleSpring' } : undefined}
+              >
+                <Icon
+                  className={`bubble-nav-icon ${isActive ? 'active' : ''}`}
+                  strokeWidth={isActive ? 2.5 : 1.8}
+                />
+              </div>
+
+              {/* Label */}
+              <span className={`bubble-nav-label ${isActive ? 'active' : ''}`}>
+                {item.label}
+              </span>
+
+              {/* Active dot below label */}
+              <div className={`bubble-nav-dot ${isActive ? 'active' : ''}`} />
             </button>
           );
         })}
       </div>
+
+      {/* Bottom safe area spacer */}
+      <div style={{ height: 'env(safe-area-inset-bottom, 0px)' }} />
     </nav>
   );
 }
