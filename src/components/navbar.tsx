@@ -20,6 +20,7 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isDarkSection, setIsDarkSection] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -28,6 +29,23 @@ export default function Navbar() {
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const sections = document.querySelectorAll('section[id]');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const section = entry.target as HTMLElement;
+          const bg = section.classList;
+          const hasDarkBg = section.id === 'home' || section.id === 'contact' || bg.contains('bg-[var(--bg-secondary)]');
+          setIsDarkSection(hasDarkBg);
+        }
+      });
+    }, { rootMargin: '-80px 0px -50% 0px', threshold: 0 });
+
+    sections.forEach(s => observer.observe(s));
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {

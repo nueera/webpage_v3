@@ -70,15 +70,36 @@ const PROOF_ITEMS = [
 
 export function Hero() {
   const typedText = useTypewriter(TYPING_PHRASES);
+  const heroRef = useRef<HTMLElement>(null);
+  const wallpaperRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const handleScroll = () => {
+      const img = wallpaperRef.current;
+      if (!img) return;
+      const scrollY = window.scrollY;
+      if (scrollY < window.innerHeight) {
+        img.classList.add('parallax-active');
+        img.style.transform = `scale(1.1) translateY(${scrollY * 0.3}px)`;
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <section
       id="home"
+      ref={heroRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--bg-main)] pt-16 md:pt-20"
     >
       {/* Background wallpaper image */}
-      <div className="hero-wallpaper" aria-hidden="true">
+      <div className="hero-wallpaper parallax-hero" aria-hidden="true">
         <img
+          ref={wallpaperRef}
           src="/assets/images/homewallpaper.webp"
           alt=""
           role="presentation"
@@ -94,6 +115,13 @@ export function Hero() {
         <div className="orb orb-blue animate-float-orb" />
         <div className="orb orb-orange animate-float-orb" style={{ animationDelay: '-7s', animationDuration: '25s' }} />
         <div className="orb orb-accent animate-float-orb" style={{ animationDelay: '-14s', animationDuration: '30s' }} />
+      </div>
+
+      {/* Aurora Northern Lights Effect */}
+      <div className="aurora-layer" aria-hidden="true">
+        <div className="aurora-blob aurora-blob-1" />
+        <div className="aurora-blob aurora-blob-2" />
+        <div className="aurora-blob aurora-blob-3" />
       </div>
 
       {/* Dot grid overlay */}

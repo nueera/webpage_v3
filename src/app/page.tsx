@@ -7,6 +7,8 @@ import { ProcessSection } from '@/components/process-section';
 import { PortfolioSection } from '@/components/portfolio-section';
 import { TestimonialsSection } from '@/components/testimonials-section';
 import { CTASection } from '@/components/cta-section';
+import { FAQSection } from '@/components/faq-section';
+import { ServiceSelector } from '@/components/service-selector';
 
 export default function HomePage() {
   return (
@@ -16,7 +18,9 @@ export default function HomePage() {
       <ServicesSection />
       <ProcessSection />
       <PortfolioSection />
+      <ServiceSelector />
       <TestimonialsSection />
+      <FAQSection />
       <CTASection />
     </>
   );

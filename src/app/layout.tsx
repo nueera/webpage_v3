@@ -7,6 +7,7 @@ import ScrollTopBtn from "@/components/scroll-top-btn";
 import WhatsAppFloat from "@/components/whatsapp-float";
 import MobileBottomNav from "@/components/mobile-bottom-nav";
 import InitialLoader from "@/components/initial-loader";
+import CookieConsent from "@/components/cookie-consent";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -107,6 +108,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <meta name="view-transition" content="same-origin" />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className={`${outfit.variable} ${spaceGrotesk.variable} antialiased`} suppressHydrationWarning>
@@ -156,6 +158,7 @@ export default function RootLayout({
           <Footer />
           <MobileBottomNav />
           <WhatsAppFloat />
+          <CookieConsent />
           <ScrollTopBtn />
         </ThemeProvider>
       </body>

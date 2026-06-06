@@ -60,7 +60,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, [theme, mounted]);
 
   const setTheme = useCallback((newTheme: Theme) => {
-    setThemeState(newTheme);
+    const root = document.documentElement;
+    root.classList.add('theme-transitioning');
+    setTimeout(() => {
+      setThemeState(newTheme);
+      setTimeout(() => {
+        root.classList.remove('theme-transitioning');
+      }, 600);
+    }, 50);
   }, []);
 
   // Prevent flash: on server, render with default theme

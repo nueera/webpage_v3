@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, TrendingUp, Clock, Zap, Star, ExternalLink } from 'lucide-react';
 import { SectionBadge, FadeUp, AnimatedCounter } from '@/components/ui-extensions';
+import BeforeAfterSlider from '@/components/before-after-slider';
 
 const filters = ['All', 'Web', 'App', 'Marketing', 'Design'];
 
@@ -178,6 +179,50 @@ export default function PortfolioPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Before/After Case Study */}
+      <section className="py-24 md:py-32 bg-[var(--bg-secondary)]">
+        <div className="container-nueera">
+          <div className="text-center mb-12">
+            <FadeUp>
+              <SectionBadge>Case Study</SectionBadge>
+            </FadeUp>
+            <FadeUp delay={0.1}>
+              <h2 className="heading-gradient text-3xl md:text-4xl font-extrabold mb-4 mt-4">Before & After</h2>
+            </FadeUp>
+            <FadeUp delay={0.2}>
+              <p className="text-[var(--text-secondary)] text-lg max-w-2xl mx-auto">
+                See the tangible impact of our work. Drag the slider to compare the transformation.
+              </p>
+            </FadeUp>
+          </div>
+
+          <FadeUp delay={0.3}>
+            <div className="max-w-3xl mx-auto">
+              <BeforeAfterSlider
+                beforeLabel="Before"
+                afterLabel="After — FreshBite"
+                beforeImage="/assets/images/before.webp"
+                afterImage="/assets/images/img1.webp"
+              />
+              <div className="mt-8 grid grid-cols-3 gap-4">
+                <div className="stat-card">
+                  <div className="text-2xl font-extrabold gradient-text">4x</div>
+                  <div className="text-xs text-[var(--text-muted)] mt-1">Revenue Growth</div>
+                </div>
+                <div className="stat-card">
+                  <div className="text-2xl font-extrabold gradient-text">68%</div>
+                  <div className="text-xs text-[var(--text-muted)] mt-1">More Conversions</div>
+                </div>
+                <div className="stat-card">
+                  <div className="text-2xl font-extrabold gradient-text">2.5s</div>
+                  <div className="text-xs text-[var(--text-muted)] mt-1">Load Time</div>
+                </div>
+              </div>
+            </div>
+          </FadeUp>
         </div>
       </section>
 
