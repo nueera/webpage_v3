@@ -1,31 +1,76 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Globe, Share2, Link as LinkIcon, MessageCircle, Mail, ArrowRight } from 'lucide-react';
+import { Globe, Share2, Link as LinkIcon, MessageCircle, Mail, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
 
 const quickLinks = [
   { href: '/', label: 'Home' },
-  { href: '/about', label: 'About Us' },
-  { href: '/services', label: 'Services' },
-  { href: '/portfolio', label: 'Portfolio' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/', label: 'About Us' },
+  { href: '/', label: 'Services' },
+  { href: '/', label: 'Portfolio' },
+  { href: '/', label: 'Contact' },
 ];
 
 const serviceLinks = [
-  { href: '/services', label: 'Web Development' },
-  { href: '/services', label: 'Mobile Apps' },
-  { href: '/services', label: 'UI/UX Design' },
-  { href: '/services', label: 'Branding' },
-  { href: '/services', label: 'Digital Marketing' },
-  { href: '/services', label: 'Software Solutions' },
+  { href: '/', label: 'Web Development' },
+  { href: '/', label: 'Mobile Apps' },
+  { href: '/', label: 'UI/UX Design' },
+  { href: '/', label: 'Branding' },
+  { href: '/', label: 'Digital Marketing' },
+  { href: '/', label: 'Software Solutions' },
 ];
 
 function CurrentYear() {
   return <span suppressHydrationWarning>{new Date().getFullYear()}</span>;
 }
 
+function AccordionSection({
+  title,
+  children,
+  isOpen,
+  onToggle,
+}: {
+  title: string;
+  children: React.ReactNode;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <div className="border-t border-[var(--border-soft)] md:border-t-0">
+      <button
+        className="footer-accordion-trigger w-full flex items-center justify-between py-4 px-0 md:p-0"
+        onClick={onToggle}
+        aria-expanded={isOpen}
+      >
+        <h4 className="text-[var(--text-primary)] font-bold text-sm uppercase tracking-wider">
+          {title}
+        </h4>
+        <span className="md:hidden ml-2">
+          {isOpen ? (
+            <ChevronUp className="w-5 h-5 text-[var(--text-muted)]" />
+          ) : (
+            <ChevronDown className="w-5 h-5 text-[var(--text-muted)]" />
+          )}
+        </span>
+      </button>
+      <div
+        className={`footer-accordion-content ${isOpen ? 'open' : ''} md:!max-h-none md:!opacity-100 md:!overflow-visible`}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
 export default function Footer() {
+  const [openSection, setOpenSection] = useState<string | null>('quickLinks');
+
+  const toggleSection = (section: string) => {
+    setOpenSection((prev) => (prev === section ? null : section));
+  };
+
   return (
     <footer className="bg-[var(--bg-secondary)] mt-auto" suppressHydrationWarning>
       {/* Premium gradient top border */}
@@ -33,7 +78,7 @@ export default function Footer() {
 
       <div className="container-nueera py-12 md:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
-          {/* Column 1: Logo + Description + Social */}
+          {/* Column 1: Logo + Description + Social - Always visible */}
           <div className="sm:col-span-2 lg:col-span-2">
             <Link href="/" className="inline-block mb-4">
               <Image src="/assets/images/lightlogo.webp" alt="NueEra" width={120} height={46} className="h-10 w-auto object-contain block dark:hidden" />
@@ -63,8 +108,26 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 2: Quick Links */}
-          <div>
+          {/* Column 2: Quick Links - Accordion on mobile */}
+          <div className="md:hidden">
+            <AccordionSection
+              title="Quick Links"
+              isOpen={openSection === 'quickLinks'}
+              onToggle={() => toggleSection('quickLinks')}
+            >
+              <ul className="space-y-2.5 pb-4">
+                {quickLinks.map((link) => (
+                  <li key={link.label}>
+                    <Link href={link.href} className="text-[var(--text-secondary)] text-sm hover:text-[var(--blue-primary)] transition-colors duration-200 hover:translate-x-1 inline-block">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </AccordionSection>
+          </div>
+          {/* Desktop: Quick Links */}
+          <div className="hidden md:block">
             <h4 className="text-[var(--text-primary)] font-bold text-sm uppercase tracking-wider mb-4">Quick Links</h4>
             <ul className="space-y-2.5">
               {quickLinks.map((link) => (
@@ -77,8 +140,26 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Services */}
-          <div>
+          {/* Column 3: Services - Accordion on mobile */}
+          <div className="md:hidden">
+            <AccordionSection
+              title="Services"
+              isOpen={openSection === 'services'}
+              onToggle={() => toggleSection('services')}
+            >
+              <ul className="space-y-2.5 pb-4">
+                {serviceLinks.map((link, i) => (
+                  <li key={i}>
+                    <Link href={link.href} className="text-[var(--text-secondary)] text-sm hover:text-[var(--blue-primary)] transition-colors duration-200 hover:translate-x-1 inline-block">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </AccordionSection>
+          </div>
+          {/* Desktop: Services */}
+          <div className="hidden md:block">
             <h4 className="text-[var(--text-primary)] font-bold text-sm uppercase tracking-wider mb-4">Services</h4>
             <ul className="space-y-2.5">
               {serviceLinks.map((link, i) => (
@@ -91,8 +172,48 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 4: Newsletter */}
-          <div>
+          {/* Column 4: Newsletter - Accordion on mobile */}
+          <div className="md:hidden">
+            <AccordionSection
+              title="Stay Updated"
+              isOpen={openSection === 'newsletter'}
+              onToggle={() => toggleSection('newsletter')}
+            >
+              <div className="pb-4">
+                <p className="text-[var(--text-secondary)] text-sm mb-4">Get the latest insights on digital growth delivered to your inbox.</p>
+                <form onSubmit={(e) => e.preventDefault()} className="flex gap-2">
+                  <div className="relative flex-1">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
+                    <input
+                      type="email"
+                      placeholder="Your email"
+                      suppressHydrationWarning
+                      className="w-full pl-9 pr-3 py-2.5 rounded-xl text-sm bg-[var(--input-bg)] border border-[var(--input-border)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--blue-primary)] focus:outline-none transition-colors"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    suppressHydrationWarning
+                    className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-r from-[var(--blue-primary)] to-[var(--orange-primary)] text-white hover:shadow-[0_0_16px_var(--glow-blue)] transition-all duration-300"
+                    aria-label="Subscribe"
+                  >
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </form>
+                <div className="mt-4 space-y-2">
+                  <a href="mailto:hello@nueera.io" className="text-[var(--text-secondary)] text-sm hover:text-[var(--blue-primary)] transition-colors block">
+                    hello@nueera.io
+                  </a>
+                  <a href="https://wa.me/917066607424" target="_blank" rel="noopener noreferrer" className="text-[var(--text-secondary)] text-sm hover:text-green-500 transition-colors block">
+                    +91 70666 07424
+                  </a>
+                  <p className="text-[var(--text-muted)] text-sm">Pune, Maharashtra, India</p>
+                </div>
+              </div>
+            </AccordionSection>
+          </div>
+          {/* Desktop: Newsletter */}
+          <div className="hidden md:block">
             <h4 className="text-[var(--text-primary)] font-bold text-sm uppercase tracking-wider mb-4">Stay Updated</h4>
             <p className="text-[var(--text-secondary)] text-sm mb-4">Get the latest insights on digital growth delivered to your inbox.</p>
             <form onSubmit={(e) => e.preventDefault()} className="flex gap-2">

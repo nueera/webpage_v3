@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import ScrollTopBtn from "@/components/scroll-top-btn";
 import WhatsAppFloat from "@/components/whatsapp-float";
+import MobileBottomNav from "@/components/mobile-bottom-nav";
 import InitialLoader from "@/components/initial-loader";
 import "./globals.css";
 
@@ -153,6 +154,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <MobileBottomNav />
           <WhatsAppFloat />
           <ScrollTopBtn />
         </ThemeProvider>

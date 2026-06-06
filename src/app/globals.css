@@ -1152,3 +1152,146 @@
   html { scroll-behavior: auto; }
   .animate-marquee { animation: none; }
 }
+
+/* ==========================================
+   MOBILE BOTTOM NAV
+   ========================================== */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--bg-navbar);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-top: 1px solid var(--border-soft);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 4px;
+  min-height: 52px;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+
+.mobile-nav-item:active {
+  transform: scale(0.92);
+}
+
+.mobile-nav-item.active {
+  color: var(--blue-primary);
+}
+
+.mobile-nav-item.active .mobile-nav-icon {
+  filter: drop-shadow(0 0 8px var(--glow-blue));
+}
+
+/* ==========================================
+   HORIZONTAL SNAP CAROUSEL (Mobile)
+   ========================================== */
+.snap-carousel {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.snap-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.snap-carousel-item {
+  scroll-snap-align: center;
+}
+
+/* Carousel peek padding */
+.snap-carousel-peek {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Carousel dot indicators */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+}
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-soft);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.carousel-dot.active {
+  width: 24px;
+  border-radius: 4px;
+  background: var(--gradient-blue-orange);
+}
+
+/* ==========================================
+   FOOTER ACCORDION (Mobile)
+   ========================================== */
+.footer-accordion-content {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.3s ease;
+}
+.footer-accordion-content.open {
+  max-height: 400px;
+  opacity: 1;
+}
+.footer-accordion-trigger {
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+.footer-accordion-trigger:active {
+  opacity: 0.7;
+}
+
+/* ==========================================
+   TOUCH OPTIMIZATIONS
+   ========================================== */
+
+/* Prevent text selection on interactive elements */
+button, a, .snap-carousel, .mobile-nav-item {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Touch press feedback */
+.touch-press {
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.1s ease;
+}
+.touch-press:active {
+  transform: scale(0.97);
+}
+
+/* Portfolio overlay always visible on mobile */
+@media (max-width: 767px) {
+  .portfolio-card .portfolio-overlay {
+    opacity: 1;
+    background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.75) 100%);
+  }
+}
+
+/* Mobile-safe spacing for bottom nav */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+  }
+}

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { Star, Quote } from 'lucide-react';
 import Image from 'next/image';
 import { SectionBadge, SectionTitle, FadeUp } from './ui-extensions';
@@ -56,6 +57,37 @@ function CompanyLogo({ name, gradient }: { name: string; gradient: string }) {
 }
 
 export function TestimonialsSection() {
+  const [activeDot, setActiveDot] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = useCallback(() => {
+    const container = carouselRef.current;
+    if (!container) return;
+
+    const scrollLeft = container.scrollLeft;
+    const itemWidth = container.scrollWidth / TESTIMONIAL_DATA.length;
+    const index = Math.round(scrollLeft / itemWidth);
+    setActiveDot(Math.min(index, TESTIMONIAL_DATA.length - 1));
+  }, []);
+
+  useEffect(() => {
+    const container = carouselRef.current;
+    if (!container) return;
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
+
+  const scrollToIndex = useCallback((index: number) => {
+    const container = carouselRef.current;
+    if (!container) return;
+
+    const itemWidth = container.scrollWidth / TESTIMONIAL_DATA.length;
+    container.scrollTo({
+      left: itemWidth * index,
+      behavior: 'smooth',
+    });
+  }, []);
+
   return (
     <section id="testimonials" className="relative py-24 md:py-32 bg-[var(--bg-main)] overflow-hidden">
       {/* Subtle background accents */}
@@ -78,47 +110,114 @@ export function TestimonialsSection() {
           </SectionTitle>
         </FadeUp>
 
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-          {TESTIMONIAL_DATA.map((testimonial, idx) => (
-            <FadeUp key={testimonial.name} delay={0.1 + idx * 0.1}>
-              <div className="testimonial-card text-left h-full flex flex-col p-6">
-                {/* Quote icon and stars */}
-                <div className="mb-4 flex items-center justify-between">
-                  <StarRating rating={testimonial.rating} />
-                  <Quote className="w-8 h-8 text-[var(--blue-primary)] opacity-20" />
-                </div>
+        {/* Mobile: Horizontal snap carousel / Desktop: Grid */}
+        <>
+          {/* Mobile carousel */}
+          <div className="mt-12 md:hidden">
+            <div
+              ref={carouselRef}
+              className="snap-carousel snap-carousel-peek flex gap-4 pb-4"
+            >
+              {TESTIMONIAL_DATA.map((testimonial) => (
+                <div
+                  key={testimonial.name}
+                  className="min-w-[85vw] sm:min-w-[80vw] snap-carousel-item flex-shrink-0"
+                >
+                  <div className="testimonial-card text-left h-full flex flex-col p-6">
+                    {/* Quote icon and stars */}
+                    <div className="mb-4 flex items-center justify-between">
+                      <StarRating rating={testimonial.rating} />
+                      <Quote className="w-8 h-8 text-[var(--blue-primary)] opacity-20" />
+                    </div>
 
-                <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-6 flex-1 relative z-10">
-                  &ldquo;{testimonial.content}&rdquo;
-                </p>
+                    <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-6 flex-1 relative z-10">
+                      &ldquo;{testimonial.content}&rdquo;
+                    </p>
 
-                <div className="flex items-center gap-3 pt-4 border-t border-[var(--border-soft)]">
-                  <div className="relative w-11 h-11 rounded-full overflow-hidden ring-2 ring-[var(--border-soft)] bg-[var(--bg-secondary)] flex items-center justify-center flex-shrink-0">
-                    <Image
-                      src={testimonial.avatar}
-                      alt={testimonial.name}
-                      fill
-                      className="object-cover"
-                      sizes="44px"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                        if (target.parentElement) {
-                          target.parentElement.innerHTML = `<span style="font-size:16px;font-weight:700;color:var(--blue-primary)">${testimonial.name.charAt(0)}</span>`;
-                        }
-                      }}
-                    />
-                  </div>
-                  <CompanyLogo name={testimonial.company} gradient={testimonial.companyColor} />
-                  <div>
-                    <p className="text-[var(--text-primary)] text-sm font-semibold">{testimonial.name}</p>
-                    <p className="text-[var(--text-muted)] text-xs">{testimonial.role}, {testimonial.company}</p>
+                    <div className="flex items-center gap-3 pt-4 border-t border-[var(--border-soft)]">
+                      <div className="relative w-11 h-11 rounded-full overflow-hidden ring-2 ring-[var(--border-soft)] bg-[var(--bg-secondary)] flex items-center justify-center flex-shrink-0">
+                        <Image
+                          src={testimonial.avatar}
+                          alt={testimonial.name}
+                          fill
+                          className="object-cover"
+                          sizes="44px"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
+                            if (target.parentElement) {
+                              target.parentElement.innerHTML = `<span style="font-size:16px;font-weight:700;color:var(--blue-primary)">${testimonial.name.charAt(0)}</span>`;
+                            }
+                          }}
+                        />
+                      </div>
+                      <CompanyLogo name={testimonial.company} gradient={testimonial.companyColor} />
+                      <div>
+                        <p className="text-[var(--text-primary)] text-sm font-semibold">{testimonial.name}</p>
+                        <p className="text-[var(--text-muted)] text-xs">{testimonial.role}, {testimonial.company}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </FadeUp>
-          ))}
-        </div>
+              ))}
+            </div>
+
+            {/* Dot indicators */}
+            <div className="carousel-dots md:hidden">
+              {TESTIMONIAL_DATA.map((_, idx) => (
+                <button
+                  key={idx}
+                  className={`carousel-dot touch-press ${idx === activeDot ? 'active' : ''}`}
+                  onClick={() => scrollToIndex(idx)}
+                  aria-label={`Go to testimonial ${idx + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop grid */}
+          <div className="mt-12 hidden md:grid md:grid-cols-3 gap-6">
+            {TESTIMONIAL_DATA.map((testimonial, idx) => (
+              <FadeUp key={testimonial.name} delay={0.1 + idx * 0.1}>
+                <div className="testimonial-card text-left h-full flex flex-col p-6">
+                  {/* Quote icon and stars */}
+                  <div className="mb-4 flex items-center justify-between">
+                    <StarRating rating={testimonial.rating} />
+                    <Quote className="w-8 h-8 text-[var(--blue-primary)] opacity-20" />
+                  </div>
+
+                  <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-6 flex-1 relative z-10">
+                    &ldquo;{testimonial.content}&rdquo;
+                  </p>
+
+                  <div className="flex items-center gap-3 pt-4 border-t border-[var(--border-soft)]">
+                    <div className="relative w-11 h-11 rounded-full overflow-hidden ring-2 ring-[var(--border-soft)] bg-[var(--bg-secondary)] flex items-center justify-center flex-shrink-0">
+                      <Image
+                        src={testimonial.avatar}
+                        alt={testimonial.name}
+                        fill
+                        className="object-cover"
+                        sizes="44px"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          if (target.parentElement) {
+                            target.parentElement.innerHTML = `<span style="font-size:16px;font-weight:700;color:var(--blue-primary)">${testimonial.name.charAt(0)}</span>`;
+                          }
+                        }}
+                      />
+                    </div>
+                    <CompanyLogo name={testimonial.company} gradient={testimonial.companyColor} />
+                    <div>
+                      <p className="text-[var(--text-primary)] text-sm font-semibold">{testimonial.name}</p>
+                      <p className="text-[var(--text-muted)] text-xs">{testimonial.role}, {testimonial.company}</p>
+                    </div>
+                  </div>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
+        </>
       </div>
     </section>
   );

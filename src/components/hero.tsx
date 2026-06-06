@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { ArrowRight, ChevronDown, CheckCircle2 } from 'lucide-react';
+import { ChevronDown, CheckCircle2 } from 'lucide-react';
 import { GhostButton, AnimatedCounter } from './ui-extensions';
 import { PremiumButton } from './premium-button';
 
@@ -68,22 +68,13 @@ const PROOF_ITEMS = [
   'Business-first approach',
 ];
 
-const TRUSTED_COMPANIES = [
-  'FreshBite Organics',
-  'UrbanFit Gyms',
-  'MediConnect Health',
-  'TechVenture Labs',
-  'GreenLeaf Solutions',
-  'CloudNine Systems',
-];
-
 export function Hero() {
   const typedText = useTypewriter(TYPING_PHRASES);
 
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--bg-main)] pt-20"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--bg-main)] pt-16 md:pt-20"
     >
       {/* Background wallpaper image */}
       <div className="hero-wallpaper" aria-hidden="true">
@@ -131,10 +122,10 @@ export function Hero() {
           Just engineered growth.
         </p>
 
-        <div className="animate-fade-in-up stagger-5 flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+        {/* CTA buttons - full width on mobile */}
+        <div className="animate-fade-in-up stagger-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 mb-12 max-w-md sm:max-w-none mx-auto sm:mx-0">
           <PremiumButton onClick={() => window.open('https://wa.me/917066607424', '_blank')}>
             Book Strategy Call
-            <ArrowRight className="w-5 h-5" />
           </PremiumButton>
           <GhostButton onClick={() => {
             document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' });
@@ -144,7 +135,7 @@ export function Hero() {
         </div>
 
         {/* Animated metric counters */}
-        <div className="animate-fade-in-up stagger-6 flex flex-wrap items-center justify-center gap-8 md:gap-16 mb-10">
+        <div className="animate-fade-in-up stagger-6 flex flex-wrap items-center justify-center gap-4 md:gap-16 mb-10">
           {METRICS.map((metric) => (
             <div key={metric.label} className="text-center hero-metric-item">
               <div className="text-3xl md:text-4xl font-bold gradient-text">
@@ -155,28 +146,14 @@ export function Hero() {
           ))}
         </div>
 
-        <div className="animate-fade-in-up stagger-6 flex flex-wrap items-center justify-center gap-4 md:gap-6">
+        {/* Proof items - 2 columns on mobile */}
+        <div className="animate-fade-in-up stagger-6 grid grid-cols-2 gap-2 md:gap-4 max-w-sm md:max-w-none mx-auto">
           {PROOF_ITEMS.map((item) => (
-            <div key={item} className="hero-proof-item flex items-center gap-2 text-[var(--text-secondary)] text-sm">
-              <CheckCircle2 className="w-4 h-4 text-[var(--orange-primary)]" />
+            <div key={item} className="hero-proof-item flex items-center justify-center gap-2 text-[var(--text-secondary)] text-sm text-center">
+              <CheckCircle2 className="w-4 h-4 text-[var(--orange-primary)] flex-shrink-0" />
               {item}
             </div>
           ))}
-        </div>
-
-        {/* Trusted by strip */}
-        <div className="animate-fade-in-up stagger-6 mt-12 mb-4">
-          <p className="text-xs text-[var(--text-muted)] uppercase tracking-widest mb-4 font-semibold">Trusted by innovative companies</p>
-          <div className="flex flex-wrap items-center justify-center gap-3 md:gap-6">
-            {TRUSTED_COMPANIES.map((company) => (
-              <span
-                key={company}
-                className="px-4 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] bg-[var(--bg-glass)] border border-[var(--border-soft)] backdrop-blur-sm transition-all duration-300 hover:text-[var(--text-secondary)] hover:border-[var(--border-active)]"
-              >
-                {company}
-              </span>
-            ))}
-          </div>
         </div>
 
         <div className="mt-10 flex justify-center animate-bounce-gentle">
