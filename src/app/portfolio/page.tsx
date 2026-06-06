@@ -78,8 +78,8 @@ export default function PortfolioPage() {
     <>
       {/* Hero */}
       <section className="relative py-24 md:py-32 overflow-hidden">
-        <div className="absolute inset-0 z-0 hidden md:block">
-          <Image src="/assets/images/about.webp" alt="" fill className="object-cover opacity-20" sizes="100vw" />
+        <div className="absolute inset-0 z-0">
+          <Image src="/assets/images/about.webp" alt="" fill className="object-cover object-center opacity-20" sizes="100vw" />
         </div>
         <div className="hero-mesh" aria-hidden="true">
           <div className="orb orb-blue" style={{ opacity: 0.3 }} />
