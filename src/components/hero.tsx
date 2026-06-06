@@ -57,9 +57,9 @@ function useTypewriter(phrases: string[], typingSpeed = 60, deletingSpeed = 35, 
 /* ──────────────────────── Hero Component ──────────────────────── */
 
 const METRICS = [
-  { value: 16, suffix: '+', label: 'Projects' },
-  { value: 100, suffix: '%', label: 'Satisfaction' },
-  { value: 4, suffix: '+', label: 'Happy Clients' },
+  { value: 50, suffix: '+', label: 'Projects Delivered' },
+  { value: 98, suffix: '%', label: 'Client Satisfaction' },
+  { value: 4, suffix: '+', label: 'Years of Partnership' },
 ];
 
 const PROOF_ITEMS = [

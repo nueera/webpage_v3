@@ -6,7 +6,7 @@ import { PremiumButton } from './premium-button';
 
 const CTA_STATS = [
   { value: 50, suffix: '+', label: 'Projects Delivered' },
-  { value: 98, suffix: '%', label: 'Client Retention' },
+  { value: 98, suffix: '%', label: 'Client Satisfaction' },
   { value: 24, suffix: 'h', label: 'Response Time' },
 ];
 
