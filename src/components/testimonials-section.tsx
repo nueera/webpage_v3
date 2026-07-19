@@ -2,7 +2,6 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { Star, Quote } from 'lucide-react';
-import Image from 'next/image';
 import { SectionBadge, SectionTitle, FadeUp } from './ui-extensions';
 
 const TESTIMONIAL_DATA = [
@@ -12,7 +11,7 @@ const TESTIMONIAL_DATA = [
     company: 'FreshBite Organics',
     content: 'NueEra built our e-commerce platform from scratch and it transformed how we reach customers. Our online sales grew 4x within three months of launch. Their team understood our vision perfectly and delivered beyond expectations.',
     rating: 5,
-    avatar: '/assets/images/testimonials/priya_mehta.webp',
+    avatar: null,
     companyColor: 'from-[var(--orange-primary)] to-[var(--orange-soft)]',
   },
   {
@@ -21,7 +20,7 @@ const TESTIMONIAL_DATA = [
     company: 'UrbanFit Gyms',
     content: 'The growth marketing system NueEra implemented drove a 3x increase in organic traffic and doubled our lead generation. Their data-driven approach and consistent reporting gave us complete confidence in the strategy.',
     rating: 5,
-    avatar: '/assets/images/testimonials/amit_deshmukh.webp',
+    avatar: null,
     companyColor: 'from-[var(--blue-primary)] to-[var(--blue-soft)]',
   },
   {
@@ -30,7 +29,7 @@ const TESTIMONIAL_DATA = [
     company: 'MediConnect Health',
     content: 'We needed a reliable partner to build our healthcare platform with strict security requirements. NueEra delivered a HIPAA-compliant solution with 99.9% uptime. Their technical expertise and attention to detail are exceptional.',
     rating: 5,
-    avatar: '/assets/images/testimonials/sneha_kulkarni.webp',
+    avatar: null,
     companyColor: 'from-[var(--orange-primary)] to-[var(--orange-soft)]',
   },
 ];
@@ -135,21 +134,8 @@ export function TestimonialsSection() {
                     </p>
 
                     <div className="flex items-center gap-3 pt-4 border-t border-[var(--border-soft)]">
-                      <div className="relative w-11 h-11 rounded-full overflow-hidden ring-2 ring-[var(--border-soft)] bg-[var(--bg-secondary)] flex items-center justify-center flex-shrink-0">
-                        <Image
-                          src={testimonial.avatar}
-                          alt={testimonial.name}
-                          fill
-                          className="object-cover"
-                          sizes="44px"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = 'none';
-                            if (target.parentElement) {
-                              target.parentElement.innerHTML = `<span style="font-size:16px;font-weight:700;color:var(--blue-primary)">${testimonial.name.charAt(0)}</span>`;
-                            }
-                          }}
-                        />
+                      <div className="w-11 h-11 rounded-full ring-2 ring-[var(--border-soft)] bg-gradient-to-br from-[var(--blue-primary)] to-[var(--orange-primary)] flex items-center justify-center flex-shrink-0">
+                        <span className="text-white text-sm font-bold">{testimonial.name.split(' ').map(n => n[0]).join('')}</span>
                       </div>
                       <CompanyLogo name={testimonial.company} gradient={testimonial.companyColor} />
                       <div>
@@ -191,21 +177,8 @@ export function TestimonialsSection() {
                   </p>
 
                   <div className="flex items-center gap-3 pt-4 border-t border-[var(--border-soft)]">
-                    <div className="relative w-11 h-11 rounded-full overflow-hidden ring-2 ring-[var(--border-soft)] bg-[var(--bg-secondary)] flex items-center justify-center flex-shrink-0">
-                      <Image
-                        src={testimonial.avatar}
-                        alt={testimonial.name}
-                        fill
-                        className="object-cover"
-                        sizes="44px"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                          if (target.parentElement) {
-                            target.parentElement.innerHTML = `<span style="font-size:16px;font-weight:700;color:var(--blue-primary)">${testimonial.name.charAt(0)}</span>`;
-                          }
-                        }}
-                      />
+                    <div className="w-11 h-11 rounded-full ring-2 ring-[var(--border-soft)] bg-gradient-to-br from-[var(--blue-primary)] to-[var(--orange-primary)] flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-sm font-bold">{testimonial.name.split(' ').map(n => n[0]).join('')}</span>
                     </div>
                     <CompanyLogo name={testimonial.company} gradient={testimonial.companyColor} />
                     <div>

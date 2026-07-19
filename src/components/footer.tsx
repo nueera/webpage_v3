@@ -7,19 +7,19 @@ import { MessageCircle, Mail, ArrowRight, ChevronDown, ChevronUp } from 'lucide-
 
 const quickLinks = [
   { href: '/', label: 'Home' },
-  { href: '/', label: 'About Us' },
-  { href: '/', label: 'Services' },
-  { href: '/', label: 'Portfolio' },
-  { href: '/', label: 'Contact' },
+  { href: '/about', label: 'About Us' },
+  { href: '/services', label: 'Services' },
+  { href: '/portfolio', label: 'Portfolio' },
+  { href: '/contact', label: 'Contact' },
 ];
 
 const serviceLinks = [
-  { href: '/', label: 'Web Development' },
-  { href: '/', label: 'Mobile Apps' },
-  { href: '/', label: 'UI/UX Design' },
-  { href: '/', label: 'Branding' },
-  { href: '/', label: 'Digital Marketing' },
-  { href: '/', label: 'Software Solutions' },
+  { href: '/services#web-development', label: 'Web Development' },
+  { href: '/services#mobile-apps', label: 'Mobile Apps' },
+  { href: '/services#ui-ux-design', label: 'UI/UX Design' },
+  { href: '/services#branding', label: 'Branding' },
+  { href: '/services#digital-marketing', label: 'Digital Marketing' },
+  { href: '/services#software-solutions', label: 'Software Solutions' },
 ];
 
 function CurrentYear() {
@@ -81,7 +81,8 @@ export default function Footer() {
           {/* Column 1: Logo + Description + Social - Always visible */}
           <div className="sm:col-span-2 lg:col-span-2">
             <Link href="/" className="inline-block mb-4">
-              <Image src="/assets/images/nueera-logo.png" alt="NueEra" width={120} height={46} className="h-10 w-auto object-contain" />
+              <Image src="/assets/images/lightlogo.webp" alt="NueEra" width={120} height={46} className="h-10 w-auto object-contain block dark:hidden" />
+              <Image src="/assets/images/darklogo.webp" alt="NueEra" width={120} height={46} className="h-10 w-auto object-contain hidden dark:block" />
             </Link>
             <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-6 max-w-xs">
               Building digital empires with precision, creativity, and cutting-edge technology. Your vision, our expertise.
@@ -200,8 +201,8 @@ export default function Footer() {
                   </button>
                 </form>
                 <div className="mt-4 space-y-2">
-                  <a href="mailto:hello@nueera.com" className="text-[var(--text-secondary)] text-sm hover:text-[var(--blue-primary)] transition-colors block">
-                    hello@nueera.com
+                  <a href="mailto:hello@nueera.io" suppressHydrationWarning className="text-[var(--text-secondary)] text-sm hover:text-[var(--blue-primary)] transition-colors block">
+                    hello@nueera.io
                   </a>
                   <a href="https://wa.me/917066607424" target="_blank" rel="noopener noreferrer" className="text-[var(--text-secondary)] text-sm hover:text-green-500 transition-colors block">
                     +91 70666 07424
@@ -235,8 +236,8 @@ export default function Footer() {
               </button>
             </form>
             <div className="mt-4 space-y-2">
-              <a href="mailto:hello@nueera.com" className="text-[var(--text-secondary)] text-sm hover:text-[var(--blue-primary)] transition-colors block">
-                hello@nueera.com
+              <a href="mailto:hello@nueera.io" suppressHydrationWarning className="text-[var(--text-secondary)] text-sm hover:text-[var(--blue-primary)] transition-colors block">
+                hello@nueera.io
               </a>
               <a href="https://wa.me/917066607424" target="_blank" rel="noopener noreferrer" className="text-[var(--text-secondary)] text-sm hover:text-green-500 transition-colors block">
                 +91 70666 07424
