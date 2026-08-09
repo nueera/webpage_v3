@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { PreOneLogo } from '@/components/preone/preone-logo';
@@ -24,8 +25,12 @@ export default function PreOnePage() {
       </div>
 
       {/* Hero Section */}
-      <section className="relative z-10 pt-32 pb-16 md:pt-40 md:pb-24">
-        <div className="container-nueera space-y-16">
+      <section className="relative z-10 pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden">
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <Image src="/assets/images/homewallpaper.webp" alt="" fill className="object-cover object-center opacity-30 dark:opacity-20" priority sizes="100vw" />
+        </div>
+
+        <div className="container-nueera space-y-16 relative z-10">
           {/* Hero Top Content */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Content Column */}

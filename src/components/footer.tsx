@@ -81,9 +81,10 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Column 1: Logo + Description + Social - Always visible */}
           <div className="sm:col-span-2 lg:col-span-2">
-            <Link href="/" className="inline-block mb-4">
-              <Image src="/assets/images/lightlogo.webp" alt="NueEra" width={120} height={46} className="h-10 w-auto object-contain block dark:hidden" />
-              <Image src="/assets/images/darklogo.webp" alt="NueEra" width={120} height={46} className="h-10 w-auto object-contain hidden dark:block" />
+            <Link href="/" className="inline-block mb-4 group">
+              <div className="inline-flex items-center px-2.5 py-1 rounded-2xl bg-white/20 dark:bg-white/10 backdrop-blur-md border border-white/30 shadow-[0_0_24px_rgba(255,255,255,0.6)] transition-all duration-300 group-hover:shadow-[0_0_32px_rgba(255,255,255,0.85)]">
+                <Image src="/assets/images/nueera-logo.png" alt="NueEra" width={150} height={58} className="h-11 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]" />
+              </div>
             </Link>
             <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-6 max-w-xs">
               Building digital empires with precision, creativity, and cutting-edge technology. Your vision, our expertise.

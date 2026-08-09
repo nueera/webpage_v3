@@ -9,7 +9,7 @@ export default function AboutHeroSection() {
   return (
     <section className="relative py-28 md:py-36 overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <Image src="/assets/images/about.webp" alt="" fill className="object-cover object-center opacity-20" sizes="100vw" />
+        <Image src="/assets/images/homewallpaper.webp" alt="" fill className="object-cover object-center opacity-30 dark:opacity-20" priority sizes="100vw" />
       </div>
       {/* Hero mesh overlay */}
       <div className="hero-mesh" aria-hidden="true">

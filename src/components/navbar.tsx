@@ -95,14 +95,17 @@ export default function Navbar() {
 
         <div className="w-full max-w-[1280px] mx-auto flex items-center justify-between h-full">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="relative flex items-center overflow-hidden rounded-lg" style={{ transform: scrolled ? 'scale(0.85)' : 'scale(1)', transition: 'transform 0.3s' }}>
+          <Link href="/" className="flex items-center gap-2 group">
+            <div
+              className="relative flex items-center px-2 py-1 rounded-xl bg-white/20 dark:bg-white/10 backdrop-blur-md border border-white/30 shadow-[0_0_20px_rgba(255,255,255,0.6)] transition-all duration-300 group-hover:shadow-[0_0_28px_rgba(255,255,255,0.85)]"
+              style={{ transform: scrolled ? 'scale(0.88)' : 'scale(1)', transition: 'transform 0.3s' }}
+            >
               <Image
                 src="/assets/images/nueera-logo.png"
                 alt="NueEra"
-                width={140}
-                height={54}
-                className="h-11 w-auto object-contain"
+                width={150}
+                height={58}
+                className="h-11 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]"
                 priority
               />
             </div>
@@ -195,7 +198,9 @@ export default function Navbar() {
             {/* Drawer Header */}
             <div className="flex items-center justify-between p-6 pb-4 border-b border-[var(--border-soft)]">
               <div className="flex items-center gap-2">
-                <Image src="/assets/images/nueera-logo.png" alt="NueEra" width={110} height={42} className="h-8 w-auto object-contain" />
+                <div className="p-1 rounded-xl bg-white/20 dark:bg-white/10 backdrop-blur-md border border-white/30 shadow-[0_0_18px_rgba(255,255,255,0.6)]">
+                  <Image src="/assets/images/nueera-logo.png" alt="NueEra" width={120} height={46} className="h-8 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(255,255,255,0.9)]" />
+                </div>
               </div>
               <button
                 ref={closeBtnRef}
