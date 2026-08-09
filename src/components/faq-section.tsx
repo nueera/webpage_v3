@@ -40,6 +40,23 @@ export function FAQSection() {
 
   return (
     <section id="faq" className="relative py-24 md:py-32 bg-[var(--bg-main)] overflow-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': FAQ_DATA.map((item) => ({
+              '@type': 'Question',
+              'name': item.q,
+              'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': item.a,
+              },
+            })),
+          }),
+        }}
+      />
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="absolute w-[400px] h-[400px] rounded-full opacity-[0.03] top-[20%] right-[-5%]"
           style={{ background: 'radial-gradient(circle, var(--blue-primary) 0%, transparent 70%)' }}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState, useCallback } from 'react';
+import Image from 'next/image';
 
 interface BeforeAfterSliderProps {
   beforeImage: string;
@@ -54,11 +55,11 @@ export default function BeforeAfterSlider({
       onPointerUp={handlePointerUp}
     >
       {/* After image (full, behind) */}
-      <img src={afterImage} alt={afterLabel} draggable={false} />
+      <Image src={afterImage} alt={afterLabel} fill sizes="100vw" className="object-cover pointer-events-none" draggable={false} />
 
       {/* Before image (clipped) */}
       <div className="ba-slider-before" style={{ width: `${position}%` }}>
-        <img src={beforeImage} alt={beforeLabel} draggable={false} />
+        <Image src={beforeImage} alt={beforeLabel} fill sizes="100vw" className="object-cover pointer-events-none" draggable={false} />
       </div>
 
       {/* Slider handle */}

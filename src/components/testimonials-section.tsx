@@ -116,11 +116,17 @@ export function TestimonialsSection() {
             <div
               ref={carouselRef}
               className="snap-carousel snap-carousel-peek flex gap-4 pb-4"
+              role="region"
+              aria-roledescription="carousel"
+              aria-label="Client testimonials"
             >
               {TESTIMONIAL_DATA.map((testimonial) => (
                 <div
                   key={testimonial.name}
                   className="min-w-[85vw] sm:min-w-[80vw] snap-carousel-item flex-shrink-0"
+                  role="group"
+                  aria-roledescription="slide"
+                  aria-label={`${testimonial.name}, ${testimonial.role}`}
                 >
                   <div className="testimonial-card text-left h-full flex flex-col p-6">
                     {/* Quote icon and stars */}
@@ -149,12 +155,14 @@ export function TestimonialsSection() {
             </div>
 
             {/* Dot indicators */}
-            <div className="carousel-dots md:hidden">
+            <div className="carousel-dots md:hidden" role="tablist" aria-label="Testimonial navigation">
               {TESTIMONIAL_DATA.map((_, idx) => (
                 <button
                   key={idx}
                   className={`carousel-dot touch-press ${idx === activeDot ? 'active' : ''}`}
                   onClick={() => scrollToIndex(idx)}
+                  role="tab"
+                  aria-selected={idx === activeDot}
                   aria-label={`Go to testimonial ${idx + 1}`}
                 />
               ))}

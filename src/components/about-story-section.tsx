@@ -1,6 +1,6 @@
 'use client';
 
-import { SectionBadge, SectionTitle, SectionDescription, GlassCard, FadeUp } from './ui-extensions';
+import { SectionBadge, SectionTitle, GlassCard, FadeUp } from './ui-extensions';
 import { Target, Eye } from 'lucide-react';
 import Image from 'next/image';
 

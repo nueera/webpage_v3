@@ -1,0 +1,42 @@
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-outfit), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+  ::selection { background: var(--accent-blue); color: #ffffff; }
+  h1, h2, h3, h4, h5, h6 { font-weight: 700; letter-spacing: -0.5px; line-height: 1.2; }
+  .font-display { font-family: var(--font-display), var(--font-outfit), sans-serif; letter-spacing: -0.03em; font-weight: 700; }
+  h1, h2 { font-family: var(--font-display), var(--font-outfit), sans-serif; }
+  p { color: var(--text-secondary); line-height: 1.6; }
+  a { color: var(--accent-blue); text-decoration: none; transition: var(--transition); }
+  a:hover { color: var(--blue-soft); }
+  img { max-width: 100%; height: auto; display: block; }
+}
+
+/* ==========================================
+   SCROLL PROGRESS BAR
+   ========================================== */
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--gradient-blue-orange);
+  z-index: 9999;
+  transition: width 0.1s linear;
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 0 10px var(--glow-blue);
+}

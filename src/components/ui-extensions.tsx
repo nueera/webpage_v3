@@ -94,10 +94,10 @@ export function AnimatedCounter({
     const el = ref.current;
     if (!el) return;
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
-      setCount(value);
-      return;
+      const timer = requestAnimationFrame(() => setCount(value));
+      return () => cancelAnimationFrame(timer);
     }
 
     const observer = new IntersectionObserver(

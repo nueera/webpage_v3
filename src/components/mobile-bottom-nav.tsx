@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
-import Link from 'next/link';
 import { House, Layers, Briefcase, MessageCircle } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -16,7 +15,6 @@ export default function MobileBottomNav() {
   const pathname = usePathname();
   const isHomePage = pathname === '/';
   const [activeSection, setActiveSection] = useState(isHomePage ? 'home' : '');
-  const [springKey, setSpringKey] = useState(0);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const prevActiveRef = useRef(isHomePage ? 'home' : '');
 
@@ -28,7 +26,6 @@ export default function MobileBottomNav() {
       if (prevActiveRef.current !== newActive) {
         prevActiveRef.current = newActive;
         setActiveSection(newActive);
-        setSpringKey((k) => k + 1);
       }
     }
   }, [pathname, isHomePage]);
@@ -46,7 +43,6 @@ export default function MobileBottomNav() {
             if (prevActiveRef.current !== newActive) {
               prevActiveRef.current = newActive;
               setActiveSection(newActive);
-              setSpringKey((k) => k + 1);
             }
           }
         });
@@ -71,7 +67,6 @@ export default function MobileBottomNav() {
     if (prevActiveRef.current !== newId) {
       prevActiveRef.current = newId;
       setActiveSection(newId);
-      setSpringKey((k) => k + 1);
     }
 
     // If we're on home page, scroll to section

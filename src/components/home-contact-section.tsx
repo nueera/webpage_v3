@@ -131,12 +131,14 @@ export function HomeContactSection() {
                   <p className="text-[var(--text-secondary)] text-sm">We&apos;ll get back to you within 24 hours.</p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  {errors.general && (
-                    <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-2 text-red-400 text-sm">
-                      <AlertCircle className="w-4 h-4 shrink-0" /> {errors.general}
-                    </div>
-                  )}
+                <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                  <div aria-live="polite" aria-atomic="true">
+                    {errors.general && (
+                      <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-2 text-red-400 text-sm">
+                        <AlertCircle className="w-4 h-4 shrink-0" /> {errors.general}
+                      </div>
+                    )}
+                  </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
@@ -150,8 +152,12 @@ export function HomeContactSection() {
                         className={inputClass(!!errors.name)}
                         placeholder="Your full name"
                         suppressHydrationWarning
+                        aria-invalid={!!errors.name}
+                        aria-describedby={errors.name ? 'name-error' : undefined}
                       />
-                      {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
+                      <div aria-live="polite">
+                        {errors.name && <p id="name-error" className="text-red-400 text-xs mt-1">{errors.name}</p>}
+                      </div>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">
@@ -164,8 +170,12 @@ export function HomeContactSection() {
                         className={inputClass(!!errors.email)}
                         placeholder="you@example.com"
                         suppressHydrationWarning
+                        aria-invalid={!!errors.email}
+                        aria-describedby={errors.email ? 'email-error' : undefined}
                       />
-                      {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
+                      <div aria-live="polite">
+                        {errors.email && <p id="email-error" className="text-red-400 text-xs mt-1">{errors.email}</p>}
+                      </div>
                     </div>
                   </div>
 
@@ -226,8 +236,12 @@ export function HomeContactSection() {
                         rows={3}
                         placeholder="Tell us about your project..."
                         suppressHydrationWarning
+                        aria-invalid={!!errors.message}
+                        aria-describedby={errors.message ? 'message-error' : undefined}
                       />
-                      {errors.message && <p className="text-red-400 text-xs mt-1">{errors.message}</p>}
+                      <div aria-live="polite">
+                        {errors.message && <p id="message-error" className="text-red-400 text-xs mt-1">{errors.message}</p>}
+                      </div>
                     </div>
                   </div>
 

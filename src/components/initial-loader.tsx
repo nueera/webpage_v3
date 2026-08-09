@@ -17,7 +17,7 @@ export default function InitialLoader() {
     const alreadyLoaded = sessionStorage.getItem('nueera-loaded');
     if (alreadyLoaded) return;
 
-    setIsVisible(true);
+    const timer = requestAnimationFrame(() => setIsVisible(true));
 
     // Minimum display time: 2.5 seconds
     const fadeTimer = setTimeout(() => {
@@ -31,6 +31,7 @@ export default function InitialLoader() {
     }, 3000); // 2.5s display + 0.5s fade
 
     return () => {
+      cancelAnimationFrame(timer);
       clearTimeout(fadeTimer);
       clearTimeout(removeTimer);
     };

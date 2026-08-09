@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { ChevronDown, CheckCircle2 } from 'lucide-react';
 import { GhostButton, AnimatedCounter } from './ui-extensions';
 import { PremiumButton } from './premium-button';
@@ -71,19 +72,19 @@ const PROOF_ITEMS = [
 export function Hero() {
   const typedText = useTypewriter(TYPING_PHRASES);
   const heroRef = useRef<HTMLElement>(null);
-  const wallpaperRef = useRef<HTMLImageElement>(null);
+  const wallpaperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
     const handleScroll = () => {
-      const img = wallpaperRef.current;
-      if (!img) return;
+      const container = wallpaperRef.current;
+      if (!container) return;
       const scrollY = window.scrollY;
       if (scrollY < window.innerHeight) {
-        img.classList.add('parallax-active');
-        img.style.transform = `scale(1.1) translateY(${scrollY * 0.3}px)`;
+        container.classList.add('parallax-active');
+        container.style.transform = `scale(1.1) translateY(${scrollY * 0.3}px)`;
       }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -97,13 +98,14 @@ export function Hero() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--bg-main)] pt-16 md:pt-20"
     >
       {/* Background wallpaper image */}
-      <div className="hero-wallpaper parallax-hero" aria-hidden="true">
-        <img
-          ref={wallpaperRef}
+      <div ref={wallpaperRef} className="hero-wallpaper parallax-hero" aria-hidden="true">
+        <Image
           src="/assets/images/homewallpaper.webp"
           alt=""
-          role="presentation"
-          className="hero-wallpaper-img"
+          fill
+          priority
+          className="hero-wallpaper-img object-cover object-top"
+          sizes="100vw"
         />
       </div>
 

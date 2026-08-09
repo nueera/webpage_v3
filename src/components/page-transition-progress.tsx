@@ -15,11 +15,10 @@ export default function PageTransitionProgress() {
 
   useEffect(() => {
     // When pathname changes, animate the progress bar
-    setIsVisible(true);
-    setProgress(0);
-
-    // Quick start - jump to 30%
-    const t1 = requestAnimationFrame(() => setProgress(30));
+    const t0 = requestAnimationFrame(() => {
+      setIsVisible(true);
+      setProgress(30);
+    });
 
     // Ease to 70%
     const t2 = setTimeout(() => setProgress(70), 150);
@@ -38,7 +37,7 @@ export default function PageTransitionProgress() {
     }, 600);
 
     return () => {
-      cancelAnimationFrame(t1);
+      cancelAnimationFrame(t0);
       clearTimeout(t2);
       clearTimeout(t3);
       clearTimeout(t4);

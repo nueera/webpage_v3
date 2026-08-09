@@ -14,7 +14,8 @@ export default function CookieConsent() {
         return () => clearTimeout(timer);
       }
     } catch {
-      setVisible(true);
+      const timer = setTimeout(() => setVisible(true), 3000);
+      return () => clearTimeout(timer);
     }
   }, []);
 

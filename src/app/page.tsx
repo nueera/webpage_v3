@@ -1,5 +1,3 @@
-'use client';
-
 import { Hero } from '@/components/hero';
 import { VideoSection } from '@/components/video-section';
 import { TrustedLogosSection } from '@/components/trusted-logos-section';

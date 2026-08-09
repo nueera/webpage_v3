@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, X, MessageCircle } from 'lucide-react';
@@ -20,8 +20,10 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [isDarkSection, setIsDarkSection] = useState(false);
   const pathname = usePathname();
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,30 +34,38 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const sections = document.querySelectorAll('section[id]');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const section = entry.target as HTMLElement;
-          const bg = section.classList;
-          const hasDarkBg = section.id === 'home' || section.id === 'contact' || bg.contains('bg-[var(--bg-secondary)]');
-          setIsDarkSection(hasDarkBg);
-        }
-      });
-    }, { rootMargin: '-80px 0px -50% 0px', threshold: 0 });
-
-    sections.forEach(s => observer.observe(s));
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = 'hidden';
+      previousFocusRef.current = document.activeElement as HTMLElement;
+      setTimeout(() => closeBtnRef.current?.focus(), 100);
     } else {
       document.body.style.overflow = '';
+      previousFocusRef.current?.focus();
     }
     return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      setMobileOpen(false);
+      return;
+    }
+    if (e.key === 'Tab' && drawerRef.current) {
+      const focusable = drawerRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -155,9 +165,15 @@ export default function Navbar() {
             className="fixed inset-0 z-[2005] animate-fade-in"
             style={{ background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(18px)' }}
             onClick={() => setMobileOpen(false)}
+            aria-hidden="true"
           />
           <div
+            ref={drawerRef}
             className="fixed right-0 top-0 h-full w-[85vw] max-w-[390px] flex flex-col z-[2006] mobile-drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
+            onKeyDown={handleKeyDown}
             style={{
               background: 'var(--bg-main)',
               animation: 'slideInRight 0.3s ease-out forwards',
@@ -171,6 +187,7 @@ export default function Navbar() {
                 <Image src="/assets/images/nueera-logo.png" alt="NueEra" width={100} height={39} className="h-8 w-auto object-contain" />
               </div>
               <button
+                ref={closeBtnRef}
                 onClick={() => setMobileOpen(false)}
                 suppressHydrationWarning
                 className="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--bg-glass)] border border-[var(--border-soft)] hover:border-[var(--border-active)] transition-colors"

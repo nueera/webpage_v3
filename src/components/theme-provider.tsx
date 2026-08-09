@@ -27,23 +27,19 @@ export function useTheme() {
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('dark');
-  const [mounted, setMounted] = useState(false);
-
-  // Read stored theme on mount
-  useEffect(() => {
+  const [theme, setThemeState] = useState<Theme>(() => {
+    if (typeof window === 'undefined') return 'dark';
     try {
       const stored = localStorage.getItem('theme') as Theme | null;
-      if (stored === 'light' || stored === 'dark') {
-        setThemeState(stored);
-      } else {
-        // Default to dark
-        setThemeState('dark');
-      }
-    } catch {
-      setThemeState('dark');
-    }
-    setMounted(true);
+      if (stored === 'light' || stored === 'dark') return stored;
+    } catch {}
+    return 'dark';
+  });
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const timer = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(timer);
   }, []);
 
   // Sync class on <html> whenever theme changes

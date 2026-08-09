@@ -1,0 +1,184 @@
+/* ==========================================
+   HERO WALLPAPER BACKGROUND
+   ========================================== */
+
+.hero-wallpaper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-wallpaper-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 0.55;
+  transition: opacity 0.5s ease;
+}
+.dark .hero-wallpaper-img {
+  opacity: 0.4;
+}
+
+/* Overlay for text readability on top of wallpaper */
+.hero-wallpaper-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 50%, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0.4) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.65) 100%);
+}
+.dark .hero-wallpaper-overlay {
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 50%, rgba(11, 15, 20, 0.88) 0%, rgba(11, 15, 20, 0.6) 50%, rgba(11, 15, 20, 0.3) 100%),
+    linear-gradient(180deg, rgba(11, 15, 20, 0.55) 0%, rgba(11, 15, 20, 0.15) 50%, rgba(11, 15, 20, 0.55) 100%);
+}
+
+/* Hero text highlight classes for light mode pop */
+.hero-heading {
+  text-shadow: none;
+}
+.dark .hero-heading {
+  text-shadow: 0 0 40px rgba(31, 106, 255, 0.15);
+}
+
+.hero-description {
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+.dark .hero-description {
+  text-shadow: none;
+  font-weight: 400;
+}
+
+.hero-metric-item {
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+.dark .hero-metric-item {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.hero-proof-item {
+  padding: 0.35rem 0.75rem;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+}
+.dark .hero-proof-item {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 640px) {
+  .hero-metric-item {
+    padding: 0.35rem 0.75rem;
+  }
+  .hero-proof-item {
+    padding: 0.25rem 0.5rem;
+  }
+}
+
+/* ==========================================
+   HERO GRADIENT MESH
+   ========================================== */
+
+.hero-mesh {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+.hero-mesh .orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+}
+.hero-mesh .orb-blue {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--blue-glow) 0%, transparent 70%);
+  top: -15%;
+  right: -5%;
+  opacity: 0.5;
+}
+.hero-mesh .orb-orange {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, var(--orange-glow) 0%, transparent 70%);
+  bottom: -10%;
+  left: -5%;
+  opacity: 0.4;
+}
+.hero-mesh .orb-accent {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, var(--blue-glow) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.2;
+}
+
+/* Dot grid pattern overlay */
+.dot-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--border-soft) 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ==========================================
+   CTA SECTION MESH
+   ========================================== */
+
+.cta-mesh {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.cta-mesh .glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+}
+.cta-mesh .glow-center {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--orange-glow) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.3;
+}
+.cta-mesh .glow-left {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--blue-glow) 0%, transparent 70%);
+  top: 20%;
+  left: -10%;
+  opacity: 0.25;
+}
+
+/* ==========================================
+   FOOTER (Premium)
+   ========================================== */
+
+.footer-gradient-border {
+  height: 3px;
+  background: var(--gradient-blue-orange);
+}

@@ -66,11 +66,20 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: "https://nueera.io",
     siteName: "NueEra",
+    images: [
+      {
+        url: "/assets/images/nueera-logo.png",
+        width: 1200,
+        height: 630,
+        alt: "NueEra - IT & Digital Solutions",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "NueEra - IT & Digital Solutions",
     description: "Build Your Digital Empire with NueEra's premium IT & digital solutions.",
+    images: ["/assets/images/nueera-logo.png"],
   },
   robots: {
     index: true,
@@ -116,19 +125,35 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Organization",
+              "@type": ["Organization", "ProfessionalService"],
               "name": "NueEra",
               "url": "https://nueera.io",
               "logo": "https://nueera.io/assets/images/nueera-logo.png",
+              "image": "https://nueera.io/assets/images/nueera-logo.png",
               "description": "NueEra delivers premium IT & digital solutions: web development, mobile apps, growth marketing, tech automation, UI/UX design, and branding strategy.",
               "address": {
                 "@type": "PostalAddress",
                 "addressLocality": "Pune",
                 "addressRegion": "Maharashtra",
+                "postalCode": "411001",
                 "addressCountry": "IN"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 18.5204,
+                "longitude": 73.8567
               },
               "email": "hello@nueera.com",
               "telephone": "+917066607424",
+              "priceRange": "$$",
+              "openingHoursSpecification": [
+                {
+                  "@type": "OpeningHoursSpecification",
+                  "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                  "opens": "09:00",
+                  "closes": "20:00"
+                }
+              ],
               "sameAs": [
                 "https://www.facebook.com/nueera",
                 "https://www.instagram.com/_nueera_",

@@ -107,11 +107,17 @@ export function PortfolioSection() {
           <div
             ref={carouselRef}
             className="snap-carousel snap-carousel-peek flex gap-4 pb-4"
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Portfolio projects"
           >
             {PORTFOLIO_PROJECTS.map((project) => (
               <div
                 key={project.title}
                 className="min-w-[80vw] sm:min-w-[70vw] snap-carousel-item flex-shrink-0"
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`${project.title} — ${project.category}`}
               >
                 <div className="portfolio-card group">
                   <div className="relative aspect-[4/3] overflow-hidden">
@@ -149,12 +155,14 @@ export function PortfolioSection() {
           </div>
 
           {/* Dot indicators */}
-          <div className="carousel-dots md:hidden">
+          <div className="carousel-dots md:hidden" role="tablist" aria-label="Project navigation">
             {PORTFOLIO_PROJECTS.map((_, idx) => (
               <button
                 key={idx}
                 className={`carousel-dot touch-press ${idx === activeDot ? 'active' : ''}`}
                 onClick={() => scrollToIndex(idx)}
+                role="tab"
+                aria-selected={idx === activeDot}
                 aria-label={`Go to project ${idx + 1}`}
               />
             ))}
