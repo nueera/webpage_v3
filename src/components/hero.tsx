@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { ChevronDown, CheckCircle2 } from 'lucide-react';
 import { GhostButton, AnimatedCounter } from './ui-extensions';
 import { PremiumButton } from './premium-button';
+import { Hero3DMockup } from './hero-3d-mockup';
 
 /* ──────────────────────── Typing Animation ──────────────────────── */
 
@@ -186,7 +187,10 @@ export function Hero() {
           ))}
         </div>
 
-        <div className="mt-10 flex justify-center animate-bounce-gentle">
+        {/* 3D Interactive Browser Showcase Mockup */}
+        <Hero3DMockup />
+
+        <div className="mt-8 flex justify-center animate-bounce-gentle">
           <ChevronDown className="w-6 h-6 text-[var(--text-muted)]" />
         </div>
       </div>

@@ -6,9 +6,7 @@ import { ServicesSection } from '@/components/services-section';
 import { TechOrbitalVisualizer } from '@/components/tech-orbital-visualizer';
 import { IndustriesSection } from '@/components/industries-section';
 import { ProcessSection } from '@/components/process-section';
-import { PortfolioSection } from '@/components/portfolio-section';
 import { ServiceSelector } from '@/components/service-selector';
-import { TestimonialsSection } from '@/components/testimonials-section';
 import { HomeContactSection } from '@/components/home-contact-section';
 import { FAQSection } from '@/components/faq-section';
 import { TrustSection } from '@/components/trust-section';
@@ -25,9 +23,7 @@ export default function HomePage() {
       <TechOrbitalVisualizer />
       <IndustriesSection />
       <ProcessSection />
-      <PortfolioSection />
       <ServiceSelector />
-      <TestimonialsSection />
       <HomeContactSection />
       <FAQSection />
       <TrustSection />

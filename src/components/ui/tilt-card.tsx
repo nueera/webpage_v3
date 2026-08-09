@@ -12,12 +12,12 @@ interface TiltCardProps {
 export function TiltCard({
   children,
   className = '',
-  maxDegree = 10,
-  scale = 1.02,
+  maxDegree = 12,
+  scale = 1.03,
 }: TiltCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [style, setStyle] = useState({
-    transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
+    transform: 'perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
     transition: 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)',
   });
 
@@ -25,7 +25,7 @@ export function TiltCard({
     const card = cardRef.current;
     if (!card) return;
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
     const rect = card.getBoundingClientRect();
@@ -43,14 +43,14 @@ export function TiltCard({
     card.style.setProperty('--spotlight-y', `${y}px`);
 
     setStyle({
-      transform: `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(${scale}, ${scale}, ${scale})`,
+      transform: `perspective(1200px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(${scale}, ${scale}, ${scale})`,
       transition: 'transform 0.1s ease-out',
     });
   };
 
   const handleMouseLeave = () => {
     setStyle({
-      transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
+      transform: 'perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
       transition: 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)',
     });
   };
@@ -61,7 +61,7 @@ export function TiltCard({
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={style}
-      className={`tilt-card-spotlight relative transition-all ${className}`}
+      className={`tilt-card-spotlight relative transition-all [transform-style:preserve-3d] ${className}`}
     >
       {children}
     </div>
