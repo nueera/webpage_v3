@@ -238,3 +238,33 @@ html.theme-transitioning *::after {
 body {
   transition: background-color 0.8s ease;
 }
+
+/* ==========================================
+   CURSOR SPOTLIGHT HOVER EFFECT
+   ========================================== */
+
+.tilt-card-spotlight {
+  position: relative;
+  overflow: hidden;
+}
+
+.tilt-card-spotlight::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    600px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+    rgba(255, 154, 31, 0.12),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.tilt-card-spotlight:hover::before {
+  opacity: 1;
+}
+

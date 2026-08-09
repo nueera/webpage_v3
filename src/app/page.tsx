@@ -3,6 +3,7 @@ import { VideoSection } from '@/components/video-section';
 import { TrustedLogosSection } from '@/components/trusted-logos-section';
 import { AboutStorySection } from '@/components/about-story-section';
 import { ServicesSection } from '@/components/services-section';
+import { TechOrbitalVisualizer } from '@/components/tech-orbital-visualizer';
 import { IndustriesSection } from '@/components/industries-section';
 import { ProcessSection } from '@/components/process-section';
 import { PortfolioSection } from '@/components/portfolio-section';
@@ -21,6 +22,7 @@ export default function HomePage() {
       <TrustedLogosSection />
       <AboutStorySection />
       <ServicesSection />
+      <TechOrbitalVisualizer />
       <IndustriesSection />
       <ProcessSection />
       <PortfolioSection />

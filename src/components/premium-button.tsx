@@ -1,6 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
+import { MagneticButton } from './ui/magnetic-button';
 
 interface PremiumButtonProps {
   children: ReactNode;
@@ -18,7 +19,7 @@ export function PremiumButton({
   disabled = false,
 }: PremiumButtonProps) {
   return (
-    <button
+    <MagneticButton
       type={type}
       onClick={onClick}
       disabled={disabled}
@@ -34,6 +35,6 @@ export function PremiumButton({
         ${className}`}
     >
       {children}
-    </button>
+    </MagneticButton>
   );
 }
