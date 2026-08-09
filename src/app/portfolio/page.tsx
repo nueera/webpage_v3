@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowRight, TrendingUp, Clock, Zap, Star, ExternalLink } from 'lucide-react';
 import { SectionBadge, FadeUp, AnimatedCounter } from '@/components/ui-extensions';
 import BeforeAfterSlider from '@/components/before-after-slider';
+import { FAQSection } from '@/components/faq-section';
 
 const filters = ['All', 'Web', 'App', 'Marketing', 'Design'];
 
@@ -228,6 +229,9 @@ export default function PortfolioPage() {
           </FadeUp>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <FAQSection />
 
       {/* CTA */}
       <section className="py-24 md:py-32 bg-[var(--bg-secondary)] relative overflow-hidden">

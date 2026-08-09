@@ -1,13 +1,7 @@
 'use client';
 
-import { SectionBadge, SectionTitle, SectionDescription, FadeUp, AnimatedCounter } from './ui-extensions';
-import { CirclePlay, Clock, ShieldCheck, Star } from 'lucide-react';
-
-const VIDEO_STATS = [
-  { value: 500, suffix: '+', label: 'Hours of Client Work', icon: Clock },
-  { value: 99.9, suffix: '%', label: 'Project Uptime', icon: ShieldCheck, decimals: 1 },
-  { value: 4.9, suffix: '/5', label: 'Client Rating', icon: Star, decimals: 1 },
-];
+import { SectionBadge, SectionTitle, SectionDescription, FadeUp } from './ui-extensions';
+import { CirclePlay } from 'lucide-react';
 
 export function VideoSection() {
   return (
@@ -75,33 +69,7 @@ export function VideoSection() {
                 </button>
                 <span className="text-[var(--text-muted)] text-sm font-medium">Watch Showreel</span>
               </div>
-
-              {/* YouTube iframe placeholder - update src with real video URL */}
-              {/* <iframe
-                className="absolute inset-0 w-full h-full"
-                src="about:blank"
-                title="NueEra Showreel"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              /> */}
             </div>
-          </div>
-        </FadeUp>
-
-        {/* Stats below video */}
-        <FadeUp delay={0.4} className="mt-10">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 max-w-3xl mx-auto">
-            {VIDEO_STATS.map((stat) => (
-              <div key={stat.label} className="stat-card flex flex-col items-center gap-2 py-5">
-                <div className="flex items-center gap-2 mb-1">
-                  <stat.icon className="w-5 h-5 text-[var(--orange-primary)]" />
-                </div>
-                <div className="text-2xl md:text-3xl font-bold gradient-text">
-                  <AnimatedCounter value={stat.value} suffix={stat.suffix} decimals={stat.decimals} />
-                </div>
-                <div className="text-xs text-[var(--text-muted)]">{stat.label}</div>
-              </div>
-            ))}
           </div>
         </FadeUp>
       </div>

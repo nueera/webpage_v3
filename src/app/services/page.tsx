@@ -1,6 +1,7 @@
 import ServicesHeroSection from '@/components/services-page/hero-section';
 import ServiceCatalogSection from '@/components/services-page/service-catalog';
 import { TechOrbitalVisualizer } from '@/components/tech-orbital-visualizer';
+import { TrustSection } from '@/components/trust-section';
 import ServicesProcessSection from '@/components/services-page/process-section';
 import ServicesIndustriesSection from '@/components/services-page/industries-section';
 import ServicesFaqSection from '@/components/services-page/faq-section';
@@ -13,6 +14,7 @@ export default function ServicesPage() {
       <ServicesHeroSection />
       <ServiceCatalogSection />
       <TechOrbitalVisualizer />
+      <TrustSection />
       <ServicesProcessSection />
       <ServicesIndustriesSection />
       <ServicesFaqSection />

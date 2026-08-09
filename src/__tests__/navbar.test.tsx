@@ -22,6 +22,14 @@ vi.mock('lucide-react', () => ({
   Menu: () => <svg data-testid="menu-icon" />,
   X: () => <svg data-testid="x-icon" />,
   MessageCircle: () => <svg data-testid="message-icon" />,
+  Palette: () => <svg data-testid="palette-icon" />,
+  ChevronRight: () => <svg data-testid="chevron-right" />,
+  House: () => <svg data-testid="house-icon" />,
+  Info: () => <svg data-testid="info-icon" />,
+  Layers: () => <svg data-testid="layers-icon" />,
+  Briefcase: () => <svg data-testid="briefcase-icon" />,
+  Mail: () => <svg data-testid="mail-icon" />,
+  Star: () => <svg data-testid="star-icon" />,
 }));
 
 vi.mock('@/components/theme-toggle', () => ({
@@ -56,6 +64,7 @@ describe('Navbar', () => {
     expect(screen.getByText('About')).toHaveAttribute('href', '/about');
     expect(screen.getByText('Services')).toHaveAttribute('href', '/services');
     expect(screen.getByText('Portfolio')).toHaveAttribute('href', '/portfolio');
+    expect(screen.getByText('PreOne').closest('a')).toHaveAttribute('href', '/preone');
     expect(screen.getByText('Contact')).toHaveAttribute('href', '/contact');
   });
 

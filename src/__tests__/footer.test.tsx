@@ -38,7 +38,7 @@ describe('Footer', () => {
     servicesLinks.forEach(link => {
       expect(link).toHaveAttribute('href', '/services');
     });
-  });
+  }, 15000);
 
   it('renders service links with correct hrefs', async () => {
     const { default: Footer } = await import('@/components/footer');

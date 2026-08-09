@@ -1,141 +1,112 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { House, Layers, Briefcase, MessageCircle } from 'lucide-react';
+import { House, Info, Layers, Briefcase, Mail, Star } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { id: 'home', label: 'Home', icon: House, href: '/', sectionId: 'home' },
-  { id: 'services', label: 'Services', icon: Layers, href: '/services', sectionId: 'services' },
-  { id: 'portfolio', label: 'Portfolio', icon: Briefcase, href: '/portfolio', sectionId: 'portfolio' },
-  { id: 'contact', label: 'Contact', icon: MessageCircle, href: '/contact', sectionId: null },
+  { id: 'home', label: 'Home', icon: House, href: '/' },
+  { id: 'about', label: 'About', icon: Info, href: '/about' },
+  { id: 'services', label: 'Services', icon: Layers, href: '/services' },
+  { id: 'portfolio', label: 'Portfolio', icon: Briefcase, href: '/portfolio' },
+  { id: 'preone', label: 'PreOne', icon: Star, href: '/preone', isPill: true },
+  { id: 'contact', label: 'Contact', icon: Mail, href: '/contact' },
 ];
 
 export default function MobileBottomNav() {
   const pathname = usePathname();
-  const isHomePage = pathname === '/';
-  const [activeSection, setActiveSection] = useState(isHomePage ? 'home' : '');
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const prevActiveRef = useRef(isHomePage ? 'home' : '');
-
-  // Determine active based on pathname when not on home
-  useEffect(() => {
-    if (!isHomePage) {
-      const match = NAV_ITEMS.find((item) => item.href === pathname);
-      const newActive = match ? match.id : '';
-      if (prevActiveRef.current !== newActive) {
-        prevActiveRef.current = newActive;
-        setActiveSection(newActive);
-      }
-    }
-  }, [pathname, isHomePage]);
-
-  // IntersectionObserver — only on home page
-  useEffect(() => {
-    if (!isHomePage) return;
-
-    const sections = ['home', 'services', 'portfolio'];
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const newActive = entry.target.id;
-            if (prevActiveRef.current !== newActive) {
-              prevActiveRef.current = newActive;
-              setActiveSection(newActive);
-            }
-          }
-        });
-      },
-      { root: null, rootMargin: '-40% 0px -40% 0px', threshold: 0 }
-    );
-
-    sections.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observerRef.current?.observe(el);
-    });
-
-    return () => { observerRef.current?.disconnect(); };
-  }, [isHomePage]);
-
-  const scrollToSection = useCallback((target: string) => {
-    document.querySelector(target)?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
-
-  const handleNavClick = useCallback((item: typeof NAV_ITEMS[number]) => {
-    const newId = item.id;
-    if (prevActiveRef.current !== newId) {
-      prevActiveRef.current = newId;
-      setActiveSection(newId);
-    }
-
-    // If we're on home page, scroll to section
-    if (isHomePage && item.sectionId) {
-      scrollToSection(`#${item.sectionId}`);
-      return;
-    }
-
-    // If navigating to home, go to / and then scroll to section
-    if (item.href === '/' && !isHomePage) {
-      window.location.href = '/';
-      return;
-    }
-
-    // For other pages, navigate to the page route
-    if (!isHomePage) {
-      window.location.href = item.href;
-    }
-  }, [isHomePage, scrollToSection]);
 
   return (
-    <nav className="bubble-nav-container md:hidden" aria-label="Mobile navigation">
-      {/* Top glow line */}
-      <div className="bubble-nav-glow-line" />
+    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[2000] md:hidden w-[96vw] max-w-md pointer-events-auto">
+      {/* Floating Glass Container */}
+      <nav
+        aria-label="Mobile Bottom Navigation"
+        className="relative flex items-center justify-between px-1.5 py-2 rounded-full bg-[var(--bg-glass-strong)] border border-white/20 backdrop-blur-2xl shadow-[0_15px_40px_rgba(0,0,0,0.4)]"
+      >
+        {/* Glow Line */}
+        <div
+          className="absolute -top-px left-6 right-6 h-[1px]"
+          style={{
+            background: 'linear-gradient(90deg, transparent, var(--blue-primary), var(--orange-primary), transparent)',
+            opacity: 0.8,
+          }}
+          aria-hidden="true"
+        />
 
-      <div className="bubble-nav-inner">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
-          const isActive = activeSection === item.id;
+          const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
+
+          if (item.isPill) {
+            return (
+              <Link
+                key={item.id}
+                href={item.href}
+                className="relative flex flex-col items-center justify-center py-1 px-2.5 rounded-full transition-all duration-300 active:scale-95 bg-gradient-to-r from-purple-600 via-violet-600 to-blue-500 shadow-[0_0_15px_rgba(139,92,246,0.6)] border border-white/30 text-white"
+              >
+                <div className="flex items-center justify-center">
+                  <Star className="w-4 h-4 text-pink-300 fill-pink-300/40" />
+                </div>
+                <span className="text-[9px] font-extrabold tracking-tight mt-0.5 text-white">
+                  {item.label}
+                </span>
+              </Link>
+            );
+          }
 
           return (
-            <button
+            <Link
               key={item.id}
-              onClick={() => handleNavClick(item)}
-              className={`bubble-nav-item ${isActive ? 'active' : ''}`}
-              aria-label={item.label}
-              aria-current={isActive ? 'page' : undefined}
+              href={item.href}
+              className={`relative flex flex-col items-center justify-center py-1.5 px-2 rounded-full transition-all duration-300 ${
+                isActive
+                  ? 'text-[var(--text-primary)] font-bold'
+                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+              }`}
             >
-              {/* Active bubble background */}
-              <div className={`bubble-nav-bubble ${isActive ? 'active' : ''}`}>
-                <div className="bubble-nav-bubble-glow" />
-                <div className="bubble-nav-bubble-fill" />
-              </div>
+              {/* Active Pill Glow Backdrop */}
+              {isActive && (
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[var(--blue-primary)]/20 to-[var(--orange-primary)]/20 border border-[var(--border-active)] shadow-[0_4px_16px_var(--glow-blue)] animate-fade-in" />
+              )}
 
-              {/* Icon with spring animation */}
-              <div
-                className={`bubble-nav-icon-wrap ${isActive ? 'active' : ''}`}
-                style={isActive ? { animationName: 'bubbleSpring' } : undefined}
-              >
+              {/* Icon */}
+              <div className="relative z-10 flex items-center justify-center">
                 <Icon
-                  className={`bubble-nav-icon ${isActive ? 'active' : ''}`}
-                  strokeWidth={isActive ? 2.5 : 1.8}
+                  className={`w-4.5 h-4.5 transition-transform duration-300 ${
+                    isActive
+                      ? 'scale-110 text-transparent bg-clip-text bg-gradient-to-r from-[var(--blue-primary)] to-[var(--orange-primary)]'
+                      : ''
+                  }`}
+                  strokeWidth={isActive ? 2.4 : 1.8}
                 />
               </div>
 
               {/* Label */}
-              <span className={`bubble-nav-label ${isActive ? 'active' : ''}`}>
+              <span
+                className={`relative z-10 text-[9px] tracking-tight mt-0.5 transition-all duration-200 ${
+                  isActive ? 'font-bold text-[var(--text-primary)]' : 'font-medium'
+                }`}
+              >
                 {item.label}
               </span>
 
-              {/* Active dot below label */}
-              <div className={`bubble-nav-dot ${isActive ? 'active' : ''}`} />
-            </button>
+              {/* Active Indicator Dot */}
+              {isActive && (
+                <span
+                  className="absolute -bottom-1 w-1.5 h-1.5 rounded-full"
+                  style={{
+                    background: 'linear-gradient(135deg, var(--blue-primary), var(--orange-primary))',
+                    boxShadow: '0 0 8px var(--glow-blue)',
+                  }}
+                />
+              )}
+            </Link>
           );
         })}
-      </div>
+      </nav>
 
-      {/* Bottom safe area spacer */}
+      {/* Safe Area Spacer for iOS Devices */}
       <div style={{ height: 'env(safe-area-inset-bottom, 0px)' }} />
-    </nav>
+    </div>
   );
 }

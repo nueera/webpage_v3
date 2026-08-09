@@ -7,6 +7,7 @@ import ScrollTopBtn from "@/components/scroll-top-btn";
 import MobileBottomNav from "@/components/mobile-bottom-nav";
 import InitialLoader from "@/components/initial-loader";
 import CookieConsent from "@/components/cookie-consent";
+import { WhatsAppWidget } from "@/components/whatsapp-widget";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -184,6 +185,7 @@ export default function RootLayout({
           <MobileBottomNav />
           <CookieConsent />
           <ScrollTopBtn />
+          <WhatsAppWidget />
         </ThemeProvider>
       </body>
     </html>

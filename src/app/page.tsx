@@ -2,14 +2,7 @@ import { Hero } from '@/components/hero';
 import { VideoSection } from '@/components/video-section';
 import { TrustedLogosSection } from '@/components/trusted-logos-section';
 import { AboutStorySection } from '@/components/about-story-section';
-import { ServicesSection } from '@/components/services-section';
-import { TechOrbitalVisualizer } from '@/components/tech-orbital-visualizer';
 import { IndustriesSection } from '@/components/industries-section';
-import { ProcessSection } from '@/components/process-section';
-import { ServiceSelector } from '@/components/service-selector';
-import { HomeContactSection } from '@/components/home-contact-section';
-import { FAQSection } from '@/components/faq-section';
-import { TrustSection } from '@/components/trust-section';
 import { CTASection } from '@/components/cta-section';
 
 export default function HomePage() {
@@ -19,14 +12,7 @@ export default function HomePage() {
       <VideoSection />
       <TrustedLogosSection />
       <AboutStorySection />
-      <ServicesSection />
-      <TechOrbitalVisualizer />
       <IndustriesSection />
-      <ProcessSection />
-      <ServiceSelector />
-      <HomeContactSection />
-      <FAQSection />
-      <TrustSection />
       <CTASection />
     </>
   );

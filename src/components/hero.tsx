@@ -2,10 +2,9 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { ChevronDown, CheckCircle2 } from 'lucide-react';
-import { GhostButton, AnimatedCounter } from './ui-extensions';
+import { ChevronDown } from 'lucide-react';
+import { GhostButton } from './ui-extensions';
 import { PremiumButton } from './premium-button';
-import { Hero3DMockup } from './hero-3d-mockup';
 
 /* ──────────────────────── Typing Animation ──────────────────────── */
 
@@ -55,20 +54,6 @@ function useTypewriter(phrases: string[], typingSpeed = 60, deletingSpeed = 35, 
 
   return displayText;
 }
-
-/* ──────────────────────── Hero Component ──────────────────────── */
-
-const METRICS = [
-  { value: 50, suffix: '+', label: 'Projects Delivered' },
-  { value: 98, suffix: '%', label: 'Client Satisfaction' },
-  { value: 4, suffix: '+', label: 'Years of Partnership' },
-];
-
-const PROOF_ITEMS = [
-  'Proven delivery framework',
-  'No fluff, just results',
-  'Business-first approach',
-];
 
 export function Hero() {
   const typedText = useTypewriter(TYPING_PHRASES);
@@ -165,32 +150,7 @@ export function Hero() {
           </GhostButton>
         </div>
 
-        {/* Animated metric counters */}
-        <div className="animate-fade-in-up stagger-6 flex flex-wrap items-center justify-center gap-4 md:gap-16 mb-10">
-          {METRICS.map((metric) => (
-            <div key={metric.label} className="text-center hero-metric-item">
-              <div className="text-3xl md:text-4xl font-bold gradient-text">
-                <AnimatedCounter value={metric.value} suffix={metric.suffix} />
-              </div>
-              <div className="text-sm text-[var(--text-muted)] mt-1">{metric.label}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Proof items - 2 columns on mobile */}
-        <div className="animate-fade-in-up stagger-6 grid grid-cols-2 gap-2 md:gap-4 max-w-sm md:max-w-none mx-auto">
-          {PROOF_ITEMS.map((item) => (
-            <div key={item} className="hero-proof-item flex items-center justify-center gap-2 text-[var(--text-secondary)] text-sm text-center">
-              <CheckCircle2 className="w-4 h-4 text-[var(--orange-primary)] flex-shrink-0" />
-              {item}
-            </div>
-          ))}
-        </div>
-
-        {/* 3D Interactive Browser Showcase Mockup */}
-        <Hero3DMockup />
-
-        <div className="mt-8 flex justify-center animate-bounce-gentle">
+        <div className="mt-10 flex justify-center animate-bounce-gentle">
           <ChevronDown className="w-6 h-6 text-[var(--text-muted)]" />
         </div>
       </div>

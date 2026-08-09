@@ -53,11 +53,8 @@ export default function ServiceCatalogSection() {
                       </div>
                     </div>
 
-                    {/* Price & Timeline badges — desktop */}
+                    {/* Timeline badge — desktop */}
                     <div className="hidden md:flex items-center gap-3 flex-shrink-0">
-                      <span className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[var(--bg-glass)] border border-[var(--border-soft)] text-[var(--text-primary)]">
-                        Starting {service.startingPrice}
-                      </span>
                       <span className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[var(--bg-glass)] border border-[var(--border-soft)] text-[var(--text-muted)]">
                         {service.timeline}
                       </span>
@@ -164,11 +161,8 @@ export default function ServiceCatalogSection() {
                         <span className="text-sm font-semibold">{service.result}</span>
                       </div>
 
-                      {/* Price & Timeline — mobile */}
+                      {/* Timeline — mobile */}
                       <div className="flex items-center gap-2 sm:hidden">
-                        <span className="px-2.5 py-1 rounded-md text-xs font-medium bg-[var(--bg-glass)] border border-[var(--border-soft)] text-[var(--text-primary)]">
-                          {service.startingPrice}
-                        </span>
                         <span className="px-2.5 py-1 rounded-md text-xs font-medium bg-[var(--bg-glass)] border border-[var(--border-soft)] text-[var(--text-muted)]">
                           {service.timeline}
                         </span>
